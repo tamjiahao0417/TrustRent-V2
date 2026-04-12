@@ -10,7 +10,7 @@ Route::post('/api/register', [AuthController::class, 'register']);
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::put('/api/user/update', [AuthController::class, 'updateProfile']);
 Route::put('/api/user/update', [AuthController::class, 'updateProfile']);
-Route::get('/api/user/details', [AuthController::class, 'getUserDetails']);
+Route::get('/api/user/details', [AuthController::class, 'getUserDetails']); 
 Route::get('/api/user/profile', [ProfileController::class, 'show']);
 Route::put('/api/user/profile', [ProfileController::class, 'update']);
 Route::get('/api/properties', [PropertyController::class, 'index']);
