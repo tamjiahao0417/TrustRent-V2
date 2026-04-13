@@ -1,0 +1,41 @@
+<div class="auth-wrapper">
+    <header class="logo-header">
+        <div class="logo">
+            <i class="fa-solid fa-layer-group"></i> 
+            <span>TrustRent</span>
+        </div>
+    </header>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <h1>Welcome back</h1>
+            
+            <form (submit)="onSubmit($event)">
+                <div *ngIf="errorMessage" class="error-banner">
+                    {{ errorMessage }}
+                </div>
+
+                <div class="input-group">
+                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required>
+                </div>
+
+                <div class="input-group password-group">
+                    <div class="password-wrapper">
+                        <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required>
+                        <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()" style="cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary">Log in</button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="/register">Sign up</a>
+            </div>
+        </div>
+    </main>
+</div>

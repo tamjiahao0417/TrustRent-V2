@@ -1,0 +1,55 @@
+<p>dashboard works!</p>
+<div class="dashboard-container">
+    <header class="welcome-section">
+        <h1>Welcome Back, {{ userRole | titlecase }} {{ userName }}!</h1>
+        <p>Here is an overview of your property portfolio.</p>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <label>Total Properties</label>
+            <div class="value">2</div>
+        </div>
+        <div class="stat-card">
+            <label>Active Tenants</label>
+            <div class="value">1</div>
+        </div>
+        <div class="stat-card">
+            <label>Monthly Revenue</label>
+            <div class="value revenue">RM 1,500</div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <h2>My Properties Overview</h2>
+        <button class="btn-add">+ Add New Property</button>
+    </div>
+
+    <div class="property-wide-card">
+        <div class="property-img-placeholder"></div>
+        <div class="property-details">
+            <div class="property-title-row">
+                <h3>Sky Suite Apartment</h3>
+                <span class="badge-rented">Rented</span>
+            </div>
+            <p class="location"><i class="fa-solid fa-location-dot"></i> 123 Skyway Avenue, KL City Center</p>
+            
+            <div class="property-info-row">
+                <div class="info-item">
+                    <label>CURRENT TENANT</label>
+                    <p>tam@gmail.com</p>
+                </div>
+                <div class="info-item">
+                    <label>MONTHLY RENT</label>
+                    <p>RM 1,500</p>
+                </div>
+                <div class="info-item">
+                    <label>STATUS</label>
+                    <p class="status-success">Paid up to date</p>
+                </div>
+            </div>
+            
+            <button class="btn-outline">Manage Property</button>
+        </div>
+    </div>
+</div>

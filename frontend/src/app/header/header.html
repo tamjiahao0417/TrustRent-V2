@@ -1,0 +1,14 @@
+<header class="top-header">
+    <div class="header-left">
+    </div>
+
+    <div class="header-right">
+        <button class="icon-btn">
+            <i class="fa-regular fa-bell"></i>
+        </button>
+        
+        <div class="profile-circle" routerLink="/profile">
+            {{ user.name?.[0] | uppercase }}
+        </div>
+    </div>
+</header>

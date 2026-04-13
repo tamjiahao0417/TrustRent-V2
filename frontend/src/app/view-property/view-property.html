@@ -1,0 +1,65 @@
+<div class="page-container" *ngIf="property">
+    <a routerLink="/my-properties" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
+
+    <div class="header-row">
+        <h1>Property Details</h1>
+        <span class="rented-badge" *ngIf="property.is_rented">
+            <i class="fa-solid fa-lock"></i> Currently Rented
+        </span>
+    </div>
+
+    <div class="photo-grid">
+        <div class="main-photo">
+            <img [src]="'http://localhost:8000/uploads/' + property.images[0]">
+        </div>
+        <div class="side-photos" *ngIf="property.images.length > 1">
+            <img *ngIf="property.images[1]" [src]="'http://localhost:8000/uploads/' + property.images[1]">
+            <img *ngIf="property.images[2]" [src]="'http://localhost:8000/uploads/' + property.images[2]">
+        </div>
+    </div>
+
+    <div class="details-card">
+        <div class="card-top">
+            <h2>{{ property.title }}</h2>
+            <div class="price">RM {{ property.price | number:'1.2-2' }} <span>per month</span></div>
+        </div>
+        <p class="address"><i class="fa-solid fa-location-dot"></i> {{ property.address }}</p>
+
+        <div class="section">
+            <h3>Description</h3>
+            <p>{{ property.description }}</p>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-box">
+                <label>Location/City</label>
+                <p>{{ property.location }}</p>
+            </div>
+            <div class="info-box">
+                <label>Total Rooms</label>
+                <p>{{ property.rooms }} Rooms</p>
+            </div>
+            <div class="info-box">
+                <label>Contact Phone</label>
+                <p>{{ property.phone_number }}</p>
+            </div>
+            <div class="info-box" *ngIf="property.created_at">
+                <label>Date Listed</label>
+                <p>{{ property.created_at | date:'MMM dd, yyyy' }}</p>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-edit" [routerLink]="['/properties/edit', property.id]">
+                <i class="fa-solid fa-pen"></i> Edit Property
+            </button>
+            
+            <button *ngIf="!property.is_rented" class="btn-delete" (click)="deleteProperty()">
+                <i class="fa-solid fa-trash"></i> Delete Listing
+            </button>
+            <span class="lock-text" *ngIf="property.is_rented">
+                <i class="fa-solid fa-lock"></i> Cannot delete while property is actively rented
+            </span>
+        </div>
+    </div>
+</div>

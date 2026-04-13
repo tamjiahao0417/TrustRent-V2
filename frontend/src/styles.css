@@ -1,0 +1,22 @@
+:root {
+    --primary-blue: #2563eb;
+    --success-green: #10b981;
+    --danger-red: #ef4444;
+    --text-dark: #111827;
+    --text-muted: #6b7280;
+    --bg-main: #f8fafc;
+    --white: #ffffff;
+    --border-color: #f3f4f6;
+    --radius-lg: 12px;
+    --radius-md: 10px;
+    --radius-sm: 8px;
+    --sidebar-width: 280px;
+    --header-height: 70px;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}

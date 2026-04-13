@@ -1,0 +1,53 @@
+<div class="auth-wrapper">
+    <header class="logo-header">
+        <div class="logo">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>TrustRent</span>
+        </div>
+    </header>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <h1>Create an account</h1>
+            
+            <form (submit)="onSubmit($event)">
+                <div *ngIf="errorMessage" class="error-banner">
+                    {{ errorMessage }}
+                </div>
+
+                <div class="input-group">
+                    <select name="role" [(ngModel)]="role" required class="premium-select">
+                        <option value="" disabled selected hidden>I want to sign up as a...</option>
+                        <option value="tenant">Tenant (Looking to rent)</option>
+                        <option value="landlord">Landlord (Listing properties)</option>
+                        <option value="admin">Admin (System Management)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required>
+                </div>
+
+                <div class="input-group password-group">
+                    <div class="password-wrapper">
+                        <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required>
+                        <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()" style="cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <div class="input-group password-group" style="margin-bottom: 30px;">
+                    <div class="password-wrapper">
+                        <input [type]="showConfirmPassword ? 'text' : 'password'" name="confirm_password" [(ngModel)]="confirmPassword" placeholder="Confirm Password" required>
+                        <i class="fa-regular" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword" (click)="toggleConfirmPassword()" style="cursor: pointer;"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Sign up</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="/login">Log in</a>
+            </div>
+        </div>
+    </main>
+</div>

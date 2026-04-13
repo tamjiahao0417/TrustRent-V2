@@ -1,0 +1,40 @@
+<div class="page-container">
+    <div class="header-flex">
+        <div>
+            <h1>My Property</h1>
+        </div>
+        <a routerLink="/properties/create" class="btn-create">Create Property</a>
+    </div>
+
+    <div class="controls-container">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search by address, city, or ZIP code">
+        </div>
+        <button class="btn-filter">
+            Filter <i class="fa-solid fa-sliders"></i>
+        </button>
+    </div>
+
+    <h2>My Properties</h2>
+
+    <div class="empty-state" *ngIf="!isLoading && properties.length === 0">
+        <h3>No properties listed yet</h3>
+        <p>Click "Create Property" to add your first listing.</p>
+    </div>
+
+    <div class="property-list" *ngIf="properties.length > 0">
+        <div class="property-card" *ngFor="let prop of properties" [routerLink]="['/properties/view', prop.id]">
+            <div class="card-info">
+                <span class="location"><i class="fa-solid fa-location-dot"></i> {{ prop.location }}</span>
+                <h3>{{ prop.title }}</h3>
+                <p class="details">{{ prop.rooms }} Rooms • {{ prop.address }}</p>
+                <div class="price-badge">RM {{ prop.price | number:'1.2-2' }}/month</div>
+            </div>
+            
+            <div class="card-image">
+                <img [src]="'http://localhost:8000/uploads/' + prop.thumbnail" alt="Property Image">
+            </div>
+        </div>
+    </div>
+</div>

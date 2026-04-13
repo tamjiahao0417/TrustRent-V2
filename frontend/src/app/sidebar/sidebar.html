@@ -1,0 +1,48 @@
+<div class="sidebar">
+    <div class="logo-section">
+        <i class="fa-solid fa-house-chimney"></i>
+        <span>TrustRent</span>
+    </div>
+
+    <nav class="nav-menu">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-table-cells-large"></i> Dashboard
+        </a>
+        <a routerLink="/my-properties" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-house-user"></i> My Properties
+        </a>
+        <a routerLink="/property-listings" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-magnifying-glass"></i> Property Listings
+        </a>
+        <a routerLink="/appointments" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-calendar-days"></i> My Appointments
+        </a>
+        <a routerLink="/rental-requests" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-list-ul"></i> Rental Requests
+        </a>
+        <a routerLink="/contracts" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-file-invoice"></i> Rental Contracts
+        </a>
+        <a routerLink="/transactions" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-credit-card"></i> Transaction History
+        </a>
+        <a routerLink="/ai-pricing" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Pricing Assistant
+        </a>
+        <a routerLink="/ai-matching" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Matching Page
+        </a>
+        <a routerLink="/maintenance" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-wrench"></i> Maintenance Issue
+        </a>
+        <a routerLink="/reports" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-desktop"></i> Reports
+        </a>
+    </nav>
+
+    <div class="logout-section">
+        <button class="btn-logout" (click)="logout()">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+    </div>
+</div>
