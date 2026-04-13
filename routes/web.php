@@ -14,6 +14,7 @@ Route::get('/api/user/details', [AuthController::class, 'getUserDetails']);
 Route::get('/api/user/profile', [ProfileController::class, 'show']);
 Route::put('/api/user/profile', [ProfileController::class, 'update']);
 Route::get('/api/properties', [PropertyController::class, 'index']);
+Route::get('/api/properties/all', [PropertyController::class, 'getAll']);
 Route::post('/api/properties', [PropertyController::class, 'store']);
 Route::post('/api/properties/{id}', [PropertyController::class, 'update']);
 Route::get('/api/properties/{id}', [PropertyController::class, 'show']);       // <-- ADD THIS

@@ -146,4 +146,18 @@ class PropertyController extends Controller
 
         return response()->json(['message' => 'Updated successfully']);
     }
+
+    // Fetch ALL properties for the public feed
+    public function getAll()
+    {
+        // Notice we don't filter by user_id here!
+        $properties = DB::table('properties')->orderBy('created_at', 'desc')->get();
+
+        foreach ($properties as $property) {
+            $property->images = json_decode($property->image_path) ?: [];
+            $property->thumbnail = !empty($property->images) ? $property->images[0] : 'default_property.jpg';
+        }
+
+        return response()->json($properties);
+    }
 }

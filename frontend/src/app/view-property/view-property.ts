@@ -12,6 +12,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ViewProperty implements OnInit {
   property: any = null;
+  currentUserId: string | null = null; // Stores who is logged in
+  fullScreenImage: string | null = null; // Stores the popup image
 
   constructor(
     private route: ActivatedRoute,
@@ -19,35 +21,41 @@ export class ViewProperty implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
-// Add these for the popup:
-fullScreenImage: string | null = null; 
-
-openImage(url: string) {
-  this.fullScreenImage = url;
-  this.cdr.detectChanges(); 
-}
-
-closeImage() {
-  this.fullScreenImage = null;
-  this.cdr.detectChanges(); 
-}
 
   ngOnInit() {
-    // Grab the ID from the URL (e.g., /properties/view/5)
+    // 1. Grab the currently logged-in user's ID
+    this.currentUserId = localStorage.getItem('user_id');
+
     const id = this.route.snapshot.paramMap.get('id');
     
-    // Fetch the specific property from your Laravel API
     this.http.get(`http://localhost:8000/api/properties/${id}`).subscribe({
       next: (data: any) => {
         this.property = data;
-        
-        // ADD THIS LINE! This forces the blank screen to vanish and show the HTML
         this.cdr.detectChanges(); 
       },
       error: (err) => console.error('Failed to load property details', err)
     });
   }
 
+  // 2. A safe helper function to check if the user owns this property
+  get isOwner(): boolean {
+    if (!this.property || !this.currentUserId) return false;
+    // We convert both to strings just in case one is a number!
+    return this.property.landlord_id.toString() === this.currentUserId.toString();
+  }
+
+  // --- Lightbox Functions ---
+  openImage(url: string) {
+    this.fullScreenImage = url;
+    this.cdr.detectChanges(); 
+  }
+
+  closeImage() {
+    this.fullScreenImage = null;
+    this.cdr.detectChanges(); 
+  }
+
+  // --- Delete Function ---
   deleteProperty() {
     if (confirm('Are you sure you want to delete this listing?')) {
       const userId = localStorage.getItem('user_id');

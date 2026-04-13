@@ -69,12 +69,7 @@
             </div>
         </div>
 
-        <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">
-            <span class="close-modal">&times;</span>
-            <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">
-        </div>
-        
-        <div class="actions">
+        <div class="actions" *ngIf="isOwner">
             <button class="btn-edit" [routerLink]="['/properties/edit', property.id]">
                 <i class="fa-solid fa-pen"></i> Edit Property
             </button>
@@ -82,9 +77,12 @@
             <button *ngIf="!property.is_rented" class="btn-delete" (click)="deleteProperty()">
                 <i class="fa-solid fa-trash"></i> Delete Listing
             </button>
+            
             <span class="lock-text" *ngIf="property.is_rented">
                 <i class="fa-solid fa-lock"></i> Cannot delete while property is actively rented
             </span>
         </div>
-    </div>
+    </div> </div> <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">
+    <span class="close-modal">&times;</span>
+    <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">
 </div>

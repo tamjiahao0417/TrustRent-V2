@@ -8,6 +8,7 @@ import { MyProperties } from './my-properties/my-properties';
 import { CreateProperty } from './create-property/create-property';
 import { ViewProperty } from './view-property/view-property';
 import { EditProperty } from './edit-property/edit-property';
+import { PropertyListings } from './property-listings/property-listings';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -22,7 +23,8 @@ export const routes: Routes = [
       { path: 'my-properties', component: MyProperties },
       { path: 'properties/create', component: CreateProperty },
       { path: 'properties/view/:id', component: ViewProperty },
-      { path: 'properties/edit/:id', component: EditProperty }
+      { path: 'properties/edit/:id', component: EditProperty },
+      { path: 'property-listings', component: PropertyListings },
     ]
   },
 
