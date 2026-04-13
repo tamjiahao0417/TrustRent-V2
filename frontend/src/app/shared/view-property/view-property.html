@@ -82,6 +82,19 @@
                 <i class="fa-solid fa-lock"></i> Cannot delete while property is actively rented
             </span>
         </div>
+
+        <div class="actions" *ngIf="isOwner">
+        </div>
+
+        <div class="tenant-actions" *ngIf="userRole === 'tenant' && !isOwner">
+            <button class="btn-outline" [routerLink]="['/book-appointment', property.id]">
+                Book Appointment
+            </button>
+            <button class="btn-solid">
+                Apply Now
+            </button>
+        </div>
+
     </div> </div> <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">
     <span class="close-modal">&times;</span>
     <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">

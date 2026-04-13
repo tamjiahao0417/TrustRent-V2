@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 export class ViewProperty implements OnInit {
   property: any = null;
   currentUserId: string | null = null; // Stores who is logged in
+  userRole: string | null = null;
   fullScreenImage: string | null = null; // Stores the popup image
 
   constructor(
@@ -25,6 +26,7 @@ export class ViewProperty implements OnInit {
   ngOnInit() {
     // 1. Grab the currently logged-in user's ID
     this.currentUserId = localStorage.getItem('user_id');
+    this.userRole = localStorage.getItem('user_role');
 
     const id = this.route.snapshot.paramMap.get('id');
     

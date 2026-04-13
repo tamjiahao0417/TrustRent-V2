@@ -121,3 +121,46 @@
 .close-modal:hover {
     color: #ef4444; 
 }
+
+/* --- Tenant Action Buttons --- */
+.tenant-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 30px;
+}
+
+.btn-outline {
+    flex: 1;
+    padding: 16px;
+    background-color: #ffffff;
+    color: #111827;
+    border: 2px solid #111827;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+    background-color: #f3f4f6;
+}
+
+.btn-solid {
+    flex: 1;
+    padding: 16px;
+    background-color: #111827;
+    color: #ffffff;
+    border: 2px solid #111827;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-solid:hover {
+    background-color: #000000;
+}
