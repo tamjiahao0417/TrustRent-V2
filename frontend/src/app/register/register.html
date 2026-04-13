@@ -1,7 +1,7 @@
 <div class="auth-wrapper">
     <header class="logo-header">
         <div class="logo">
-            <i class="fa-solid fa-layer-group"></i>
+            <i class="fa-solid fa-house-chimney"></i>
             <span>TrustRent</span>
         </div>
     </header>
@@ -12,7 +12,7 @@
             
             <form (submit)="onSubmit($event)">
                 <div *ngIf="errorMessage" class="error-banner">
-                    {{ errorMessage }}
+                    <i class="fa-solid fa-circle-exclamation"></i> {{ errorMessage }}
                 </div>
 
                 <div class="input-group">
@@ -25,24 +25,24 @@
                 </div>
 
                 <div class="input-group">
-                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required>
+                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email address" required>
                 </div>
 
-                <div class="input-group password-group">
+                <div class="input-group">
                     <div class="password-wrapper">
                         <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required>
-                        <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()" style="cursor: pointer;"></i>
+                        <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()"></i>
                     </div>
                 </div>
 
-                <div class="input-group password-group" style="margin-bottom: 30px;">
+                <div class="input-group" style="margin-bottom: 32px;">
                     <div class="password-wrapper">
-                        <input [type]="showConfirmPassword ? 'text' : 'password'" name="confirm_password" [(ngModel)]="confirmPassword" placeholder="Confirm Password" required>
-                        <i class="fa-regular" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword" (click)="toggleConfirmPassword()" style="cursor: pointer;"></i>
+                        <input [type]="showConfirmPassword ? 'text' : 'password'" name="confirm_password" [(ngModel)]="confirmPassword" placeholder="Confirm password" required>
+                        <i class="fa-regular" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword" (click)="toggleConfirmPassword()"></i>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary">Sign up</button>
+                <button type="submit" class="btn-primary">Create account</button>
             </form>
 
             <div class="auth-footer">

@@ -1,33 +1,160 @@
-/* --- Special styling for the Register Dropdown --- */
-.premium-select {
+/* --- Base Layout --- */
+.auth-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #111827;
+}
+
+.logo-header {
+    padding: 24px 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 20px;
+    color: #111827;
+}
+
+.logo i {
+    color: #000000; /* Brand color for the icon */
+    font-size: 24px;
+}
+
+/* --- Centered Card --- */
+.auth-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 20px 80px 20px; /* Offset bottom for visual balance */
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.auth-card h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    letter-spacing: -0.8px;
+    text-align: center;
+}
+
+/* --- Form Elements --- */
+.input-group {
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.input-group input, .premium-select {
     width: 100%;
     padding: 16px;
     background-color: #f3f4f6;
     border: 2px solid transparent;
-    border-radius: 8px;
+    border-radius: 12px; /* Slightly smoother corners */
     font-size: 15px;
     outline: none;
     transition: all 0.2s ease;
     box-sizing: border-box;
     color: #111827;
-    appearance: none; /* Removes default browser arrow for a cleaner look */
+}
+
+.input-group input:focus, .premium-select:focus {
+    background-color: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+/* --- Password Toggle Styling --- */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+}
+
+.password-wrapper i:hover {
+    color: #111827;
+}
+
+/* --- Premium Dropdown --- */
+.premium-select {
+    appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 16px center;
     background-size: 16px;
 }
 
-.premium-select:focus {
-    background-color: #ffffff;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+/* --- Primary Button --- */
+.btn-primary {
+    width: 100%;
+    padding: 16px;
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Make the dropdown text look like a placeholder when nothing is selected */
-.premium-select:invalid {
+.btn-primary:hover {
+    background-color: #166fe5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(24, 119, 242, 0.25);
+}
+
+.btn-primary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* --- Messages & Footer --- */
+.error-banner {
+    color: #dc2626;
+    background: #fef2f2;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    border: 1px solid #fee2e2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.auth-footer {
+    margin-top: 32px;
+    font-size: 14px;
     color: #6b7280;
+    text-align: center;
 }
 
-.premium-select option {
-    color: #111827;
+.auth-footer a {
+    color: #1877f2;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
 }

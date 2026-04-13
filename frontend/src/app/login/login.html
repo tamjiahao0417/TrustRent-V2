@@ -1,7 +1,7 @@
 <div class="auth-wrapper">
     <header class="logo-header">
         <div class="logo">
-            <i class="fa-solid fa-layer-group"></i> 
+            <i class="fa-solid fa-house-chimney"></i> 
             <span>TrustRent</span>
         </div>
     </header>
@@ -12,7 +12,7 @@
             
             <form (submit)="onSubmit($event)">
                 <div *ngIf="errorMessage" class="error-banner">
-                    {{ errorMessage }}
+                    <i class="fa-solid fa-circle-exclamation"></i> {{ errorMessage }}
                 </div>
 
                 <div class="input-group">
