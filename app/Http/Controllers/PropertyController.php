@@ -106,17 +106,16 @@ class PropertyController extends Controller
     }
 
     // 5. Update an existing property
+    // 5. Update an existing property
     public function update(Request $request, $id)
     {
         $userId = $request->input('user_id');
 
-        // Safety check: Ensure the user actually owns this property
         $property = DB::table('properties')->where('id', $id)->where('landlord_id', $userId)->first();
         if (!$property) {
             return response()->json(['message' => 'Unauthorized or Property not found'], 403);
         }
 
-        // Prepare the text data to update
         $updateData = [
             'title' => $request->input('title'),
             'description' => $request->input('description'),
@@ -127,21 +126,22 @@ class PropertyController extends Controller
             'phone_number' => $request->input('phone_number')
         ];
 
-        // ONLY process images if the user selected new ones
+        // 1. Get the list of old images the user DID NOT delete
+        $finalImages = $request->input('existing_images', []); 
+
+        // 2. If they uploaded new images, save them and add them to the final list
         if ($request->hasFile('property_images')) {
             $uploadDirectory = public_path('uploads/');
-            $uploadedImages = [];
-
             foreach ($request->file('property_images') as $file) {
                 $newFilename = uniqid('prop_') . '_' . time() . '.' . $file->getClientOriginalExtension();
                 $file->move($uploadDirectory, $newFilename);
-                $uploadedImages[] = $newFilename;
+                $finalImages[] = $newFilename; // Append the new image
             }
-            // Overwrite the old image array with the new one
-            $updateData['image_path'] = json_encode($uploadedImages);
         }
 
-        // Save everything to the database
+        // 3. Save the combined list of kept images + new images to the database!
+        $updateData['image_path'] = json_encode($finalImages);
+
         DB::table('properties')->where('id', $id)->update($updateData);
 
         return response()->json(['message' => 'Updated successfully']);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -9,82 +9,107 @@ import { Router, RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './create-property.html',
-  styleUrl: './create-property.css' // We will add the CSS next
+  styleUrl: './create-property.css'
 })
 export class CreateProperty {
   property: any = {
-    title: '', description: '', location: '', 
-    price: null, rooms: null, address: '', phone_number: ''
+    title: '',
+    description: '',
+    location: '',
+    price: null,
+    rooms: null,
+    address: '',
+    phone_number: ''
   };
 
-  // The "Memory Box" for our files and their visual previews
   selectedFiles: File[] = [];
-  previewUrls: string[] = [];
+  previewUrls: string[] = []; // Matches your HTML
   isSubmitting: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  onFileSelect(event: any) {
-    const files = Array.from(event.target.files as FileList);
-    
-    files.forEach(file => {
-      if (file.type.startsWith('image/')) {
-        // Prevent duplicate files by checking name and size
-        if (!this.selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
-          this.selectedFiles.push(file);
-          
-          // Generate the preview URL for the UI
-          const reader = new FileReader();
-          reader.onload = (e: any) => this.previewUrls.push(e.target.result);
-          reader.readAsDataURL(file);
-        }
-      }
-    });
-    
-    // Reset the input so you can select the same file again if you delete it
-    event.target.value = '';
+  // ADD THESE 3 THINGS:
+  fullScreenImage: string | null = null; 
+
+  openImage(url: string) {
+    this.fullScreenImage = url;
+    this.cdr.detectChanges(); // Tell Angular to show the popup
   }
 
+  closeImage() {
+    this.fullScreenImage = null;
+    this.cdr.detectChanges(); // Tell Angular to hide the popup
+  }
+  
+  onFileSelect(event: any) {
+    if (event.target.files.length > 0) {
+      const files = Array.from(event.target.files) as File[];
+
+      // Loop through new files and add them to our arrays
+      for (let file of files) {
+        this.selectedFiles.push(file); // Save the actual file for Laravel
+
+        // Create the preview for Angular
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.previewUrls.push(e.target.result);
+          this.cdr.detectChanges(); // Instantly draw the new thumbnail
+        };
+        reader.readAsDataURL(file);
+      }
+      
+      // Clear the input value so the user can select the same file again if they want
+      event.target.value = ''; 
+    }
+  }
+
+  // Matches the (click)="removeImage(i)" in your HTML
   removeImage(index: number) {
-    this.selectedFiles.splice(index, 1);
-    this.previewUrls.splice(index, 1);
+    this.selectedFiles.splice(index, 1); // Remove the file
+    this.previewUrls.splice(index, 1);   // Remove the preview
+    this.cdr.detectChanges(); // Instantly remove it from the screen
   }
 
   onSubmit() {
-    if (this.selectedFiles.length === 0) {
-      alert('Please upload at least one image.');
-      return;
-    }
-
     this.isSubmitting = true;
     const formData = new FormData();
     const userId = localStorage.getItem('user_id');
 
     if (!userId) {
-      alert('You must be logged in to create a property.');
+      alert("Error: You must be logged in to create a property.");
+      this.isSubmitting = false;
       return;
     }
 
     formData.append('user_id', userId);
-    
-    // Append standard text fields
-    Object.keys(this.property).forEach(key => {
-      formData.append(key, this.property[key]);
-    });
+    formData.append('title', this.property.title);
+    formData.append('description', this.property.description);
+    formData.append('location', this.property.location);
+    formData.append('price', this.property.price?.toString() || '0');
+    formData.append('rooms', this.property.rooms?.toString() || '0');
+    formData.append('address', this.property.address);
+    formData.append('phone_number', this.property.phone_number);
 
-    // Append multiple files
-    this.selectedFiles.forEach((file, index) => {
-      formData.append(`property_images[${index}]`, file);
+    // Append all remaining files
+    this.selectedFiles.forEach((file) => {
+      formData.append('property_images[]', file, file.name);
     });
 
     this.http.post('http://localhost:8000/api/properties', formData).subscribe({
-      next: () => {
+      next: (response: any) => {
         alert('Property listed successfully!');
-        this.router.navigate(['/my-properties']); // Go back to the list
+        this.isSubmitting = false;
+        this.router.navigate(['/my-properties']);
       },
       error: (err) => {
-        alert('Failed to create property. ' + (err.error?.message || ''));
+        alert('Failed to create property. See console for details.');
+        console.error(err);
         this.isSubmitting = false;
+        this.cdr.detectChanges();
       }
     });
   }

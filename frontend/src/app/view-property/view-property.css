@@ -35,3 +35,89 @@
 .btn-edit { background: #3b82f6; color: white; padding: 12px 24px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; text-decoration: none;}
 .btn-delete { background: white; color: #ef4444; border: 1px solid #ef4444; padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; }
 .lock-text { color: #ef4444; font-weight: 700; font-size: 14px; }   
+
+/* Additional Photos Gallery */
+.extra-photos-section {
+    margin-bottom: 40px;
+}
+
+.extra-photos-section h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #111;
+}
+
+.extra-gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.gallery-item {
+    width: calc(25% - 12px); /* Puts 4 photos per row */
+    height: 160px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #f3f4f6;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.05); /* Slight zoom effect when you hover over them! */
+}
+
+/* Make images look clickable */
+.clickable-image {
+    cursor: pointer;
+    transition: filter 0.2s ease;
+}
+.clickable-image:hover {
+    filter: brightness(0.85); /* Slightly darkens the image on hover to indicate it can be clicked */
+}
+
+/* The Dark Background Overlay */
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 9999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; 
+}
+
+/* The Full Size Image */
+.image-modal img {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+    cursor: default;
+}
+
+/* The Close Button */
+.close-modal {
+    position: absolute;
+    top: 24px;
+    right: 40px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #ef4444; 
+}

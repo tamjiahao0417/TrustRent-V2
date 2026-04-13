@@ -168,3 +168,52 @@
 .btn-cancel:hover {
     color: #111827;
 }
+
+/* Add a hover effect so the user knows they can click the small picture */
+.preview-image {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+.preview-image:hover {
+    opacity: 0.8;
+}
+
+/* The Dark Background Overlay */
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85); /* 85% transparent black */
+    z-index: 9999; /* Ensures it stays on top of the navbar and footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; /* Clicking anywhere in the dark area closes it */
+}
+
+/* The Full Size Image */
+.image-modal img {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+    cursor: default;
+}
+
+/* The Close Button */
+.close-modal {
+    position: absolute;
+    top: 24px;
+    right: 40px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #ef4444; /* Turns red when hovered */
+}

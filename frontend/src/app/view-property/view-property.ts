@@ -19,6 +19,18 @@ export class ViewProperty implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
+// Add these for the popup:
+fullScreenImage: string | null = null; 
+
+openImage(url: string) {
+  this.fullScreenImage = url;
+  this.cdr.detectChanges(); 
+}
+
+closeImage() {
+  this.fullScreenImage = null;
+  this.cdr.detectChanges(); 
+}
 
   ngOnInit() {
     // Grab the ID from the URL (e.g., /properties/view/5)

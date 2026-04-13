@@ -42,24 +42,31 @@
             </div>
 
             <div class="form-group">
-                <label>Upload Property Images</label>
+                <label>Upload Property Image    s</label>
                 <input type="file" class="file-input" (change)="onFileSelect($event)" accept="image/jpeg, image/png, image/webp" multiple>
                 <small>You can select multiple images. Supported formats: JPG, PNG, WEBP. Max size: 5MB per image.</small>
                 
                 <div class="preview-container" *ngIf="previewUrls.length > 0">
                     <div class="preview-wrapper" *ngFor="let url of previewUrls; let i = index">
-                        <img [src]="url" class="preview-image" alt="Preview">
+                        <img [src]="url" class="preview-image" alt="New Preview" (click)="openImage(url)">
                         <button type="button" class="remove-btn" (click)="removeImage(i)">&times;</button>
                     </div>
                 </div>
             </div>
 
+            <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">
+                <span class="close-modal">&times;</span>
+                
+                <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">
+            </div>
+            
             <div class="action-buttons">
                 <button type="submit" class="btn-black" [disabled]="!propertyForm.valid || isSubmitting">
                     {{ isSubmitting ? 'Listing...' : 'List Property' }}
                 </button>
                 <a routerLink="/my-properties" class="btn-cancel">Cancel</a>
             </div>
+            
         </form>
     </div>
 </div>
