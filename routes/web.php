@@ -15,6 +15,9 @@ Route::get('/api/user/profile', [ProfileController::class, 'show']);
 Route::put('/api/user/profile', [ProfileController::class, 'update']);
 Route::get('/api/properties', [PropertyController::class, 'index']);
 Route::post('/api/properties', [PropertyController::class, 'store']);
+Route::post('/api/properties/{id}', [PropertyController::class, 'update']);
+Route::get('/api/properties/{id}', [PropertyController::class, 'show']);       // <-- ADD THIS
+Route::delete('/api/properties/{id}', [PropertyController::class, 'destroy']);
 
 // --- Your existing Angular serving logic stays below ---
 Route::get('/{asset}', function ($asset) {
@@ -26,6 +29,9 @@ Route::get('/{asset}', function ($asset) {
             'js' => 'application/javascript',
             'css' => 'text/css',
             'ico' => 'image/x-icon',
+            'svg' => 'image/svg+xml',  // <-- ADDED THIS!
+            'png' => 'image/png',      // <-- ADDED THIS!
+            'jpg', 'jpeg' => 'image/jpeg', // <-- ADDED THIS!
             default => 'text/plain'
         };
         return response()->file($path, ['Content-Type' => $mimeType]);

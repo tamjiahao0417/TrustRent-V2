@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class PropertyController extends Controller
 {
+    // 1. Fetch all properties for a specific landlord (Used in My Properties)
     public function index(Request $request)
     {
         $userId = $request->query('user_id');
@@ -15,29 +16,26 @@ class PropertyController extends Controller
             return response()->json(['message' => 'User ID is required'], 400);
         }
 
-        // Fetch properties just like your old PropertyRepository
         $properties = DB::table('properties')
             ->where('landlord_id', $userId)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Decode the JSON image string before sending to Angular, so Angular doesn't have to!
         foreach ($properties as $property) {
             $property->images = json_decode($property->image_path) ?: [];
-            // Determine the thumbnail (first image or a default)
             $property->thumbnail = !empty($property->images) ? $property->images[0] : 'default_property.jpg';
         }
 
         return response()->json($properties);
     }
 
+    // 2. Save a new property and upload images (Used in Create Property)
     public function store(Request $request)
     {
         $userId = $request->input('user_id');
 
         if (!$userId) return response()->json(['message' => 'Unauthorized'], 401);
 
-        // Define the exact same upload folder from your PHP script
         $uploadDirectory = public_path('uploads/');
         if (!file_exists($uploadDirectory)) {
             mkdir($uploadDirectory, 0777, true);
@@ -45,10 +43,8 @@ class PropertyController extends Controller
 
         $uploadedImages = [];
 
-        // Handle the file uploads
         if ($request->hasFile('property_images')) {
             foreach ($request->file('property_images') as $file) {
-                // Generate secure filename
                 $newFilename = uniqid('prop_') . '_' . time() . '.' . $file->getClientOriginalExtension();
                 $file->move($uploadDirectory, $newFilename);
                 $uploadedImages[] = $newFilename;
@@ -59,7 +55,6 @@ class PropertyController extends Controller
             return response()->json(['message' => 'At least one image is required.'], 422);
         }
 
-        // Save to Database
         DB::table('properties')->insert([
             'landlord_id' => $userId,
             'title' => $request->input('title'),
@@ -69,9 +64,86 @@ class PropertyController extends Controller
             'rooms' => $request->input('rooms'),
             'address' => $request->input('address'),
             'phone_number' => $request->input('phone_number'),
-            'image_path' => json_encode($uploadedImages),
+            'image_path' => json_encode($uploadedImages)
         ]);
 
         return response()->json(['message' => 'Success']);
+    }
+
+    // 3. Fetch a single property's details (Used in View Property)
+    public function show($id)
+    {
+        $property = DB::table('properties')->where('id', $id)->first();
+        
+        if (!$property) {
+            return response()->json(['message' => 'Property not found'], 404);
+        }
+
+        // Check if rented so we can disable the delete button
+        $isRented = DB::table('contracts')
+            ->where('property_id', $id)
+            ->where('status', 'Active')
+            ->exists();
+
+        $property->images = json_decode($property->image_path) ?: [];
+        $property->is_rented = $isRented;
+
+        return response()->json($property);
+    }
+
+    // 4. Delete a property (Used in View Property)
+    public function destroy($id, Request $request)
+    {
+        $userId = $request->query('user_id');
+        
+        $isRented = DB::table('contracts')->where('property_id', $id)->where('status', 'Active')->exists();
+        if ($isRented) {
+            return response()->json(['message' => 'Cannot delete active rental'], 403);
+        }
+
+        DB::table('properties')->where('id', $id)->where('landlord_id', $userId)->delete();
+        return response()->json(['message' => 'Deleted']);
+    }
+
+    // 5. Update an existing property
+    public function update(Request $request, $id)
+    {
+        $userId = $request->input('user_id');
+
+        // Safety check: Ensure the user actually owns this property
+        $property = DB::table('properties')->where('id', $id)->where('landlord_id', $userId)->first();
+        if (!$property) {
+            return response()->json(['message' => 'Unauthorized or Property not found'], 403);
+        }
+
+        // Prepare the text data to update
+        $updateData = [
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'location' => $request->input('location'),
+            'price' => $request->input('price'),
+            'rooms' => $request->input('rooms'),
+            'address' => $request->input('address'),
+            'phone_number' => $request->input('phone_number')
+        ];
+
+        // ONLY process images if the user selected new ones
+        if ($request->hasFile('property_images')) {
+            $uploadDirectory = public_path('uploads/');
+            $uploadedImages = [];
+
+            foreach ($request->file('property_images') as $file) {
+                $newFilename = uniqid('prop_') . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $file->move($uploadDirectory, $newFilename);
+                $uploadedImages[] = $newFilename;
+            }
+            // Overwrite the old image array with the new one
+            $updateData['image_path'] = json_encode($uploadedImages);
+        }
+
+        // Save everything to the database
+        DB::table('properties')->where('id', $id)->update($updateData);
+
+        return response()->json(['message' => 'Updated successfully']);
     }
 }
