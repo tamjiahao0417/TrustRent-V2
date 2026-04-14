@@ -7,6 +7,8 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\RentalRequestController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\AiController;
 
 // 2. Added these API routes so Angular can "call" the controller
 Route::post('/api/register', [AuthController::class, 'register']);
@@ -40,6 +42,13 @@ Route::patch('/api/contracts/{id}/sign', [ContractController::class, 'signTenant
 Route::put('/api/contracts/{id}/redraft', [ContractController::class, 'reDraft']);
 Route::patch('/api/contracts/{id}/request-edit', [ContractController::class, 'requestEdit']);
 Route::patch('/api/contracts/{id}/seal', [ContractController::class, 'seal']);
+Route::get('/api/billing/{tenant_id}', [TransactionController::class, 'getBillingDetails']);
+Route::post('/api/payments', [TransactionController::class, 'storePayment']);
+Route::get('/api/transactions', [TransactionController::class, 'index']);
+Route::get('/api/transactions/{id}', [TransactionController::class, 'show']);
+Route::get('/api/ai/properties/{landlordId}', [AiController::class, 'getLandlordProperties']);
+Route::post('/api/ai/predict', [AiController::class, 'predictPrice']);
+
 
 // --- Your existing Angular serving logic stays below ---
 Route::get('/{asset}', function ($asset) {

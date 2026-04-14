@@ -1,0 +1,22 @@
+.page-container { padding: 30px; background-color: #f9fafb; min-height: 100vh; max-width: 800px; }
+
+.btn-back { color: #6b7280; text-decoration: none; cursor: pointer; display: inline-block; margin-bottom: 20px; font-weight: 500; transition: 0.2s ease;}
+.btn-back:hover { color: #111; }
+
+.page-title { font-size: 28px; font-weight: 800; color: #111; margin-bottom: 5px; margin-top: 0; }
+.page-subtitle { color: #6b7280; margin-bottom: 30px; font-size: 14px; margin-top: 0; }
+
+.coverage-banner { background-color: #e0f2fe; color: #0369a1; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; font-weight: bold; font-size: 15px; border: 1px solid #bae6fd; }
+.section-title { font-size: 18px; font-weight: bold; color: #111; margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; }
+
+.breakdown-box { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-top: 10px; }
+.breakdown-row { display: flex; justify-content: space-between; margin-bottom: 12px; color: #4b5563; font-size: 14px; }
+.breakdown-total { display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px solid #d1d5db; font-weight: bold; color: #111; font-size: 16px; }
+
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.info-item p { color: #6b7280; font-size: 14px; margin-bottom: 5px; margin-top: 0; }
+.info-item h4 { font-size: 15px; color: #111; margin: 0; font-weight: bold; }
+.info-item.full-width { grid-column: span 2; }
+
+.hash-link { font-size: 13px; word-break: break-all; color: #3b82f6; text-decoration: none; font-weight: normal; cursor: pointer; }
+.hash-link:hover { text-decoration: underline; }

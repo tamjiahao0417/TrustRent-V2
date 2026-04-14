@@ -29,6 +29,10 @@
             <i class="fa-solid fa-file-invoice"></i> Rental Contracts
         </a>
 
+        <a *ngIf="userRole === 'tenant'" routerLink="/rent-payment" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-money-bill"></i> Make Payment
+        </a>
+
         <a routerLink="/transactions" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-credit-card"></i> Transaction History
         </a>

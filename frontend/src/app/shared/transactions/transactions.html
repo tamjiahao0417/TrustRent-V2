@@ -1,0 +1,24 @@
+<div class="page-container">
+    <div class="header-actions">
+        <h1 class="page-title">Transactions</h1>
+        <button class="btn-light">Export</button>
+    </div>
+
+    <div class="table-card">
+        <table class="contract-table">
+            <thead>
+                <tr><th>Date</th><th>Amount</th><th>Type</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tx of transactions">
+                    <td>{{ tx.created_at | date:'MM/dd/yyyy' }}</td>
+                    <td style="color:#6b7280;">RM {{ tx.amount | number:'1.2-2' }}</td>
+                    <td style="color:#9ca3af;">{{ tx.type }}</td>
+                    <td><span class="status-pill">{{ tx.status }}</span></td>
+                    <td><a [routerLink]="['/transactions/details', tx.id]" class="action-link">View</a></td>
+                </tr>
+                <tr *ngIf="transactions.length === 0"><td colspan="5" class="empty-state">No transactions found.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

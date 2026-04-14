@@ -21,6 +21,10 @@ import { CreateContract } from './landlord/create-contract/create-contract';
 import { Contracts } from './shared/contracts/contracts';
 import { ContractDetails } from './shared/contract-details/contract-details';
 import { EditContract } from './landlord/edit-contract/edit-contract';
+import { RentPayment } from './tenant/rent-payment/rent-payment';
+import { Transactions } from './shared/transactions/transactions';
+import { TransactionDetails } from './shared/transaction-details/transaction-details';
+import { AiPricing } from './shared/ai-pricing/ai-pricing'; // Adjust path!
 
 export const routes: Routes = [ 
   { path: 'login', component: Login },
@@ -49,6 +53,10 @@ export const routes: Routes = [
       { path: 'contracts', component: Contracts },
       { path: 'contracts/details/:id', component: ContractDetails },
       { path: 'contracts/edit/:id', component: EditContract },
+      { path: 'rent-payment', component: RentPayment },
+      { path: 'transactions', component: Transactions },
+      { path: 'transactions/details/:id', component: TransactionDetails },
+      { path: 'ai-pricing', component: AiPricing },
     ]
   },
 

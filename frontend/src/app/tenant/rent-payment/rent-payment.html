@@ -1,0 +1,47 @@
+<div class="page-container">
+    <h1 class="page-title" style="margin-bottom: 30px;">Payments</h1>
+    <h2 style="font-size: 20px; margin-bottom: 20px;">Current Balance</h2>
+    
+    <div class="balance-card" *ngIf="bill">
+        <div class="card-header">
+            <div>
+                <div class="pill-tag">{{ bill.is_first ? 'Move-In Payment Required' : 'Regular Monthly Billing' }}</div>
+                <div class="coverage-text">Coverage: <span>{{ bill.period }}</span></div>
+            </div>
+        </div>
+        
+        <ng-container *ngIf="bill.is_first">
+            <div class="balance-row"><div><div class="amount">RM {{ bill.rent | number:'1.2-2' }}</div><div class="label">Advance Rental</div></div><div class="due">Due Before Move-in</div></div>
+            <div class="balance-row"><div><div class="amount">RM {{ bill.sec_dep | number:'1.2-2' }}</div><div class="label">Security Deposit</div></div><div class="due">Due Before Move-in</div></div>
+            <div class="balance-row"><div><div class="amount">RM {{ bill.util_dep | number:'1.2-2' }}</div><div class="label">Utility Deposit</div></div><div class="due">Due Before Move-in</div></div>
+        </ng-container>
+
+        <ng-container *ngIf="!bill.is_first">
+            <div class="balance-row"><div><div class="amount">RM {{ bill.rent | number:'1.2-2' }}</div><div class="label">Rent</div></div><div class="due">Due on 1st</div></div>
+            <div class="balance-row"><div><div class="amount">RM {{ bill.util | number:'1.2-2' }}</div><div class="label">Utilities</div></div><div class="due">Due on 1st</div></div>
+        </ng-container>
+
+        <div class="balance-row total-row">
+            <div><div class="amount total">RM {{ bill.total | number:'1.2-2' }}</div><div class="label">Total</div></div>
+            <div class="due">{{ bill.is_first ? 'Due Before Move-in' : 'Due on 1st' }}</div>
+        </div>
+        
+        <button class="btn-primary pay-btn" (click)="payWithWeb3()">Pay Now (Web3)</button>
+    </div>
+    <div *ngIf="!bill" class="empty-state">You have no active contracts or pending balances.</div>
+
+    <h2 style="font-size: 20px; margin-top: 40px; margin-bottom: 20px;">Payment History</h2>
+    <div class="table-card">
+        <table>
+            <thead><tr><th>Coverage Period</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr *ngFor="let tx of history">
+                    <td style="color:#6b7280;">{{ tx.billing_period }}</td>
+                    <td style="font-weight:bold;">RM {{ tx.amount | number:'1.2-2' }}</td>
+                    <td><span class="status-badge">{{ tx.status }}</span></td>
+                </tr>
+                <tr *ngIf="history.length === 0"><td colspan="3" style="text-align:center;">No payments made yet.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

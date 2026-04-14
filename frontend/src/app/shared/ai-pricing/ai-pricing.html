@@ -1,0 +1,88 @@
+<div class="page-container">
+    <div class="assistant-container">
+        <h1 class="page-title">AI Chatbot Rental Price Assistant</h1>
+        <p class="page-subtitle">Get an AI-powered rental price estimate to check if a listing is fair.</p>
+        
+        <p class="intro-text">
+            Welcome to the AI Rental Price Assistant! Please enter the details of the property you are interested in. The AI will analyze current market data to provide a fair rental price range.
+        </p>
+
+        <form (ngSubmit)="getPrediction()">
+            <div class="form-group" *ngIf="userRole === 'landlord'">
+                <select class="form-control" [(ngModel)]="selectedProperty" name="propSelect" (change)="autoFillForm()">
+                    <option value="">Select a registered property to auto-fill (optional)</option>
+                    <option *ngFor="let prop of myProperties" [ngValue]="prop">{{ prop.title }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="text" [(ngModel)]="formData.location" name="loc" class="form-control" placeholder="Property Location (e.g., Bangsar, Kuala Lumpur)" required>
+            </div>
+
+            <div class="form-row">
+                <select [(ngModel)]="formData.type" name="type" class="form-control" required>
+                    <option value="" disabled selected>Property Type</option>
+                    <option value="Condominium">Condominium / Apartment</option>
+                    <option value="Terrace House">Terrace House</option>
+                    <option value="Bungalow">Bungalow / Villa</option>
+                    <option value="Studio">Studio</option>
+                </select>
+
+                <input type="number" [(ngModel)]="formData.size" name="size" class="form-control" placeholder="Size (sq ft)" required>
+            </div>
+
+            <div class="form-row">
+                <input type="number" [(ngModel)]="formData.rooms" name="rooms" class="form-control" placeholder="Number of Bedrooms" required>
+
+                <select [(ngModel)]="formData.furnishing" name="furn" class="form-control" required>
+                    <option value="" disabled selected>Furnishing Status</option>
+                    <option value="Fully Furnished">Fully Furnished</option>
+                    <option value="Partially Furnished">Partially Furnished</option>
+                    <option value="Unfurnished">Unfurnished</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <textarea [(ngModel)]="formData.features" name="feat" class="form-control" rows="4" placeholder="Additional Features (e.g., Near MRT, Swimming Pool, High Floor)..."></textarea>
+            </div>
+
+            <div class="submit-area">
+                <div class="loader" *ngIf="isLoading"></div>
+                <button type="submit" class="btn-ai" [disabled]="isLoading">
+                    {{ isLoading ? 'Analyzing Market Data...' : 'Get Price Recommendation' }}
+                </button>
+            </div>
+        </form>
+
+        <div class="results-section" *ngIf="aiResult">
+            <h2 class="result-heading">Recommended Rental Price</h2>
+            <p class="result-desc">Based on the information provided, the recommended rental price for your property is:</p>
+            
+            <div class="price-text">{{ aiResult.price_range }}</div>
+            
+            <p class="result-desc">This range is based on comparable properties in your area with similar features. The final price may vary depending on market conditions and other factors.</p>
+
+            <h2 class="result-heading" style="margin-top: 40px;">Factors Influencing the Price</h2>
+            
+            <div class="factors-grid">
+                <div class="factor-item">
+                    <h4>Location</h4>
+                    <p>{{ aiResult.factors.location }}</p>
+                </div>
+                <div class="factor-item">
+                    <h4>Size</h4>
+                    <p>{{ aiResult.factors.size }}</p>
+                </div>
+                <div class="factor-item">
+                    <h4>Features</h4>
+                    <p>{{ aiResult.factors.features }}</p>
+                </div>
+                <div class="factor-item">
+                    <h4>Market Trends</h4>
+                    <p>{{ aiResult.factors.trends }}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
