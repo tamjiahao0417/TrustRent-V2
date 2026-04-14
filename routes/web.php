@@ -36,6 +36,10 @@ Route::patch('/api/rental-requests/{id}/status', [RentalRequestController::class
 Route::post('/api/contracts', [ContractController::class, 'store']);
 Route::get('/api/contracts', [ContractController::class, 'index']);
 Route::get('/api/contracts/{id}', [ContractController::class, 'show']);
+Route::patch('/api/contracts/{id}/sign', [ContractController::class, 'signTenant']);
+Route::put('/api/contracts/{id}/redraft', [ContractController::class, 'reDraft']);
+Route::patch('/api/contracts/{id}/request-edit', [ContractController::class, 'requestEdit']);
+Route::patch('/api/contracts/{id}/seal', [ContractController::class, 'seal']);
 
 // --- Your existing Angular serving logic stays below ---
 Route::get('/{asset}', function ($asset) {

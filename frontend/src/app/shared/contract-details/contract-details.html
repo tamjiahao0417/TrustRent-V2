@@ -1,0 +1,143 @@
+<div class="page-container" *ngIf="contract">
+    <div class="status-banner" [ngClass]="statusClass">
+        <i class="fa-solid" [ngClass]="statusIcon"></i>
+        <span>{{ statusText }}</span>
+    </div>
+
+    <div class="action-buttons no-print">
+        <button type="button" class="btn-primary" (click)="printDocument()">
+            <i class="fa-solid fa-print"></i> Print
+        </button>
+
+        <button *ngIf="contract.status === 'Active' && !contract.blockchain_hash && userRole === 'landlord'" 
+                type="button" 
+                class="btn-primary" 
+                style="background-color: #eab308; color: white;" 
+                (click)="sealContractOnBlockchain()">
+            <i class="fa-solid fa-link"></i> Seal on Blockchain (Pay Gas)
+        </button>
+        
+        <button *ngIf="contract.blockchain_hash" type="button" class="btn-primary btn-verify" (click)="verifyContractIntegrity()">
+            <i class="fa-solid fa-shield-check"></i> Verify Web3 Integrity
+        </button>
+
+        <a *ngIf="contract.status === 'Draft' && userRole === 'landlord'" 
+           [routerLink]="['/contracts/edit', contract.id]" 
+           class="btn-primary" 
+           style="background-color: #3b82f6; color: white; text-decoration: none;">
+            <i class="fa-solid fa-pen-to-square"></i> Edit & Re-Sign Contract
+        </a>
+
+        <a (click)="goBack()" class="btn-back">Back</a>
+    </div>
+
+    <div class="a4-document">
+        <div class="cover-page">
+            <h1>TENANCY AGREEMENT</h1>
+            <p class="cover-address">{{ contract.property?.address }}</p>
+            <p class="cover-title">BETWEEN</p>
+            <p class="cover-name">{{ contract.landlord?.name }}</p>
+            <p class="cover-title">AND</p>
+            <p class="cover-name">{{ contract.tenant?.name }}</p>
+            <p class="cover-date">ON {{ contract.created_at | date:'d MMMM yyyy' | uppercase }}</p>
+        </div>
+
+        <div class="page-break"></div>
+        <h2 class="schedule-title">FIRST SCHEDULE</h2>
+        <table class="schedule-table">
+            <tr><th class="col-no">No.</th><th class="col-matter">Matters</th><th class="col-details">Details</th></tr>
+            <tr><td class="col-no">1.</td><td class="col-matter">Agreement Date</td><td class="col-details">{{ contract.created_at | date:'d MMMM yyyy' }}</td></tr>
+            <tr>
+                <td class="col-no">2.</td><td class="col-matter">Landlord</td>
+                <td class="col-details">Name: {{ contract.landlord?.name }}<br>IC No.: {{ contract.landlord_ic }}</td>
+            </tr>
+            <tr>
+                <td class="col-no">3.</td><td class="col-matter">Tenant</td>
+                <td class="col-details">
+                    Name: {{ contract.tenant?.name }}<br>
+                    IC No.: {{ contract.tenant_ic }}<br>
+                    Address: {{ contract.tenant_address }}
+                </td>
+            </tr>
+            <tr><td class="col-no">4.</td><td class="col-matter">Address of the Property</td><td class="col-details">{{ contract.property?.address }}</td></tr>
+            <tr><td class="col-no">5.</td><td class="col-matter">Type of Property</td><td class="col-details">Residential Property</td></tr>
+        </table>
+
+        <h2 class="schedule-title">SECOND SCHEDULE</h2>
+        <table class="schedule-table">
+            <tr><th class="col-no">No.</th><th class="col-matter">Matters</th><th class="col-details">Details</th></tr>
+            <tr><td class="col-no">1.</td><td class="col-matter">Period of Tenancy</td><td class="col-details">{{ durationText }} with an option to renew for another year.</td></tr>
+            <tr><td class="col-no">2.</td><td class="col-matter">Effective Date</td><td class="col-details">{{ contract.start_date | date:'d MMMM yyyy' }} to {{ contract.end_date | date:'d MMMM yyyy' }}.</td></tr>
+            <tr><td class="col-no">3.</td><td class="col-matter">Monthly Rent</td><td class="col-details">RM {{ contract.rent_amount | number:'1.2-2' }}</td></tr>
+            <tr><td class="col-no">4.</td><td class="col-matter">Method of Payment</td><td class="col-details">Payment must be made on the first day and NOT EXCEED the {{ contract.due_date }} of each month via Online Transfer.</td></tr>
+            <tr>
+                <td class="col-no">5.</td><td class="col-matter">Initial payment</td>
+                <td class="col-details">
+                    <div class="payment-breakdown">
+                        <div class="payment-row"><div class="payment-col-left">a) Security Deposit</div><div class="payment-col-right">RM {{ contract.security_deposit | number:'1.2-2' }}</div></div>
+                        <div class="payment-row"><div class="payment-col-left">b) Utility Deposit</div><div class="payment-col-right">RM {{ contract.utilities_deposit | number:'1.2-2' }}</div></div>
+                        <div class="payment-row"><div class="payment-col-left">c) Advance Rental (1st Month)</div><div class="payment-col-right">RM {{ contract.rent_amount | number:'1.2-2' }}</div></div>
+                        <div class="payment-total"><div class="payment-col-left">Total:</div><div class="payment-col-right">RM {{ totalInitial | number:'1.2-2' }}</div></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div class="page-break"></div>
+
+        <p>This agreement was made on <span class="bold-text">{{ contract.created_at | date:'d MMMM yyyy' }}</span>, between <span class="bold-text">{{ contract.landlord?.name | uppercase }}</span> (Landlord) and <span class="bold-text">{{ contract.tenant?.name | uppercase }}</span> (Tenant).</p>
+        <p>WHEREAS the Landlord is the registered owner of the house located at <span class="bold-text">{{ contract.property?.address }}</span>.</p>
+        
+        <h2>THE TENANT NOW AGREES WITH THE LANDLORD AS FOLLOWS:</h2>
+        <ol class="legal-list">
+            <li>The Tenant shall pay the Landlord a sum of <span class="bold-text">RM {{ contract.rent_amount | number:'1.2-2' }}</span>.</li>
+            <li>Maintain and ensure that the condition of the Said House throughout the rental period is always in a good and habitable condition.</li>
+            </ol>
+
+        <p style="white-space: pre-line; margin-top: 20px;"><strong>ADDITIONAL TERMS:</strong><br>{{ contract.additional_terms }}</p>
+
+        <div class="page-break"></div>
+
+        <<div class="signature-section">
+            <div class="sig-block">
+                <div class="sig-line">
+                    <img *ngIf="contract.landlord_signature" [src]="contract.landlord_signature" class="sig-img">
+                </div>
+                <p class="bold-text">LANDLORD</p>
+                <p>Name: {{ contract.landlord?.name }}</p>
+                <p>IC No: {{ contract.landlord_ic }}</p>
+            </div>
+
+            <div class="sig-block">
+                <div class="sig-line">
+                    <img *ngIf="contract.tenant_signature" [src]="contract.tenant_signature" class="sig-img">
+                    <span *ngIf="!contract.tenant_signature" class="pending-sig">Pending Tenant Signature</span>
+                </div>
+                <p class="bold-text">TENANT</p>
+                <p>Name: {{ contract.tenant?.name }}</p>
+                <p>IC No: {{ contract.tenant_ic }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="signature-panel no-print" *ngIf="userRole === 'tenant' && contract.status === 'Pending Tenant'">
+        <h2>Sign & Accept Agreement</h2>
+        <p class="text-muted">By signing below, you agree to all terms and conditions stated in the document above.</p>
+        
+        <div class="canvas-container">
+            <canvas #tenantSignatureCanvas width="500" height="150"></canvas>
+            <button type="button" class="btn-clear-sig" (click)="clearSignature()">
+                <i class="fa-solid fa-arrow-rotate-right"></i> Clear Signature
+            </button>
+        </div>
+
+        <div class="signature-actions">
+            <button type="button" class="btn-agree" (click)="signContract()">
+                I Agree & Sign Contract
+            </button>
+            <button type="button" class="btn-request-edit" (click)="requestEdit()">
+                <i class="fa-solid fa-pen-to-square"></i> Request Edit
+            </button>
+        </div>
+    </div>
+</div>

@@ -19,6 +19,8 @@ import { RentalRequestDetails } from './shared/rental-request-details/rental-req
 import { EditRentalRequest } from './tenant/edit-rental-request/edit-rental-request';
 import { CreateContract } from './landlord/create-contract/create-contract';
 import { Contracts } from './shared/contracts/contracts';
+import { ContractDetails } from './shared/contract-details/contract-details';
+import { EditContract } from './landlord/edit-contract/edit-contract';
 
 export const routes: Routes = [ 
   { path: 'login', component: Login },
@@ -45,6 +47,8 @@ export const routes: Routes = [
       { path: 'rental-requests/edit/:id', component: EditRentalRequest },
       { path: 'contracts/create/:id', component: CreateContract },
       { path: 'contracts', component: Contracts },
+      { path: 'contracts/details/:id', component: ContractDetails },
+      { path: 'contracts/edit/:id', component: EditContract },
     ]
   },
 

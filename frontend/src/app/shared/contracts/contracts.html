@@ -48,17 +48,32 @@
                     <td style="color: #9ca3af;">{{ contract.end_date | date:'MMM d, y' }}</td>
                     
                     <td style="text-align: center;">
-                        <span class="status-pill draft" *ngIf="contract.status === 'Draft'">
-                            <i class="fa-solid fa-circle-exclamation"></i> Needs Action
+                        
+                        <span class="status-pill pending" *ngIf="contract.status === 'Draft' && userRole === 'tenant'">
+                            <i class="fa-solid fa-clock"></i> Waiting for Landlord Edits
+                        </span>
+                        <span class="status-pill draft" *ngIf="contract.status === 'Draft' && userRole === 'landlord'">
+                            <i class="fa-solid fa-pen-to-square"></i> Needs edit
                         </span>
                         
-                        <span class="status-pill pending" *ngIf="contract.status === 'Pending Tenant'">
-                            <i class="fa-solid fa-clock"></i> Waiting on Tenant
+                        <span class="status-pill draft" *ngIf="contract.status === 'Pending Tenant' && userRole === 'tenant'">
+                            <i class="fa-solid fa-pen-nib"></i> Needs Signature
                         </span>
-                        
-                        <span class="status-pill active" *ngIf="contract.status === 'Active'">
-                            <i class="fa-solid fa-check-circle"></i> Active
+                        <span class="status-pill pending" *ngIf="contract.status === 'Pending Tenant' && userRole === 'landlord'">
+                            <i class="fa-solid fa-clock"></i> Waiting on Tenant to sign
                         </span>
+
+                        <span class="status-pill pending" *ngIf="contract.status === 'Active' && !contract.blockchain_hash && userRole === 'tenant'">
+                            <i class="fa-solid fa-clock"></i> Waiting for Landlord to Seal
+                        </span>
+                        <span class="status-pill draft" *ngIf="contract.status === 'Active' && !contract.blockchain_hash && userRole === 'landlord'">
+                            <i class="fa-solid fa-link"></i> Needs Sealing
+                        </span>
+
+                        <span class="status-pill active" *ngIf="contract.status === 'Active' && contract.blockchain_hash">
+                            <i class="fa-solid fa-shield-check"></i> Sealed & Active
+                        </span>
+
                     </td>
 
                     <td style="text-align: right;">
