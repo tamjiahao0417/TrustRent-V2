@@ -1,0 +1,49 @@
+<div class="page-container" *ngIf="issue">
+    <a (click)="goBack()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Issues</a>
+    <h1 class="page-title">Issue Details</h1>
+
+    <div class="layout-grid">
+        <div class="detail-card">
+            <h3 class="section-title">Issue Information</h3>
+            <div class="grid-info">
+                <div><div class="info-label">Issue ID</div><div class="info-val">#{{ issue.id }}</div></div>
+                <div><div class="info-label">Property</div><div class="info-val">{{ issue.property_address }}</div></div>
+                <div><div class="info-label">Reported By</div><div class="info-val">{{ issue.tenant_name }}</div></div>
+                <div><div class="info-label">Category</div><div class="info-val">{{ issue.category }}</div></div>
+                <div><div class="info-label">Urgency</div><div class="info-val">{{ issue.urgency }}</div></div>
+                <div><div class="info-label">Status</div><div class="info-val text-blue">{{ issue.status }}</div></div>
+            </div>
+
+            <h3 class="section-title" style="margin-top: 30px;">Description</h3>
+            <p class="description-text">{{ issue.description }}</p>
+
+            <div *ngIf="issue.media_path" style="margin-top: 30px;">
+                <h3 class="section-title">Media</h3>
+                <img [src]="issue.media_path" class="media-img" alt="Issue Media">
+            </div>
+
+            <div class="action-btns" *ngIf="userRole === 'tenant' && issue.status === 'Open'">
+                <button class="btn-light">Edit Issue</button> 
+                <button class="btn-danger" (click)="deleteIssue()">Delete Issue</button>
+            </div>
+        </div>
+
+        <div class="side-column" *ngIf="userRole === 'landlord'">
+            <div class="tool-card">
+                <h3 class="section-title">Update Status</h3>
+                <p class="info-label" style="margin-bottom: 15px;">Change the current status and notify the tenant.</p>
+                
+                <select [(ngModel)]="updateData.status" class="form-control mb-3">
+                    <option value="Open">Open</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                    <option value="Closed">Closed</option>
+                </select>
+
+                <input type="text" [(ngModel)]="updateData.latest_update" class="form-control mb-3" placeholder="e.g. Plumber scheduled for tomorrow">
+                
+                <button class="btn-primary w-100" (click)="updateStatus()">Update Status</button>
+            </div>
+        </div>
+    </div>
+</div>

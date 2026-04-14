@@ -1,0 +1,28 @@
+.page-container { padding: 30px; background-color: #f9fafb; min-height: 100vh; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.page-title { font-size: 28px; color: #111; font-weight: 800; margin: 0; }
+
+.btn-report { background-color: #f3f4f6; color: #111; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 14px; border: 1px solid #e5e7eb; transition: 0.2s;}
+.btn-report:hover { background-color: #e5e7eb; }
+
+.table-card { background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);}
+.issue-table { width: 100%; border-collapse: collapse; text-align: left; }
+.issue-table th { padding: 16px 20px; font-size: 14px; color: #111; border-bottom: 1px solid #e5e7eb; font-weight: 800; }
+.issue-table td { padding: 16px 20px; font-size: 14px; border-bottom: 1px solid #e5e7eb; vertical-align: middle; }
+.issue-table tr:last-child td { border-bottom: none; }
+
+/* Text Utilities */
+.text-dark { color: #374151; }
+.text-gray { color: #6b7280; }
+.text-blue { color: #3b82f6; font-weight: 500; }
+.truncate { max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Status Pills */
+.status-pill { padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
+.status-open { background-color: #fef08a; color: #854d0e; } /* Yellow for open based on your screenshot */
+.status-progress { background-color: #dbeafe; color: #1e40af; }
+.status-closed { background-color: #dcfce7; color: #16a34a; }
+
+.action-link { color: #3b82f6; text-decoration: none; font-weight: bold; cursor: pointer;}
+.action-link:hover { text-decoration: underline; }
+.empty-state { text-align: center; padding: 40px; color: #6b7280; font-style: italic; }

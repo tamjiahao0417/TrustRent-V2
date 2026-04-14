@@ -9,6 +9,7 @@ use App\Http\Controllers\RentalRequestController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AiController;
+use App\Http\Controllers\MaintenanceController;
 
 // 2. Added these API routes so Angular can "call" the controller
 Route::post('/api/register', [AuthController::class, 'register']);
@@ -48,7 +49,12 @@ Route::get('/api/transactions', [TransactionController::class, 'index']);
 Route::get('/api/transactions/{id}', [TransactionController::class, 'show']);
 Route::get('/api/ai/properties/{landlordId}', [AiController::class, 'getLandlordProperties']);
 Route::post('/api/ai/predict', [AiController::class, 'predictPrice']);
-
+Route::get('/api/maintenance', [MaintenanceController::class, 'index']);
+Route::get('/api/maintenance/{id}', [MaintenanceController::class, 'show']);
+Route::delete('/api/maintenance/{id}', [MaintenanceController::class, 'destroy']);
+Route::get('/api/maintenance-properties', [MaintenanceController::class, 'getActiveProperties']);
+Route::post('/api/maintenance', [MaintenanceController::class, 'store']);
+Route::put('/api/maintenance/{id}/status', [MaintenanceController::class, 'updateStatus']);
 
 // --- Your existing Angular serving logic stays below ---
 Route::get('/{asset}', function ($asset) {

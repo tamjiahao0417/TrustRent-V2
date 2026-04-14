@@ -1,14 +1,14 @@
 <div class="auth-wrapper">
-    <header class="logo-header">
-        <div class="logo">
-            <i class="fa-solid fa-house-chimney"></i> 
-            <span>TrustRent</span>
-        </div>
-    </header>
-
     <main class="auth-main">
         <div class="auth-card">
+            
+            <div class="brand-header">
+                <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                <div class="brand-name">TrustRent</div>
+            </div>
+
             <h1>Welcome back</h1>
+            <p class="subtitle">Enter your details to access your account.</p>
             
             <form (submit)="onSubmit($event)">
                 <div *ngIf="errorMessage" class="error-banner">
@@ -16,13 +16,15 @@
                 </div>
 
                 <div class="input-group">
-                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required>
+                    <i class="fa-regular fa-envelope input-icon-left"></i>
+                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email address" required [disabled]="isLoading">
                 </div>
 
                 <div class="input-group password-group">
                     <div class="password-wrapper">
-                        <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required>
-                        <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-lock input-icon-left"></i>
+                        <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required [disabled]="isLoading">
+                        <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()" class="password-toggle"></i>
                     </div>
                 </div>
 
@@ -30,12 +32,16 @@
                     <a href="#">Forgot password?</a>
                 </div>
 
-                <button type="submit" class="btn-primary">Log in</button>
+                <button type="submit" class="btn-primary" [disabled]="isLoading">
+                    <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isLoading" style="margin-right: 8px;"></i>
+                    {{ isLoading ? 'Signing in...' : 'Log in' }}
+                </button>
             </form>
 
             <div class="auth-footer">
                 Don't have an account? <a href="/register">Sign up</a>
             </div>
+            
         </div>
     </main>
 </div>

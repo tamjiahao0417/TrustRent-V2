@@ -1,0 +1,59 @@
+<div class="page-container">
+    <a (click)="goBack()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <h1 class="page-title">Report Maintenance Issue</h1>
+
+    <div class="form-card">
+        <form (ngSubmit)="submitReport()">
+            
+            <div class="form-group">
+                <select [(ngModel)]="reportData.selected_property" name="property" class="form-control" required>
+                    <option value="" disabled>Select Property</option>
+                    <option *ngFor="let prop of activeProperties" [ngValue]="prop">
+                        {{ prop.address }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <textarea [(ngModel)]="reportData.description" name="description" class="form-control" rows="5" placeholder="Describe the issue in detail" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <select [(ngModel)]="reportData.category" name="category" class="form-control" required>
+                    <option value="" disabled>Select a category</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Structural">Structural</option>
+                    <option value="Appliance">Appliance</option>
+                    <option value="General">General Maintenance</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <select [(ngModel)]="reportData.urgency" name="urgency" class="form-control" required>
+                    <option value="" disabled>Select urgency</option>
+                    <option value="Low">Low (Can wait a few weeks)</option>
+                    <option value="Medium">Medium (Needs attention soon)</option>
+                    <option value="High">High (Immediate attention required)</option>
+                </select>
+            </div>
+
+            <div class="upload-box" (click)="fileInput.click()">
+                <p class="upload-title">Upload photos or videos (optional)</p>
+                <p class="upload-subtitle">Add media to help us understand the issue better</p>
+                <input type="file" #fileInput (change)="onFileSelected($event)" style="display:none;" accept="image/*,video/*">
+                
+                <div *ngIf="fileName" class="selected-file">
+                    <i class="fa-solid fa-file-circle-check"></i> Selected: {{ fileName }}
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit" [disabled]="isLoading">
+                    {{ isLoading ? 'Reporting...' : 'Report' }}
+                </button>
+            </div>
+            
+        </form>
+    </div>
+</div>

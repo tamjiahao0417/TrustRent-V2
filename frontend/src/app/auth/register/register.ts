@@ -12,15 +12,14 @@ import { Router } from '@angular/router';
   styleUrl: './register.css',
 })
 export class Register {
-  // Visibility toggles
   showPassword = false;
   showConfirmPassword = false;
+  isLoading = false; // 🌟 NEW: Tracks if registration is processing
 
-  // Form Data - Ensure 'confirmPassword' is added here!
   role = '';
   email = '';
   password = '';
-  confirmPassword = ''; // This was the missing link
+  confirmPassword = ''; 
   errorMessage = '';
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -37,27 +36,29 @@ export class Register {
     event.preventDefault();
     this.errorMessage = '';
 
-    // Check if passwords match locally before even calling the server
+    if (!this.role || !this.email || !this.password || !this.confirmPassword) return;
+
     if (this.password !== this.confirmPassword) {
       this.errorMessage = "Passwords do not match.";
       return;
     }
 
+    this.isLoading = true; // 🌟 Start loading spinner
+
     const registerData = {
       role: this.role,
       email: this.email,
       password: this.password,
-      confirm_password: this.confirmPassword // Match the key Laravel expects
+      confirm_password: this.confirmPassword 
     };
 
     this.http.post('http://localhost:8000/api/register', registerData).subscribe({
       next: (response: any) => {
-        console.log('Registration Success:', response);
         this.router.navigate(['/login']);
       },
       error: (error) => {
-        console.error('Registration Error:', error);
         this.errorMessage = error.error.message || 'Registration failed.';
+        this.isLoading = false; // 🌟 Stop spinner on error
       }
     });
   }

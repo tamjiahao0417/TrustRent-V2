@@ -25,10 +25,13 @@ import { RentPayment } from './tenant/rent-payment/rent-payment';
 import { Transactions } from './shared/transactions/transactions';
 import { TransactionDetails } from './shared/transaction-details/transaction-details';
 import { AiPricing } from './shared/ai-pricing/ai-pricing'; // Adjust path!
+import { Maintenance } from './shared/maintenance/maintenance'; // Adjust path!
+import { MaintenanceDetails } from './shared/maintenance-details/maintenance-details'; // Adjust path!
+import { MaintenanceReport } from './tenant/maintenance-report/maintenance-report'; // Adjust path!
 
 export const routes: Routes = [ 
   { path: 'login', component: Login },
-  { path: 'register', component: Register },
+  { path: 'register', component: Register },  
   
   { 
     path: '', 
@@ -57,6 +60,9 @@ export const routes: Routes = [
       { path: 'transactions', component: Transactions },
       { path: 'transactions/details/:id', component: TransactionDetails },
       { path: 'ai-pricing', component: AiPricing },
+      { path: 'maintenance', component: Maintenance },
+      { path: 'maintenance/details/:id', component: MaintenanceDetails },
+      { path: 'maintenance/report', component: MaintenanceReport },
     ]
   },
 
