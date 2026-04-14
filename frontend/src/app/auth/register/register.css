@@ -3,9 +3,9 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f0f4f8 0%, #dbeafe 100%);
+    background: #ffffff; /* Pure white background */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    color: #111827;
+    color: #000000;
 }
 
 /* --- Centered Main Content Area --- */
@@ -23,8 +23,9 @@
     max-width: 420px;
     padding: 48px 40px;
     background: #ffffff;
-    border-radius: 24px;
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+    border-radius: 16px;
+    border: 1px solid #e5e7eb; /* Subtle boundary */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Minimal shadow */
     text-align: center;
     box-sizing: border-box;
 }
@@ -40,9 +41,9 @@
 .logo-icon {
     width: 48px;
     height: 48px;
-    background: #eff6ff;
-    color: #3b82f6;
-    border-radius: 14px;
+    background: #000000; /* Stark black logo box */
+    color: #ffffff; /* White icon */
+    border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,6 +55,7 @@
     font-weight: 800;
     font-size: 20px;
     letter-spacing: -0.5px;
+    color: #000000;
 }
 
 .auth-card h1 {
@@ -61,10 +63,11 @@
     font-weight: 800;
     margin: 0 0 8px 0;
     letter-spacing: -0.8px;
+    color: #000000;
 }
 
 .subtitle {
-    color: #6b7280;
+    color: #666666; /* Clean gray */
     font-size: 15px;
     margin-bottom: 35px;
     margin-top: 0;
@@ -82,7 +85,7 @@
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: #9ca3af;
+    color: #999999;
     font-size: 16px;
     transition: color 0.2s ease;
     z-index: 2;
@@ -91,21 +94,21 @@
 .input-group input, 
 .input-group select.premium-select {
     width: 100%;
-    padding: 16px 16px 16px 46px; /* Extra left padding for the icon */
-    background-color: #f9fafb;
+    padding: 16px 16px 16px 46px; 
+    background-color: #fafafa;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
     font-size: 15px;
     outline: none;
     transition: all 0.2s ease;
     box-sizing: border-box;
-    color: #111827;
+    color: #000000;
 }
 
-/* Premium Dropdown Chevron */
+/* Premium Dropdown Chevron (Updated to Black) */
 .premium-select {
     appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 16px center;
     background-size: 16px;
@@ -113,18 +116,18 @@
 
 .input-group input::placeholder, 
 .premium-select:invalid {
-    color: #9ca3af;
+    color: #999999;
 }
 
 .input-group:focus-within .input-icon-left {
-    color: #3b82f6;
+    color: #000000; /* Black focus */
 }
 
 .input-group input:focus, 
 .premium-select:focus {
     background-color: #ffffff;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+    border-color: #000000; /* Stark black focus ring */
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 .input-group input:disabled, 
@@ -143,7 +146,7 @@
     right: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: #9ca3af;
+    color: #999999;
     font-size: 16px;
     cursor: pointer;
     transition: color 0.2s;
@@ -151,16 +154,33 @@
 }
 
 .password-toggle:hover {
-    color: #111827;
+    color: #000000;
 }
 
 /* --- Links and Buttons --- */
+.forgot-password {
+    text-align: right;
+    margin-bottom: 25px;
+    margin-top: -4px;
+}
+
+.forgot-password a {
+    font-size: 14px;
+    color: #000000;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.forgot-password a:hover {
+    color: #666666;
+}
+
 .btn-primary {
     width: 100%;
     padding: 16px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
+    background-color: #000000;
+    color: #ffffff;
+    border: 2px solid #000000;
     border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
@@ -171,10 +191,12 @@
     align-items: center;
 }
 
+/* Invert colors on hover for a high-end feel */
 .btn-primary:hover:not(:disabled) {
-    background-color: #1d4ed8;
+    background-color: #ffffff;
+    color: #000000;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -182,7 +204,9 @@
 }
 
 .btn-primary:disabled {
-    background-color: #93c5fd;
+    background-color: #cccccc;
+    border-color: #cccccc;
+    color: #ffffff;
     cursor: not-allowed;
 }
 
@@ -190,31 +214,31 @@
 .auth-footer {
     margin-top: 32px;
     font-size: 14px;
-    color: #6b7280;
+    color: #666666;
 }
 
 .auth-footer a {
-    color: #2563eb;
-    text-decoration: none;
+    color: #000000;
+    text-decoration: underline;
     font-weight: 600;
 }
 
 .auth-footer a:hover {
-    text-decoration: underline;
+    color: #666666;
 }
 
 /* --- Error Display --- */
 .error-banner {
-    color: #dc2626; 
-    background: #fef2f2; 
+    color: #000000; /* Replaced red with harsh black */
+    background: #ffffff; 
     padding: 14px 16px; 
     border-radius: 12px; 
     margin-bottom: 24px; 
     font-size: 14px; 
     text-align: left;
-    border: 1px solid #fee2e2;
+    border: 2px solid #000000; /* Bold black warning border */
     display: flex;
     align-items: center;
     gap: 10px;
-    font-weight: 500;
+    font-weight: 600;
 }
