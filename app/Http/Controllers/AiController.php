@@ -51,9 +51,9 @@ Based on the Malaysian property market, respond ONLY with a valid JSON object ma
   }
 }";
 
-            // Send the request securely via Laravel HTTP Client
+            // Send the request using the current, active Gemini 2.5 Flash model
             $response = Http::withOptions(['verify' => false]) 
-                ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}", [
+                ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
                     "contents" => [["parts" => [["text" => $prompt]]]],
                     "generationConfig" => ["responseMimeType" => "application/json"]
                 ]);
