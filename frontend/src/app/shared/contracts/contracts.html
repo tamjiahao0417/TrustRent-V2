@@ -1,0 +1,71 @@
+<div class="page-container">
+    <h1 class="page-title">Contracts</h1>
+
+    <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input 
+            type="text" 
+            class="search-bar" 
+            placeholder="Search contracts by address..." 
+            [(ngModel)]="searchQuery" 
+            (input)="filterContracts()"
+        >
+    </div>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Created Date</th>
+                    <th>Address</th>
+                    <th>Rent Amount</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th style="text-align: center;">Status</th>
+                    <th style="text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="filteredContracts.length === 0">
+                    <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280; font-style: italic;">
+                        No contracts found.
+                    </td>
+                </tr>
+                <tr *ngFor="let contract of filteredContracts">
+                    <td style="color: #111; font-weight: 600;">
+                        {{ contract.created_at | date:'MMM d, y' }}
+                    </td>
+                    
+                    <td style="color: #3b82f6; max-width: 200px; line-height: 1.5;">
+                        {{ contract.property?.address }}
+                    </td>
+                    
+                    <td style="color: #111; font-weight: 600;">
+                        RM {{ contract.rent_amount | number:'1.0-0' }}
+                    </td>
+                    
+                    <td style="color: #9ca3af;">{{ contract.start_date | date:'MMM d, y' }}</td>
+                    <td style="color: #9ca3af;">{{ contract.end_date | date:'MMM d, y' }}</td>
+                    
+                    <td style="text-align: center;">
+                        <span class="status-pill draft" *ngIf="contract.status === 'Draft'">
+                            <i class="fa-solid fa-circle-exclamation"></i> Needs Action
+                        </span>
+                        
+                        <span class="status-pill pending" *ngIf="contract.status === 'Pending Tenant'">
+                            <i class="fa-solid fa-clock"></i> Waiting on Tenant
+                        </span>
+                        
+                        <span class="status-pill active" *ngIf="contract.status === 'Active'">
+                            <i class="fa-solid fa-check-circle"></i> Active
+                        </span>
+                    </td>
+
+                    <td style="text-align: right;">
+                        <a [routerLink]="['/contracts/details', contract.id]" class="view-link">View</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

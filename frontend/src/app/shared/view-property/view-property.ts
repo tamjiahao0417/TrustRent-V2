@@ -46,6 +46,13 @@ export class ViewProperty implements OnInit {
     return this.property.landlord_id.toString() === this.currentUserId.toString();
   }
 
+  // Add this right below your isOwner() getter
+  goToBooking() {
+    if (this.property && this.property.id) {
+      this.router.navigate(['/book-appointment', this.property.id]);
+    }
+  }
+  
   // --- Lightbox Functions ---
   openImage(url: string) {
     this.fullScreenImage = url;

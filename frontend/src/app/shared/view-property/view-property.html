@@ -87,10 +87,10 @@
         </div>
 
         <div class="tenant-actions" *ngIf="userRole === 'tenant' && !isOwner">
-            <button class="btn-outline" [routerLink]="['/book-appointment', property.id]">
+            <button class="btn-outline" (click)="goToBooking()">
                 Book Appointment
             </button>
-            <button class="btn-solid">
+            <button class="btn-solid" [routerLink]="['/apply-property', property.id]">
                 Apply Now
             </button>
         </div>

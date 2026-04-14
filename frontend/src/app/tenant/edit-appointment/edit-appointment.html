@@ -1,0 +1,51 @@
+<div class="page-container">
+    <a (click)="goBack()" class="back-link" style="cursor: pointer;">
+        <i class="fa-solid fa-arrow-left"></i> Cancel
+    </a>
+
+    <h1 class="page-title">Edit Appointment</h1>
+
+    <div class="form-card" *ngIf="propertyTitle">
+        <form (submit)="onSubmit($event)">
+            
+            <div class="form-group">
+                <label>Property</label>
+                <input type="text" class="form-control readonly-input" [value]="propertyTitle" readonly>
+            </div>
+
+            <div class="date-time-row">
+                <div class="form-group">
+                    <label>Select Date</label>
+                    <input type="date" name="date" [(ngModel)]="appointmentDate" [min]="minDate" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Time</label>
+                    <input type="time" name="time" [(ngModel)]="appointmentTime" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Appointment Type</label>
+                <div class="pill-group">
+                    <label class="pill-radio" [class.active]="appointmentType === 'Physical'">
+                        <input type="radio" name="type" value="Physical" [(ngModel)]="appointmentType" required style="display: none;">
+                        Physical
+                    </label>
+                    <label class="pill-radio" [class.active]="appointmentType === 'Virtual'">
+                        <input type="radio" name="type" value="Virtual" [(ngModel)]="appointmentType" required style="display: none;">
+                        Virtual
+                    </label>
+                </div>
+            </div>
+
+            <div *ngIf="errorMessage" class="error-banner">
+                {{ errorMessage }}
+            </div>
+
+            <div class="submit-container">
+                <button type="submit" class="btn-submit">Update Appointment</button>
+            </div>
+        </form>
+    </div>
+</div>

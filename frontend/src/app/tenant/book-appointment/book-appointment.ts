@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // 1. Added ChangeDetectorRef
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,20 +25,25 @@ export class BookAppointment implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private cdr: ChangeDetectorRef // 2. Injected here
   ) {}
 
   ngOnInit() {
-    // Set minimum date to today so they can't book in the past
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
 
     const propertyId = this.route.snapshot.paramMap.get('id');
     
-    // Fetch property details just to show the title in the form
     this.http.get(`http://localhost:8000/api/properties/${propertyId}`).subscribe({
-      next: (data: any) => this.property = data,
-      error: () => this.errorMessage = 'Failed to load property.'
+      next: (data: any) => {
+        this.property = data;
+        this.cdr.detectChanges(); // 3. Wakes Angular up to show the form!
+      },
+      error: () => {
+        this.errorMessage = 'Failed to load property.';
+        this.cdr.detectChanges(); // Also good to wake it up on error
+      }
     });
   }
 
@@ -53,7 +58,7 @@ export class BookAppointment implements OnInit {
     const bookingData = {
       property_id: this.property.id,
       landlord_id: this.property.landlord_id,
-      tenant_id: localStorage.getItem('user_id'), // Send who is booking
+      tenant_id: localStorage.getItem('user_id'), 
       appointment_date: this.appointmentDate,
       appointment_time: this.appointmentTime,
       appointment_type: this.appointmentType
@@ -61,12 +66,16 @@ export class BookAppointment implements OnInit {
 
     this.http.post('http://localhost:8000/api/appointments', bookingData).subscribe({
       next: (response: any) => {
+        // This alert pauses the code execution until you click 'OK'
         alert('Appointment requested successfully! The landlord will review it soon.');
-        this.router.navigate(['/appointments']); // Send them to the My Appointments list
+        
+        // --- ADD OR CHECK THIS LINE ---
+        // This tells Angular to change the URL and load a new component
+        this.router.navigate(['/appointments']); 
       },
       error: (err) => {
-        // Handle double booking or past date errors from Laravel
-        this.errorMessage = err.error.message || 'Error creating appointment.';
+        this.errorMessage = err.error?.message || 'Error creating appointment.';
+        this.cdr.detectChanges();
       }
     });
   }

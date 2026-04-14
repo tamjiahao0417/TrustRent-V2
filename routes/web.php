@@ -4,11 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController; // 1. Added this
 use App\Http\Controllers\ProfileController; // 1. Added this
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\RentalRequestController;
+use App\Http\Controllers\ContractController;
 
 // 2. Added these API routes so Angular can "call" the controller
 Route::post('/api/register', [AuthController::class, 'register']);
 Route::post('/api/login', [AuthController::class, 'login']);
-Route::put('/api/user/update', [AuthController::class, 'updateProfile']);
 Route::put('/api/user/update', [AuthController::class, 'updateProfile']);
 Route::get('/api/user/details', [AuthController::class, 'getUserDetails']); 
 Route::get('/api/user/profile', [ProfileController::class, 'show']);
@@ -19,6 +21,21 @@ Route::post('/api/properties', [PropertyController::class, 'store']);
 Route::post('/api/properties/{id}', [PropertyController::class, 'update']);
 Route::get('/api/properties/{id}', [PropertyController::class, 'show']);       // <-- ADD THIS
 Route::delete('/api/properties/{id}', [PropertyController::class, 'destroy']);
+Route::post('/api/appointments', [AppointmentController::class, 'store']);
+Route::get('/api/appointments', [AppointmentController::class, 'index']);
+Route::get('/api/appointments/{id}', [AppointmentController::class, 'show']);
+Route::delete('/api/appointments/{id}', [AppointmentController::class, 'destroy']);
+Route::put('/api/appointments/{id}', [AppointmentController::class, 'update']);
+Route::patch('/api/appointments/{id}/status', [AppointmentController::class, 'updateStatus']);
+Route::post('/api/rental-requests', [RentalRequestController::class, 'store']);
+Route::get('/api/rental-requests', [RentalRequestController::class, 'index']);
+Route::get('/api/rental-requests/{id}', [RentalRequestController::class, 'show']);
+Route::put('/api/rental-requests/{id}', [RentalRequestController::class, 'update']);
+Route::delete('/api/rental-requests/{id}', [RentalRequestController::class, 'destroy']);
+Route::patch('/api/rental-requests/{id}/status', [RentalRequestController::class, 'updateStatus']);
+Route::post('/api/contracts', [ContractController::class, 'store']);
+Route::get('/api/contracts', [ContractController::class, 'index']);
+Route::get('/api/contracts/{id}', [ContractController::class, 'show']);
 
 // --- Your existing Angular serving logic stays below ---
 Route::get('/{asset}', function ($asset) {

@@ -1,0 +1,97 @@
+.page-container {
+    padding: 30px;
+    background-color: #f9fafb;
+    min-height: 100vh;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    color: #111;
+}
+
+/* Search Bar Styles */
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+    max-width: 100%;
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 14px 15px 14px 45px;
+    border-radius: 8px;
+    border: none;
+    background-color: #f3f4f6;
+    font-size: 15px;
+    color: #111;
+    outline: none;
+}
+
+.search-bar:focus {
+    background-color: #e5e7eb;
+}
+
+/* Table Card Styles */
+.table-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+td {
+    padding: 20px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+/* Status Pill Styles */
+.status-pill {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.status-pill i { margin-right: 5px; }
+
+.status-pill.draft { background-color: #fef08a; color: #854d0e; }
+.status-pill.pending { background-color: #dbeafe; color: #1e40af; }
+.status-pill.active { background-color: #dcfce7; color: #16a34a; }
+
+.view-link {
+    color: #3b82f6;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.view-link:hover {
+    text-decoration: underline;
+}

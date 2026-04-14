@@ -1,0 +1,79 @@
+<div class="appointments-container">
+    <h1 class="main-title">My Appointments</h1>
+
+    <section class="appointment-section">
+        <h2 class="section-title">Upcoming</h2>
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ userRole === 'tenant' ? 'Landlord' : 'Tenant' }}</th>
+                        <th>Property</th>
+                        <th>Date/Time</th>
+                        <th>Tour Type</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let apt of upcomingAppointments">
+                        <td>{{ userRole === 'tenant' ? apt.landlord?.name : apt.tenant?.name }}</td>
+                        <td>
+                            <div class="prop-title">{{ apt.property?.title }}</div>
+                            <div class="prop-address">{{ apt.property?.address }}</div>
+                        </td>
+                        <td>
+                            <div class="apt-date">{{ apt.appointment_date | date:'MMMM d, y' }}</div>
+                            <div class="apt-time">{{ apt.appointment_time.substring(0,5) }}</div>
+                        </td>
+                        <td class="tour-type">{{ apt.appointment_type }}</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="apt.status.toLowerCase()">
+                                {{ apt.status }}
+                            </span>
+                        </td>
+                        <td><a [routerLink]="['/appointments/details', apt.id]" class="view-link">View Details</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="appointment-section">
+        <h2 class="section-title">Past</h2>
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ userRole === 'tenant' ? 'Landlord' : 'Tenant' }}</th>
+                        <th>Property</th>
+                        <th>Date/Time</th>
+                        <th>Tour Type</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let apt of pastAppointments">
+                        <td>{{ userRole === 'tenant' ? apt.landlord?.name : apt.tenant?.name }}</td>
+                        <td>
+                            <div class="prop-title">{{ apt.property?.title }}</div>
+                            <div class="prop-address">{{ apt.property?.address }}</div>
+                        </td>
+                        <td>
+                            <div class="apt-date">{{ apt.appointment_date | date:'MMMM d, y' }}</div>
+                            <div class="apt-time">{{ apt.appointment_time.substring(0,5) }}</div>
+                        </td>
+                        <td class="tour-type">{{ apt.appointment_type }}</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="apt.status.toLowerCase()">
+                                {{ apt.status }}
+                            </span>
+                        </td>
+                        <td><a [routerLink]="['/appointments/details', apt.id]" class="view-link">View Details</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,85 @@
+.details-container {
+    padding: 40px;
+    max-width: 600px;
+}
+
+.back-link {
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 30px;
+    display: block;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+.info-group {
+    margin-bottom: 25px;
+}
+
+.info-group label {
+    display: block;
+    font-weight: 700;
+    font-size: 16px;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.info-group p {
+    color: #4b5563;
+    font-size: 16px;
+    margin: 0;
+}
+
+.status-text { font-weight: 700; }
+.pending { color: #6b7280; }
+.approved { color: #16a34a; }
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.btn-edit, .btn-delete {
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #f3f4f6; /* Soft gray from screenshot */
+    color: #111827;
+    transition: 0.2s;
+}
+
+.btn-edit:hover, .btn-delete:hover {
+    background-color: #e5e7eb;
+}
+
+.btn-approve {
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #16a34a; /* Green */
+    color: white;
+    transition: 0.2s;
+}
+.btn-approve:hover { background-color: #15803d; }
+
+.btn-reject {
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #dc2626; /* Red */
+    color: white;
+    transition: 0.2s;
+}
+.btn-reject:hover { background-color: #b91c1c; }    

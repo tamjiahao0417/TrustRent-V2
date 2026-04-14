@@ -9,8 +9,18 @@ import { CreateProperty } from './landlord/create-property/create-property';
 import { ViewProperty } from './shared/view-property/view-property';
 import { EditProperty } from './landlord/edit-property/edit-property';
 import { PropertyListings } from './shared/property-listings/property-listings';
+import { BookAppointment } from './tenant/book-appointment/book-appointment'; // Make sure this path matches your folder structure!
+import { MyAppointments } from './shared/my-appointments/my-appointments'; // Make sure this path matches your folder structure!
+import { AppointmentDetails } from './shared/appointment-details/appointment-details'; // Make sure this path matches your folder structure!
+import { EditAppointment } from './tenant/edit-appointment/edit-appointment'; // Make sure this path matches your folder structure!
+import { ApplyProperty } from './tenant/apply-property/apply-property';
+import { RentalRequests } from './shared/rental-requests/rental-requests'; // Make sure this path matches your folder structure!
+import { RentalRequestDetails } from './shared/rental-request-details/rental-request-details';
+import { EditRentalRequest } from './tenant/edit-rental-request/edit-rental-request';
+import { CreateContract } from './landlord/create-contract/create-contract';
+import { Contracts } from './shared/contracts/contracts';
 
-export const routes: Routes = [
+export const routes: Routes = [ 
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   
@@ -25,6 +35,16 @@ export const routes: Routes = [
       { path: 'properties/view/:id', component: ViewProperty },
       { path: 'properties/edit/:id', component: EditProperty },
       { path: 'property-listings', component: PropertyListings },
+      { path: 'book-appointment/:id', component: BookAppointment },
+      { path: 'appointments', component: MyAppointments },
+      { path: 'appointments/details/:id', component: AppointmentDetails },
+      { path: 'appointments/edit/:id', component: EditAppointment },
+      { path: 'apply-property/:id', component: ApplyProperty },
+      { path: 'rental-requests', component: RentalRequests },
+      { path: 'rental-requests/details/:id', component: RentalRequestDetails },
+      { path: 'rental-requests/edit/:id', component: EditRentalRequest },
+      { path: 'contracts/create/:id', component: CreateContract },
+      { path: 'contracts', component: Contracts },
     ]
   },
 

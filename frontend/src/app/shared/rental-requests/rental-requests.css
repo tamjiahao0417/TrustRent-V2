@@ -1,0 +1,72 @@
+.appointments-container {
+    padding: 30px;
+    background-color: #f9fafb;
+    min-height: 100vh;
+}
+
+.main-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.table-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    padding: 16px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    background-color: #ffffff;
+}
+
+td {
+    padding: 20px 24px;
+    border-top: 1px solid #f3f4f6;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.prop-title { font-weight: 700; color: #111827; }
+.prop-address { font-size: 12px; color: #6b7280; margin-top: 4px; }
+.apt-date { color: #9ca3af; }
+.apt-time { color: #111827; font-weight: 500; }
+.tour-type { color: #9ca3af; }
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.pending { background-color: #f3f4f6; color: #111827; }
+.approved { background-color: #f0fdf4; color: #16a34a; }
+.rejected { background-color: #fef2f2; color: #dc2626; }
+
+.view-link {
+    color: #6b7280;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.view-link:hover { color: #111827; }

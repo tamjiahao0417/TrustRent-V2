@@ -1,0 +1,44 @@
+<div class="page-container">
+    <a (click)="goBack()" class="back-link" style="cursor: pointer;">
+        <i class="fa-solid fa-arrow-left"></i> Back to Property
+    </a>
+
+    <h1 class="page-title">Request to Rent</h1>
+    
+    <p class="page-subtitle" *ngIf="property">
+        Applying for: <strong>{{ property.title }}</strong>
+    </p>
+
+    <div *ngIf="errorMessage" class="error-banner">
+        {{ errorMessage }}
+    </div>
+
+    <div class="form-card" *ngIf="property">
+        <form (submit)="onSubmit($event)">
+
+            <div class="form-group">
+                <label>Start date</label>
+                <input type="date" name="start_date" [(ngModel)]="startDate" [min]="minDate" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>End date</label>
+                <input type="date" name="end_date" [(ngModel)]="endDate" [min]="minDate" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>Move-in date</label>
+                <input type="date" name="move_in_date" [(ngModel)]="moveInDate" [min]="minDate" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label>Notes (optional)</label>
+                <textarea name="notes" [(ngModel)]="notes" class="form-control" placeholder="Any special requests or details for the landlord..."></textarea>
+            </div>
+
+            <div class="submit-container">
+                <button type="submit" class="btn-submit">Submit Request</button>
+            </div>
+        </form>
+    </div>
+</div>

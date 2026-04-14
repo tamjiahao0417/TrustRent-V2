@@ -1,0 +1,53 @@
+<div class="details-container" *ngIf="appointment">
+    <a (click)="goBack()" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to Appointments
+    </a>
+
+    <h1 class="page-title">Appointment Details</h1>
+
+    <div class="info-group">
+        <label>Property Address</label>
+        <p>{{ appointment.property?.address }}</p>
+    </div>
+
+    <div class="info-group">
+        <label>Date and Time</label>
+        <p>
+            {{ appointment.appointment_date | date:'EEEE, MMMM d, y' }}, 
+            {{ appointment.appointment_time.substring(0,5) }} - {{ endTime }}
+        </p>
+    </div>
+
+    <div class="info-group">
+        <label>Appointment Type</label>
+        <p>{{ appointment.appointment_type }}</p>
+    </div>
+
+    <div class="info-group">
+        <label>Landlord Contact</label>
+        <p class="contact-name">{{ appointment.landlord?.name }}</p>
+        <p>{{ appointment.landlord?.email }}</p>
+        <p>{{ appointment.landlord?.phone_number || 'No phone provided' }}</p>
+    </div>
+
+    <div class="info-group">
+        <label>Status</label>
+        <p class="status-text" [ngClass]="appointment.status.toLowerCase()">
+            {{ appointment.status }}
+        </p>
+    </div>
+
+    <div class="action-buttons" *ngIf="appointment.status === 'Pending'">
+        
+        <ng-container *ngIf="userRole === 'tenant'">
+            <button class="btn-edit" [routerLink]="['/appointments/edit', appointment.id]">Edit</button>
+            <button class="btn-delete" (click)="deleteAppointment()">Delete</button>
+        </ng-container>
+
+        <ng-container *ngIf="userRole === 'landlord'">
+            <button class="btn-approve" (click)="updateStatus('Approved')">Approve</button>
+            <button class="btn-reject" (click)="updateStatus('Rejected')">Reject</button>
+        </ng-container>
+
+    </div>
+</div>

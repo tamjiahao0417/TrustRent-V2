@@ -1,0 +1,52 @@
+<div class="page-container">
+    <h1 class="page-title">Rental Requests</h1>
+    <p class="page-subtitle">Track the status of your property rental applications.</p>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ userRole === 'tenant' ? 'Landlord' : 'Tenant' }}</th>
+                    
+                    <th>Property</th>
+                    <th>Move-in Date</th>
+                    <th>Lease Period</th>
+                    <th>Date Applied</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="requests.length === 0">
+                    <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
+                        You haven't submitted any rental requests yet.
+                    </td>
+                </tr>
+                <tr *ngFor="let req of requests">
+                    <td style="font-weight: 600;">
+                        {{ userRole === 'tenant' ? req.landlord?.name : req.tenant?.name }}
+                    </td>
+                    
+                    <td style="font-weight: 600;">{{ req.property?.title }}</td>
+                    <td>
+                        <i class="fa-solid fa-calendar-day" style="color: #9ca3af; margin-right: 5px;"></i>
+                        {{ req.move_in_date | date:'MMM d, y' }}
+                    </td>
+                    <td>
+                        <div style="font-weight: 600;">{{ req.start_date | date:'MMM d, y' }}</div>
+                        <div style="font-size: 13px; color: #9ca3af;">to {{ req.end_date | date:'MMM d, y' }}</div>
+                    </td>
+                    <td style="color: #6b7280;">{{ req.created_at | date:'MMM d, y' }}</td>
+                    <td>
+                        <span class="status-badge" [ngClass]="req.status.toLowerCase()">
+                            {{ req.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <a [routerLink]="['/rental-requests/details', req.id]" class="view-link">View Details</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
