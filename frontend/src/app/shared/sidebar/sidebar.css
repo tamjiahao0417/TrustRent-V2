@@ -119,3 +119,10 @@
     justify-content: center;
     padding: 10px 0 30px 0;
 }
+
+/* 🌟 ADD THIS: Prevents text from jumping/wrapping during the slide animation */
+.nav-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 0.2s ease;
+}

@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Sidebar } from '../sidebar/sidebar'; // Adjust path
+import { Sidebar } from '../sidebar/sidebar'; // 🌟 1. Ensure the path is correct
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, Sidebar],
+  // 🌟 2. Add Sidebar to this 'imports' array
+  imports: [CommonModule, RouterModule, Sidebar], 
   template: `
     <div class="main-wrapper" [class.sidebar-collapsed]="isCollapsed">
       <app-sidebar 
@@ -22,11 +23,9 @@ import { Sidebar } from '../sidebar/sidebar'; // Adjust path
   styles: [`
     .main-wrapper {
       display: flex;
-      transition: all 0.3s ease;
     }
     .content-area {
       flex: 1;
-      padding: 20px;
       transition: all 0.3s ease;
     }
   `]

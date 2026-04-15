@@ -16,7 +16,6 @@ export class Sidebar implements OnInit {
 
   userRole: string = '';
 
-  // 🌟 ADD THIS CONSTRUCTOR BACK: This fixes the red lines for 'http' and 'router'
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
@@ -28,7 +27,6 @@ export class Sidebar implements OnInit {
   }
 
   logout() {
-    // Now this.http and this.router will work perfectly!
     this.http.post('http://localhost:8000/api/logout', {}, { withCredentials: true }).subscribe({
         next: () => {
             localStorage.clear(); 

@@ -8,51 +8,63 @@
 
     <nav class="nav-menu">
         <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-table-cells-large"></i> Dashboard
+            <i class="fa-solid fa-table-cells-large"></i> 
+            <span *ngIf="!collapsed">Dashboard</span>
         </a>
 
         <a *ngIf="userRole === 'landlord'" routerLink="/my-properties" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-house-user"></i> My Properties
+            <i class="fa-solid fa-house-user"></i> 
+            <span *ngIf="!collapsed">My Properties</span>
         </a>
 
         <a routerLink="/property-listings" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-magnifying-glass"></i> Property Listings
+            <i class="fa-solid fa-magnifying-glass"></i> 
+            <span *ngIf="!collapsed">Property Listings</span>
         </a>
 
         <a routerLink="/appointments" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-calendar-days"></i> My Appointments
+            <i class="fa-solid fa-calendar-days"></i> 
+            <span *ngIf="!collapsed">My Appointments</span>
         </a>
 
         <a routerLink="/rental-requests" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-list-ul"></i> Rental Requests
+            <i class="fa-solid fa-list-ul"></i> 
+            <span *ngIf="!collapsed">Rental Requests</span>
         </a>
 
         <a routerLink="/contracts" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-file-invoice"></i> Rental Contracts
+            <i class="fa-solid fa-file-invoice"></i> 
+            <span *ngIf="!collapsed">Rental Contracts</span>
         </a>
 
         <a *ngIf="userRole === 'tenant'" routerLink="/rent-payment" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-money-bill"></i> Make Payment
+            <i class="fa-solid fa-money-bill"></i> 
+            <span *ngIf="!collapsed">Make Payment</span>
         </a>
 
         <a routerLink="/transactions" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-credit-card"></i> Transaction History
+            <i class="fa-solid fa-credit-card"></i> 
+            <span *ngIf="!collapsed">Transaction History</span>
         </a>
 
         <a routerLink="/ai-pricing" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Pricing Assistant
+            <i class="fa-solid fa-wand-magic-sparkles"></i> 
+            <span *ngIf="!collapsed">AI Pricing Assistant</span>
         </a>
 
         <a *ngIf="userRole === 'tenant'" routerLink="/ai-matching" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Matching Page
+            <i class="fa-solid fa-wand-magic-sparkles"></i> 
+            <span *ngIf="!collapsed">AI Matching Page</span>
         </a>
 
         <a routerLink="/maintenance" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-wrench"></i> Maintenance Issue
+            <i class="fa-solid fa-wrench"></i> 
+            <span *ngIf="!collapsed">Maintenance Issue</span>
         </a>
 
         <a *ngIf="userRole === 'landlord'" routerLink="/reports" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-desktop"></i> Reports
+            <i class="fa-solid fa-desktop"></i> 
+            <span *ngIf="!collapsed">Reports</span>
         </a>
     </nav>
 
