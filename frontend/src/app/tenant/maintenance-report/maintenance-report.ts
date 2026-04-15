@@ -15,17 +15,17 @@ export class MaintenanceReport implements OnInit {
   userId = localStorage.getItem('user_id');
   activeProperties: any[] = [];
   
-  // Holds the text data
   reportData: any = {
-    selected_property: '', // This will hold the full property object so we can get both IDs
+    selected_property: '', 
     category: '',
     urgency: '',
     description: ''
   };
 
-  // Holds the actual file object
-  selectedFile: File | null = null;
-  fileName: string = '';
+  // 🌟 Upgraded to Arrays for Multiple Files
+  selectedFiles: File[] = [];
+  previewMedia: { url: string, type: string }[] = []; 
+  fullScreenImage: string | null = null;
 
   isLoading = false;
 
@@ -43,19 +43,46 @@ export class MaintenanceReport implements OnInit {
           this.activeProperties = data;
           this.cdr.detectChanges();
         },
-        error: () => {
-          alert('Failed to load active properties.');
-        }
+        error: () => alert('Failed to load active properties.')
       });
   }
 
-  // Triggered when the user picks a file
+  openImage(url: string) {
+    this.fullScreenImage = url;
+    this.cdr.detectChanges();
+  }
+
+  closeImage() {
+    this.fullScreenImage = null;
+    this.cdr.detectChanges();
+  }
+
+  // 🌟 Loops through multiple files and generates previews
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.fileName = file.name;
+    if (event.target.files.length > 0) {
+      const files = Array.from(event.target.files) as File[];
+
+      for (let file of files) {
+        this.selectedFiles.push(file);
+
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          // Save both the url and the type (image vs video)
+          this.previewMedia.push({ url: e.target.result, type: file.type });
+          this.cdr.detectChanges(); 
+        };
+        reader.readAsDataURL(file);
+      }
+      
+      event.target.value = ''; // Reset input
     }
+  }
+
+  // 🌟 Removes specific file by index
+  removeImage(index: number) {
+    this.selectedFiles.splice(index, 1);
+    this.previewMedia.splice(index, 1);
+    this.cdr.detectChanges();
   }
 
   submitReport() {
@@ -65,7 +92,6 @@ export class MaintenanceReport implements OnInit {
 
     this.isLoading = true;
 
-    // 🌟 1. Create FormData because we are sending a file!
     const formData = new FormData();
     formData.append('tenant_id', this.userId!);
     formData.append('landlord_id', this.reportData.selected_property.landlord_id);
@@ -74,12 +100,11 @@ export class MaintenanceReport implements OnInit {
     formData.append('urgency', this.reportData.urgency);
     formData.append('description', this.reportData.description);
     
-    // Append the file if one was selected
-    if (this.selectedFile) {
-      formData.append('media', this.selectedFile);
-    }
+    // 🌟 Append ALL selected files as an array
+    this.selectedFiles.forEach((file) => {
+      formData.append('media[]', file, file.name);
+    });
 
-    // 🌟 2. Send to Laravel
     this.http.post('http://localhost:8000/api/maintenance', formData).subscribe({
       next: () => {
         alert('Maintenance issue reported successfully!');
@@ -89,6 +114,7 @@ export class MaintenanceReport implements OnInit {
         console.error('API Error:', err);
         alert('Failed to submit report. Check console.');
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

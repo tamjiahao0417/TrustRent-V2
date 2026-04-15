@@ -28,7 +28,7 @@ import { AiPricing } from './shared/ai-pricing/ai-pricing'; // Adjust path!
 import { Maintenance } from './shared/maintenance/maintenance'; // Adjust path!
 import { MaintenanceDetails } from './shared/maintenance-details/maintenance-details'; // Adjust path!
 import { MaintenanceReport } from './tenant/maintenance-report/maintenance-report'; // Adjust path!
-
+import { EditMaintenance } from './tenant/edit-maintenance/edit-maintenance';
 export const routes: Routes = [ 
   { path: 'login', component: Login },
   { path: 'register', component: Register },  
@@ -63,6 +63,7 @@ export const routes: Routes = [
       { path: 'maintenance', component: Maintenance },
       { path: 'maintenance/details/:id', component: MaintenanceDetails },
       { path: 'maintenance/report', component: MaintenanceReport },
+      { path: 'edit-maintenance/:id', component: EditMaintenance },
     ]
   },
 

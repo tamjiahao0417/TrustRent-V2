@@ -1,10 +1,10 @@
 <div class="page-container">
-    <a (click)="goBack()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Issues</a>
-    <h1 class="page-title">Report Maintenance Issue</h1>
+    <a (click)="goBack()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Cancel Edit</a>
+    <h1 class="page-title">Edit Maintenance Issue</h1>
 
     <div class="form-card">
-        <form (ngSubmit)="submitReport()">
-            
+        <form (ngSubmit)="submitUpdate()">
+
             <div class="form-group">
                 <label>Select Property</label>
                 <select [(ngModel)]="reportData.selected_property" name="property" class="form-control" required>
@@ -17,14 +17,13 @@
 
             <div class="form-group">
                 <label>Issue Description</label>
-                <textarea [(ngModel)]="reportData.description" name="description" class="form-control" rows="5" placeholder="Describe the issue in detail..." required></textarea>
+                <textarea [(ngModel)]="reportData.description" name="description" class="form-control" rows="5" required></textarea>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-group">
                     <label>Category</label>
                     <select [(ngModel)]="reportData.category" name="category" class="form-control" required>
-                        <option value="" disabled>Select a category</option>
                         <option value="Plumbing">Plumbing</option>
                         <option value="Electrical">Electrical</option>
                         <option value="Structural">Structural</option>
@@ -36,7 +35,6 @@
                 <div class="form-group">
                     <label>Urgency</label>
                     <select [(ngModel)]="reportData.urgency" name="urgency" class="form-control" required>
-                        <option value="" disabled>Select urgency</option>
                         <option value="Low">Low (Can wait a few weeks)</option>
                         <option value="Medium">Medium (Needs attention soon)</option>
                         <option value="High">High (Immediate attention required)</option>
@@ -44,19 +42,26 @@
                 </div>
             </div>
 
+            <div class="form-group" *ngIf="existingMedia.length > 0">
+                <label>Current Photos/Videos Attached</label>
+                <div class="preview-container">
+                    <div class="preview-wrapper" *ngFor="let url of existingMedia; let i = index">
+                        <img *ngIf="!isVideo(url)" [src]="url" class="preview-image" (click)="openImage(url)">
+                        <video *ngIf="isVideo(url)" [src]="url" class="preview-image" style="background: #000;" controls></video>
+                        <button type="button" class="remove-btn" (click)="removeExistingImage(i)">&times;</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
-                <label>Upload Photos or Videos (Optional)</label>
+                <label>Add New Photos or Videos (Optional)</label>
                 <input type="file" class="file-input" (change)="onFileSelected($event)" accept="image/*,video/*" multiple>
-                <small>You can select multiple files. Add media to help us understand the issue better. Max size: 5MB per file.</small>
                 
                 <div class="preview-container" *ngIf="previewMedia.length > 0">
                     <div class="preview-wrapper" *ngFor="let media of previewMedia; let i = index">
-                        
-                        <img *ngIf="media.type.startsWith('image')" [src]="media.url" class="preview-image" alt="Issue Preview" (click)="openImage(media.url)">
-                        
+                        <img *ngIf="media.type.startsWith('image')" [src]="media.url" class="preview-image" (click)="openImage(media.url)">
                         <video *ngIf="media.type.startsWith('video')" [src]="media.url" class="preview-image" style="background: #000;" controls></video>
-                        
-                        <button type="button" class="remove-btn" (click)="removeImage(i)">&times;</button>
+                        <button type="button" class="remove-btn" (click)="removeNewImage(i)">&times;</button>
                     </div>
                 </div>
             </div>
@@ -69,7 +74,7 @@
             <div class="form-actions">
                 <button type="submit" class="btn-submit" [disabled]="isLoading">
                     <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isLoading" style="margin-right: 8px;"></i>
-                    {{ isLoading ? 'Reporting...' : 'Submit Report' }}
+                    {{ isLoading ? 'Saving...' : 'Save Changes' }}
                 </button>
             </div>
             

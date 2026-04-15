@@ -18,6 +18,10 @@ export class MaintenanceDetails implements OnInit {
   // For Landlord Updates
   updateData = { status: '', latest_update: '' };
 
+  // 🌟 New: Array to hold parsed media URLs and Modal State
+  parsedMedia: string[] = [];
+  fullScreenImage: string | null = null;
+
   constructor(
     private route: ActivatedRoute, 
     private http: HttpClient, 
@@ -32,9 +36,41 @@ export class MaintenanceDetails implements OnInit {
       next: (data: any) => {
         this.issue = data;
         this.updateData.status = this.issue.status;
+
+        // 🌟 Safely parse the JSON string of media paths into an array
+        if (this.issue.media_path) {
+          try {
+            this.parsedMedia = JSON.parse(this.issue.media_path);
+          } catch (e) {
+            // Fallback just in case there's an old issue with only 1 string URL
+            this.parsedMedia = [this.issue.media_path];
+          }
+        }
+
         this.cdr.detectChanges();
       }
     });
+  }
+
+  // 🌟 Helper method to determine if we should show <video> or <img>
+  isVideo(url: string): boolean {
+    return url.match(/\.(mp4|webm|ogg|mov)$/i) !== null;
+  }
+
+  // 🌟 Modal Controls
+  openImage(url: string) {
+    this.fullScreenImage = url;
+    this.cdr.detectChanges();
+  }
+
+  closeImage() {
+    this.fullScreenImage = null;
+    this.cdr.detectChanges();
+  }
+
+  editIssue() {
+    // This will send the user to an edit page (e.g., http://localhost:4200/edit-maintenance/5)
+    this.router.navigate(['/edit-maintenance', this.issue.id]);
   }
 
   deleteIssue() {

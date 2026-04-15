@@ -55,6 +55,7 @@ Route::delete('/api/maintenance/{id}', [MaintenanceController::class, 'destroy']
 Route::get('/api/maintenance-properties', [MaintenanceController::class, 'getActiveProperties']);
 Route::post('/api/maintenance', [MaintenanceController::class, 'store']);
 Route::put('/api/maintenance/{id}/status', [MaintenanceController::class, 'updateStatus']);
+Route::put('/api/maintenance/{id}', [MaintenanceController::class, 'update']);
 
 // --- Your existing Angular serving logic stays below ---
 Route::get('/{asset}', function ($asset) {

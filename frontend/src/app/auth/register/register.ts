@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core'; // 🌟 1. Added
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 export class Register {
   showPassword = false;
   showConfirmPassword = false;
-  isLoading = false; // 🌟 NEW: Tracks if registration is processing
+  isLoading = false;
 
   role = '';
   email = '';
@@ -22,15 +22,11 @@ export class Register {
   confirmPassword = ''; 
   errorMessage = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  // 🌟 2. Inject cdr
+  constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) {}
 
-  togglePassword() { 
-    this.showPassword = !this.showPassword; 
-  }
-
-  toggleConfirmPassword() { 
-    this.showConfirmPassword = !this.showConfirmPassword; 
-  }
+  togglePassword() { this.showPassword = !this.showPassword; }
+  toggleConfirmPassword() { this.showConfirmPassword = !this.showConfirmPassword; }
 
   onSubmit(event: Event) {
     event.preventDefault();
@@ -43,7 +39,7 @@ export class Register {
       return;
     }
 
-    this.isLoading = true; // 🌟 Start loading spinner
+    this.isLoading = true;
 
     const registerData = {
       role: this.role,
@@ -57,8 +53,10 @@ export class Register {
         this.router.navigate(['/login']);
       },
       error: (error) => {
-        this.errorMessage = error.error.message || 'Registration failed.';
-        this.isLoading = false; // 🌟 Stop spinner on error
+        console.error("Register API Error:", error);
+        this.errorMessage = error?.error?.message || 'Registration failed.';
+        this.isLoading = false; 
+        this.cdr.detectChanges(); // 🌟 3. Force UI to redraw!
       }
     });
   }

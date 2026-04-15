@@ -11,19 +11,26 @@
                 <div><div class="info-label">Reported By</div><div class="info-val">{{ issue.tenant_name }}</div></div>
                 <div><div class="info-label">Category</div><div class="info-val">{{ issue.category }}</div></div>
                 <div><div class="info-label">Urgency</div><div class="info-val">{{ issue.urgency }}</div></div>
-                <div><div class="info-label">Status</div><div class="info-val text-blue">{{ issue.status }}</div></div>
+                <div><div class="info-label">Status</div><div class="info-val text-bold">{{ issue.status }}</div></div>
             </div>
 
             <h3 class="section-title" style="margin-top: 30px;">Description</h3>
             <p class="description-text">{{ issue.description }}</p>
 
-            <div *ngIf="issue.media_path" style="margin-top: 30px;">
-                <h3 class="section-title">Media</h3>
-                <img [src]="issue.media_path" class="media-img" alt="Issue Media">
+            <div *ngIf="parsedMedia.length > 0" style="margin-top: 30px;">
+                <h3 class="section-title">Media Attached</h3>
+                <div class="media-grid">
+                    <div *ngFor="let url of parsedMedia" class="media-wrapper">
+                        <img *ngIf="!isVideo(url)" [src]="url" class="media-item" alt="Issue Media" (click)="openImage(url)">
+                        
+                        <video *ngIf="isVideo(url)" [src]="url" class="media-item" style="background: #000;" controls></video>
+                    </div>
+                </div>
             </div>
 
             <div class="action-btns" *ngIf="userRole === 'tenant' && issue.status === 'Open'">
-                <button class="btn-light">Edit Issue</button> 
+                <button class="btn-light" (click)="editIssue()">Edit Issue</button> 
+                
                 <button class="btn-danger" (click)="deleteIssue()">Delete Issue</button>
             </div>
         </div>
@@ -45,5 +52,10 @@
                 <button class="btn-primary w-100" (click)="updateStatus()">Update Status</button>
             </div>
         </div>
+    </div>
+
+    <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">
+        <span class="close-modal">&times;</span>
+        <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">
     </div>
 </div>

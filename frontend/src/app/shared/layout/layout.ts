@@ -1,14 +1,40 @@
-import { Component } from '@angular/core'; // Fixes "Cannot find name 'Component'"
-import { CommonModule } from '@angular/common'; // Fixes "Cannot find name 'CommonModule'"
-import { RouterOutlet } from '@angular/router';
-import { Sidebar } from '../sidebar/sidebar';
-import { Header } from '../header/header';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { Sidebar } from '../sidebar/sidebar'; // Adjust path
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, Sidebar, Header],
-  templateUrl: './layout.html',
-  styleUrl: './layout.css'
+  imports: [CommonModule, RouterModule, Sidebar],
+  template: `
+    <div class="main-wrapper" [class.sidebar-collapsed]="isCollapsed">
+      <app-sidebar 
+        [collapsed]="isCollapsed" 
+        (toggle)="toggleSidebar()">
+      </app-sidebar>
+
+      <main class="content-area">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  `,
+  styles: [`
+    .main-wrapper {
+      display: flex;
+      transition: all 0.3s ease;
+    }
+    .content-area {
+      flex: 1;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+  `]
 })
-export class Layout { }
+export class Layout {
+  isCollapsed = false;
+
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+}

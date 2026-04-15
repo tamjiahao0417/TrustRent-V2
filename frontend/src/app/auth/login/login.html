@@ -24,7 +24,7 @@
                     <div class="password-wrapper">
                         <i class="fa-solid fa-lock input-icon-left"></i>
                         <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required [disabled]="isLoading">
-                        <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()" class="password-toggle"></i>
+                        <i class="fa-regular password-toggle" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()"></i>
                     </div>
                 </div>
 

@@ -76,18 +76,28 @@ class MaintenanceController extends Controller
     }
 
     // 5. Create a new Issue (With File Upload)
+    // 5. Create a new Issue (With Multiple File Uploads)
     public function store(Request $request)
     {
-        $path = null;
+        $paths = [];
         
-        // Handle the File Upload
+        // Handle Multiple File Uploads
         if ($request->hasFile('media')) {
-            $file = $request->file('media');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            // Saves to your public folder so the frontend can display it!
-            $file->move(public_path('uploads/maintenance'), $filename); 
-            $path = 'http://localhost:8000/uploads/maintenance/' . $filename;
+            // Loop through each file in the array
+            foreach ($request->file('media') as $file) {
+                // Generate a unique name for each file
+                $filename = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+                
+                // Move it to the public folder
+                $file->move(public_path('uploads/maintenance'), $filename); 
+                
+                // Add the URL to our array
+                $paths[] = 'http://localhost:8000/uploads/maintenance/' . $filename;
+            }
         }
+
+        // Convert the array of URLs into a JSON string so it fits in your media_path column
+        $finalMediaPath = count($paths) > 0 ? json_encode($paths) : null;
 
         DB::table('maintenance_issues')->insert([
             'tenant_id' => $request->input('tenant_id'),
@@ -96,7 +106,7 @@ class MaintenanceController extends Controller
             'category' => $request->input('category'),
             'urgency' => $request->input('urgency'),
             'description' => $request->input('description'),
-            'media_path' => $path,
+            'media_path' => $finalMediaPath, // Save the JSON string here
             'status' => 'Open',
             'latest_update' => 'Tenant reported issue.',
             'created_at' => now(),
@@ -114,6 +124,49 @@ class MaintenanceController extends Controller
             ->update([
                 'status' => $request->input('status'),
                 'latest_update' => $request->input('latest_update'),
+                'updated_at' => now()
+            ]);
+
+        return response()->json(['success' => true]);
+    }
+
+    // 7. Update an Issue's text (Tenant Only)
+ // 7. Update an Issue's text and media (Tenant Only)
+    public function update(Request $request, $id)
+    {
+        $tenantId = $request->input('user_id');
+        $issue = DB::table('maintenance_issues')->where('id', $id)->first();
+
+        // Security check
+        if (!$issue || $issue->tenant_id != $tenantId || $issue->status !== 'Open') {
+            return response()->json(['success' => false, 'error' => 'Cannot edit this issue.'], 403);
+        }
+
+        // 1. Grab the media that the user decided to keep
+        $paths = json_decode($request->input('existing_media', '[]'), true) ?? [];
+
+        // 2. Process any brand new files they uploaded
+        if ($request->hasFile('media')) {
+            foreach ($request->file('media') as $file) {
+                $filename = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+                $file->move(public_path('uploads/maintenance'), $filename); 
+                $paths[] = 'http://localhost:8000/uploads/maintenance/' . $filename;
+            }
+        }
+
+        // 3. Convert the combined array back into a JSON string
+        $finalMediaPath = count($paths) > 0 ? json_encode($paths) : null;
+
+        // 4. Save to database
+        DB::table('maintenance_issues')
+            ->where('id', $id)
+            ->update([
+                'landlord_id' => $request->input('landlord_id'),
+                'property_id' => $request->input('property_id'),
+                'category' => $request->input('category'),
+                'urgency' => $request->input('urgency'),
+                'description' => $request->input('description'),
+                'media_path' => $finalMediaPath, // Update the media links
                 'updated_at' => now()
             ]);
 

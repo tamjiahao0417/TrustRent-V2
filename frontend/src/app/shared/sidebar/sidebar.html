@@ -1,7 +1,9 @@
-<div class="sidebar">
+<div class="sidebar" [class.collapsed]="collapsed">
     <div class="logo-section">
-        <i class="fa-solid fa-house-chimney"></i>
-        <span>TrustRent</span>
+        <button class="toggle-btn" (click)="onToggle()">
+            <i class="fa-solid" [class.fa-bars]="collapsed" [class.fa-chevron-left]="!collapsed"></i>
+        </button>
+        <span *ngIf="!collapsed">TrustRent</span>
     </div>
 
     <nav class="nav-menu">
@@ -56,7 +58,8 @@
 
     <div class="logout-section">
         <button class="btn-logout" (click)="logout()">
-            <i class="fa-solid fa-right-from-bracket"></i> Logout
+            <i class="fa-solid fa-right-from-bracket"></i> 
+            <span *ngIf="!collapsed">Logout</span>
         </button>
     </div>
 </div>

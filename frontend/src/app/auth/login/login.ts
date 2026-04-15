@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core'; // 🌟 1. Added ChangeDetectorRef
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -13,13 +13,14 @@ import { Router } from '@angular/router';
 })
 export class Login {
   showPassword = false;
-  isLoading = false; // 🌟 NEW: Tracks if the login is processing
+  isLoading = false; 
   
   email = '';
   password = '';
   errorMessage = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  // 🌟 2. Inject ChangeDetectorRef (cdr) here
+  constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) {}
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -31,7 +32,7 @@ export class Login {
     
     if (!this.email || !this.password) return;
     
-    this.isLoading = true; // 🌟 Start loading spinner
+    this.isLoading = true; 
 
     const loginData = {
       email: this.email,
@@ -40,16 +41,24 @@ export class Login {
 
     this.http.post('http://localhost:8000/api/login', loginData).subscribe({
       next: (response: any) => {
-        localStorage.setItem('user_role', response.user.role);
-        localStorage.setItem('user_name', response.user.name || response.user.email.split('@')[0]);
-        localStorage.setItem('user_id', response.user.id);
-        localStorage.setItem('user_email', response.user.email);
-
-        this.router.navigate(['/dashboard']); 
+        if (response && response.user) {
+            localStorage.setItem('user_role', response.user.role);
+            localStorage.setItem('user_name', response.user.name || response.user.email.split('@')[0]);
+            localStorage.setItem('user_id', response.user.id);
+            localStorage.setItem('user_email', response.user.email);
+    
+            this.router.navigate(['/dashboard']); 
+        } else {
+            this.errorMessage = response.message || 'Invalid credentials.';
+            this.isLoading = false;
+            this.cdr.detectChanges(); // 🌟 3. Force UI to redraw!
+        }
       },
       error: (error) => {
-        this.errorMessage = error.error.message || 'Login failed. Please try again.';
-        this.isLoading = false; // 🌟 Stop loading spinner on error
+        console.error("Login API Error:", error);
+        this.errorMessage = error?.error?.message || 'Login failed. Please check your email and password.';
+        this.isLoading = false; 
+        this.cdr.detectChanges(); // 🌟 4. Force UI to redraw here too!
       }
     });
   }

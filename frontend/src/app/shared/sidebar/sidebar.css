@@ -79,3 +79,43 @@
     font-weight: 600;
     cursor: pointer;
 }
+
+:root {
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 80px;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    transition: width 0.3s ease; /* 🌟 Smooth transition */
+    overflow: hidden;
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--text-dark);
+}
+
+/* 🌟 Ensure icons stay centered when collapsed */
+.nav-item {
+    justify-content: flex-start;
+    padding: 14px 22px; /* Adjusted padding */
+}
+
+.sidebar.collapsed .nav-item {
+    justify-content: center;
+    padding: 14px 0;
+}
+
+.sidebar.collapsed .logo-section {
+    justify-content: center;
+    padding: 10px 0 30px 0;
+}
