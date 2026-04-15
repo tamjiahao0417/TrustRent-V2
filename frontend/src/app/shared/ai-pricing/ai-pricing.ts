@@ -29,7 +29,10 @@ export class AiPricing implements OnInit {
   ngOnInit() {
     if (this.userRole === 'landlord') {
       this.http.get(`http://localhost:8000/api/ai/properties/${this.userId}`).subscribe({
-        next: (data: any) => this.myProperties = data
+        next: (data: any) => {
+          this.myProperties = data;
+          this.cdr.detectChanges(); 
+        }
       });
     }
   }

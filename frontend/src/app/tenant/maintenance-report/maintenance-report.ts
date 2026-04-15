@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
@@ -32,15 +32,21 @@ export class MaintenanceReport implements OnInit {
   constructor(
     private http: HttpClient, 
     private location: Location,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef  
   ) {}
-
+ 
   ngOnInit() {
-    // Fetch the tenant's active properties so they can select where the issue is
-    this.http.get(`http://localhost:8000/api/maintenance-properties?user_id=${this.userId}`).subscribe({
-      next: (data: any) => this.activeProperties = data,
-      error: () => alert('Failed to load active properties.')
-    });
+    this.http.get(`http://localhost:8000/api/maintenance-properties?user_id=${this.userId}`)
+      .subscribe({
+        next: (data: any) => {
+          this.activeProperties = data;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          alert('Failed to load active properties.');
+        }
+      });
   }
 
   // Triggered when the user picks a file
