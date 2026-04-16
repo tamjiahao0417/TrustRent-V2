@@ -10,6 +10,7 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AiController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\DashboardController;
 
 // 2. Added these API routes so Angular can "call" the controller
 Route::post('/api/register', [AuthController::class, 'register']);
@@ -56,6 +57,7 @@ Route::get('/api/maintenance-properties', [MaintenanceController::class, 'getAct
 Route::post('/api/maintenance', [MaintenanceController::class, 'store']);
 Route::put('/api/maintenance/{id}/status', [MaintenanceController::class, 'updateStatus']);
 Route::put('/api/maintenance/{id}', [MaintenanceController::class, 'update']);
+Route::get('/api/dashboard-stats', [DashboardController::class, 'getStats']);
 
 // --- Your existing Angular serving logic stays below ---
 Route::get('/{asset}', function ($asset) {

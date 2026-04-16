@@ -57,7 +57,7 @@ export class ContractDetails implements OnInit {
         "type": "function"
     }
   ];
-  contractAddress = "0xEA9275DE36F2519409b862D7ad82675Fdd336052"; // Your Ganache Address
+  contractAddress = "0x86203a546fCfD1C24CdA481fb4a95f1a99a39b30"; // Your Ganache Address
 
   constructor(
     private route: ActivatedRoute,
