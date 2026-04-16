@@ -1,4 +1,11 @@
-side bar can keep
-search filter property
-add admin role
-check session
+add search filter property
+show image property in dashboard
+add admin role use case 
+session time
+update model
+check logic
+
+
+update report
+update logbook
+demo slide?
