@@ -62,10 +62,18 @@ class AuthController extends Controller
     }
 
     // Fetch existing details to fill the profile page
+    // Fetch existing details to fill the profile page
     public function getUserDetails(Request $request) {
-        $userId = $request->session()->get('user_id'); // Get ID from session
-        $user = DB::table('users')->where('id', $userId)->first();
-        return response()->json($user);
+        // 🌟 Get the securely authenticated user directly from Laravel
+        $user = Auth::user(); 
+
+        if (!$user) {
+            return response()->json(['message' => 'Session expired'], 401);
+        }
+
+        // Return the fresh data from the database
+        $userData = DB::table('users')->where('id', $user->id)->first();
+        return response()->json($userData);
     }
 
     // Save updated details
