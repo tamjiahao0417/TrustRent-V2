@@ -1,55 +1,142 @@
-<p>dashboard works!</p>
 <div class="dashboard-container">
     <header class="welcome-section">
-        <h1>Welcome Back, {{ userRole | titlecase }} {{ userName }}!</h1>
-        <p>Here is an overview of your property portfolio.</p>
+        <h1>Welcome Back, {{ userName | titlecase }}!</h1>
+        <p *ngIf="userRole === 'landlord'">Here is an overview of your property portfolio.</p>
+        <p *ngIf="userRole === 'tenant'">Here is an overview of your current rental status.</p>
     </header>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <label>Total Properties</label>
-            <div class="value">2</div>
-        </div>
-        <div class="stat-card">
-            <label>Active Tenants</label>
-            <div class="value">1</div>
-        </div>
-        <div class="stat-card">
-            <label>Monthly Revenue</label>
-            <div class="value revenue">RM 1,500</div>
-        </div>
-    </div>
-
-    <div class="section-header">
-        <h2>My Properties Overview</h2>
-        <button class="btn-add">+ Add New Property</button>
-    </div>
-
-    <div class="property-wide-card">
-        <div class="property-img-placeholder"></div>
-        <div class="property-details">
-            <div class="property-title-row">
-                <h3>Sky Suite Apartment</h3>
-                <span class="badge-rented">Rented</span>
-            </div>
-            <p class="location"><i class="fa-solid fa-location-dot"></i> 123 Skyway Avenue, KL City Center</p>
-            
-            <div class="property-info-row">
-                <div class="info-item">
-                    <label>CURRENT TENANT</label>
-                    <p>tam@gmail.com</p>
-                </div>
-                <div class="info-item">
-                    <label>MONTHLY RENT</label>
-                    <p>RM 1,500</p>
-                </div>
-                <div class="info-item">
-                    <label>STATUS</label>
-                    <p class="status-success">Paid up to date</p>
+    <ng-container *ngIf="userRole === 'tenant'">
+        
+        <div class="alert-banner">
+            <div class="alert-content">
+                <i class="fa-solid fa-circle-exclamation alert-icon"></i>
+                <div>
+                    <h3 style="margin: 0;">Next Rent Payment Due</h3>
+                    <p style="margin: 5px 0 0 0;">You owe <strong>RM 1,500</strong> by <strong>05 May 2026</strong>.</p>
                 </div>
             </div>
-            
-            <button class="btn-outline">Manage Property</button>
+            <a routerLink="/rent-payment" class="btn-black">Pay Now</a>
         </div>
-    </div>
+
+        <div class="stats-grid tenant-stats">
+            <div class="stat-card">
+                <label>Open Maintenance Issues</label>
+                <div class="value">1 <span class="badge-warning">In Progress</span></div>
+            </div>
+            <div class="stat-card">
+                <label>Active Contracts</label>
+                <div class="value">1</div>
+            </div>
+            <div class="stat-card">
+                <label>Days Until Lease Ends</label>
+                <div class="value">142</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Quick Actions</h2>
+        </div>
+        <div class="action-grid">
+            <a routerLink="/maintenance/report" class="action-card">
+                <i class="fa-solid fa-wrench"></i>
+                <span>Report Issue</span>
+            </a>
+            <a routerLink="/transactions" class="action-card">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Payment History</span>
+            </a>
+            <a routerLink="/contracts" class="action-card">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>View Lease</span>
+            </a>
+            <a routerLink="/ai-matching" class="action-card">
+                <i class="fa-solid fa-house-user"></i>
+                <span>Find New Home</span>
+            </a>
+        </div>
+
+        <div class="section-header" style="margin-top: 40px;">
+            <h2>My Current Home</h2>
+        </div>
+        <div class="property-wide-card">
+            <div class="property-img-placeholder">
+                <i class="fa-solid fa-house" style="font-size: 40px; color: #ccc;"></i>
+            </div>
+            <div class="property-details">
+                <div class="property-title-row">
+                    <h3>Sky Suite Apartment</h3>
+                    <span class="badge-success">Active Lease</span>
+                </div>
+                <p class="location"><i class="fa-solid fa-location-dot"></i> 123 Skyway Avenue, KL City Center</p>
+                
+                <div class="property-info-row">
+                    <div class="info-item">
+                        <label>LANDLORD</label>
+                        <p>Mr. Tan</p>
+                    </div>
+                    <div class="info-item">
+                        <label>MONTHLY RENT</label>
+                        <p>RM 1,500</p>
+                    </div>
+                    <div class="info-item">
+                        <label>CONTRACT ENDS</label>
+                        <p>31 Dec 2026</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="userRole === 'landlord'">
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <label>Total Properties</label>
+                <div class="value">2</div>
+            </div>
+            <div class="stat-card">
+                <label>Active Tenants</label>
+                <div class="value">1</div>
+            </div>
+            <div class="stat-card">
+                <label>Monthly Revenue</label>
+                <div class="value revenue">RM 1,500</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>My Properties Overview</h2>
+            <a routerLink="/properties/create" class="btn-black">+ Add New Property</a>
+        </div>
+
+        <div class="property-wide-card">
+            <div class="property-img-placeholder">
+                <i class="fa-solid fa-building" style="font-size: 40px; color: #ccc;"></i>
+            </div>
+            <div class="property-details">
+                <div class="property-title-row">
+                    <h3>Sky Suite Apartment</h3>
+                    <span class="badge-success">Rented</span>
+                </div>
+                <p class="location"><i class="fa-solid fa-location-dot"></i> 123 Skyway Avenue, KL City Center</p>
+                
+                <div class="property-info-row">
+                    <div class="info-item">
+                        <label>CURRENT TENANT</label>
+                        <p>tam@gmail.com</p>
+                    </div>
+                    <div class="info-item">
+                        <label>MONTHLY RENT</label>
+                        <p>RM 1,500</p>
+                    </div>
+                    <div class="info-item">
+                        <label>STATUS</label>
+                        <p class="status-success">Paid up to date</p>
+                    </div>
+                </div>
+                
+                <button class="btn-outline">Manage Property</button>
+            </div>
+        </div>
+    </ng-container>
 </div>

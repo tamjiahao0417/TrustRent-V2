@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router'; // 🌟 Added for routerLinks
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
@@ -13,7 +14,6 @@ export class Dashboard implements OnInit {
   userName: string = '';
 
   ngOnInit() {
-    // Retrieve the data we just saved during login
     this.userRole = localStorage.getItem('user_role') || '';
     this.userName = localStorage.getItem('user_name') || 'User';
   }

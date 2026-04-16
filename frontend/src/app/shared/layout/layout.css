@@ -3,6 +3,7 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    transition: all 0.3s ease; /* 🌟 Added smooth sliding */
 }
 
 .main-container {
@@ -11,11 +12,12 @@
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
-    background-color: #f8fafc; /* Content background */
+    background-color: #f8fafc; 
 }
 
 .content-area {
     flex: 1;
     padding: 32px;
-    overflow-y: auto; /* Only scroll the content, not the whole page */
+    overflow-y: auto; 
+    transition: all 0.3s ease; /* 🌟 Added smooth sliding */
 }
