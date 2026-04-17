@@ -27,7 +27,7 @@
 
     <h2>All Available Listings</h2>
 
-    <p *ngIf="isLoading">Loading properties...</p>
+    <app-loading-spinner *ngIf="isLoading" message="Fetching available properties..."></app-loading-spinner>
     
     <p *ngIf="!isLoading && filteredProperties.length === 0" class="no-results">
         No properties match your search criteria.

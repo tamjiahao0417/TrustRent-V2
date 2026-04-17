@@ -1,13 +1,25 @@
-show image property in dashboard
+
 add admin role use case 
 add visual appointment 
 add chat page
+
+
 update model
 check logic
 
 
 
-progress 1
+
+
+			
+progress 1:
 update report
 update logbook
 demo slide?
+
+
+import { LoadingSpinnerComponent } from '../../loading-spinner.component'; // Adjust path if needed
+
+LoadingSpinnerComponent 
+
+<app-loading-spinner *ngIf="isLoading" message="Fetching available properties..."></app-loading-spinner>

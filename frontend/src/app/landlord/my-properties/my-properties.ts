@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms'; // 🌟 1. Import FormsModule
+import { LoadingSpinnerComponent } from '../../loading-spinner.component';
+
 
 @Component({
   selector: 'app-my-properties',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule], // 🌟 2. Add it here
+  imports: [CommonModule, RouterModule, FormsModule, LoadingSpinnerComponent], // 🌟 2. Add it here
   templateUrl: './my-properties.html',
   styleUrl: './my-properties.css'
 })

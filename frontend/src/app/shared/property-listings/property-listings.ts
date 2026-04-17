@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms'; // 🌟 1. Import FormsModule
+import { LoadingSpinnerComponent } from '../../loading-spinner.component'; // Adjust path if needed
 
 @Component({
   selector: 'app-property-listings',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule], // 🌟 2. Add it here
-  templateUrl: './property-listings.html',
+  imports: [CommonModule, RouterModule, FormsModule, LoadingSpinnerComponent],
+    templateUrl: './property-listings.html',
   styleUrl: './property-listings.css'
 })
 export class PropertyListings implements OnInit {

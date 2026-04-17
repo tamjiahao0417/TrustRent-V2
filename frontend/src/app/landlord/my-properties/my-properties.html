@@ -30,6 +30,8 @@
 
     <h2>My Properties</h2>
 
+    <app-loading-spinner *ngIf="isLoading" message="Loading your properties..."></app-loading-spinner>
+
     <div class="empty-state" *ngIf="!isLoading && properties.length === 0">
         <h3>No properties listed yet</h3>
         <p>Click "Create Property" to add your first listing.</p>
