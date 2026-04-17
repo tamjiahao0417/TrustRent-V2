@@ -29,7 +29,7 @@ class AiController extends Controller
 
             // NOTE: If this is still "gen-lang-client...", Google will reject it! 
             // Real API keys almost always start with "AIza..."
-            $apiKey = "AIzaSyBMr9zmjzlUYv0eJC96c0oGnD0gTmlm6_4"; 
+            $apiKey = "AQ.Ab8RN6Ic6FlZL_1NyfIcqGINekqR_mm8FuQyoSohGlCWhjc1qA"; 
 
             $prompt = "You are an expert real estate appraiser in Malaysia. Analyze the following property and estimate a fair monthly rental price in RM (Malaysian Ringgit). 
 Property Details:

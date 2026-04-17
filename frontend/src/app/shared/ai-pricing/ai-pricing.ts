@@ -67,7 +67,13 @@ export class AiPricing implements OnInit {
         if (res.success) {
           this.aiResult = res.data;
         } else {
-          alert(res.error);
+          // 🌟 Catch the Google High Demand error and make it friendly
+          let errorMsg = res.error;
+          if (typeof errorMsg === 'string' && errorMsg.includes('high demand')) {
+             alert("The AI server is currently too busy. Please wait a few seconds and try again!");
+          } else {
+             alert("AI Service Error: The system is temporarily unavailable. Please try again later.");
+          }
         }
         this.isLoading = false;
         this.cdr.detectChanges();

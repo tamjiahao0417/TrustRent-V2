@@ -15,10 +15,11 @@ export class MaintenanceDetails implements OnInit {
   issue: any = null;
   userRole = localStorage.getItem('user_role') || localStorage.getItem('role');
   
-  // For Landlord Updates
   updateData = { status: '', latest_update: '' };
+  
+  // 🌟 NEW: Variable to hold our page error message
+  errorMessage: string = ''; 
 
-  // 🌟 New: Array to hold parsed media URLs and Modal State
   parsedMedia: string[] = [];
   fullScreenImage: string | null = null;
 
@@ -37,12 +38,10 @@ export class MaintenanceDetails implements OnInit {
         this.issue = data;
         this.updateData.status = this.issue.status;
 
-        // 🌟 Safely parse the JSON string of media paths into an array
         if (this.issue.media_path) {
           try {
             this.parsedMedia = JSON.parse(this.issue.media_path);
           } catch (e) {
-            // Fallback just in case there's an old issue with only 1 string URL
             this.parsedMedia = [this.issue.media_path];
           }
         }
@@ -52,12 +51,10 @@ export class MaintenanceDetails implements OnInit {
     });
   }
 
-  // 🌟 Helper method to determine if we should show <video> or <img>
   isVideo(url: string): boolean {
     return url.match(/\.(mp4|webm|ogg|mov)$/i) !== null;
   }
 
-  // 🌟 Modal Controls
   openImage(url: string) {
     this.fullScreenImage = url;
     this.cdr.detectChanges();
@@ -69,7 +66,6 @@ export class MaintenanceDetails implements OnInit {
   }
 
   editIssue() {
-    // This will send the user to an edit page (e.g., http://localhost:4200/edit-maintenance/5)
     this.router.navigate(['/edit-maintenance', this.issue.id]);
   }
 
@@ -84,6 +80,12 @@ export class MaintenanceDetails implements OnInit {
   }
 
   updateStatus() {
+    // 🌟 Safety check: Prevent updates if already closed
+    if (this.issue.status === 'Closed') {
+        alert('This issue is already closed and cannot be modified.');
+        return;
+    }
+
     if (!this.updateData.latest_update) return alert('Please enter a status update message.');
     
     this.http.put(`http://localhost:8000/api/maintenance/${this.issue.id}/status`, this.updateData).subscribe({
