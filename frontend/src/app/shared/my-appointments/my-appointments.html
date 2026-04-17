@@ -1,79 +1,102 @@
 <div class="appointments-container">
     <h1 class="main-title">My Appointments</h1>
 
-    <section class="appointment-section">
-        <h2 class="section-title">Upcoming</h2>
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>{{ userRole === 'tenant' ? 'Landlord' : 'Tenant' }}</th>
-                        <th>Property</th>
-                        <th>Date/Time</th>
-                        <th>Tour Type</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let apt of upcomingAppointments">
-                        <td>{{ userRole === 'tenant' ? apt.landlord?.name : apt.tenant?.name }}</td>
-                        <td>
-                            <div class="prop-title">{{ apt.property?.title }}</div>
-                            <div class="prop-address">{{ apt.property?.address }}</div>
-                        </td>
-                        <td>
-                            <div class="apt-date">{{ apt.appointment_date | date:'MMMM d, y' }}</div>
-                            <div class="apt-time">{{ apt.appointment_time.substring(0,5) }}</div>
-                        </td>
-                        <td class="tour-type">{{ apt.appointment_type }}</td>
-                        <td>
-                            <span class="status-badge" [ngClass]="apt.status.toLowerCase()">
-                                {{ apt.status }}
-                            </span>
-                        </td>
-                        <td><a [routerLink]="['/appointments/details', apt.id]" class="view-link">View Details</a></td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="controls-container" style="margin-bottom: 30px;">
+        <div class="search-box" style="display: flex; align-items: center; background: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <i class="fa-solid fa-magnifying-glass" style="color: #9ca3af; margin-right: 12px;"></i>
+            <input type="text" placeholder="Search by property, landlord, or tenant..." 
+                   [(ngModel)]="searchText" (input)="applyFilters()"
+                   style="border: none; background: transparent; width: 100%; outline: none; font-size: 15px;">
         </div>
-    </section>
+    </div>
 
-    <section class="appointment-section">
-        <h2 class="section-title">Past</h2>
-        <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>{{ userRole === 'tenant' ? 'Landlord' : 'Tenant' }}</th>
-                        <th>Property</th>
-                        <th>Date/Time</th>
-                        <th>Tour Type</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let apt of pastAppointments">
-                        <td>{{ userRole === 'tenant' ? apt.landlord?.name : apt.tenant?.name }}</td>
-                        <td>
-                            <div class="prop-title">{{ apt.property?.title }}</div>
-                            <div class="prop-address">{{ apt.property?.address }}</div>
-                        </td>
-                        <td>
-                            <div class="apt-date">{{ apt.appointment_date | date:'MMMM d, y' }}</div>
-                            <div class="apt-time">{{ apt.appointment_time.substring(0,5) }}</div>
-                        </td>
-                        <td class="tour-type">{{ apt.appointment_type }}</td>
-                        <td>
-                            <span class="status-badge" [ngClass]="apt.status.toLowerCase()">
-                                {{ apt.status }}
-                            </span>
-                        </td>
-                        <td><a [routerLink]="['/appointments/details', apt.id]" class="view-link">View Details</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+    <app-loading-spinner *ngIf="isLoading" message="Fetching your appointments..."></app-loading-spinner>
+
+    <ng-container *ngIf="!isLoading">
+        
+        <section class="appointment-section">
+            <h2 class="section-title">Upcoming</h2>
+            
+            <p *ngIf="upcomingAppointments.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px;">You have no upcoming appointments.</p>
+            <p *ngIf="upcomingAppointments.length > 0 && filteredUpcoming.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px;">No upcoming appointments match your search.</p>
+
+            <div class="table-card" *ngIf="filteredUpcoming.length > 0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ userRole === 'tenant' ? 'Landlord' : 'Tenant' }}</th>
+                            <th>Property</th>
+                            <th>Date/Time</th>
+                            <th>Tour Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let apt of filteredUpcoming">
+                            <td>{{ userRole === 'tenant' ? apt.landlord?.name : apt.tenant?.name }}</td>
+                            <td>
+                                <div class="prop-title">{{ apt.property?.title }}</div>
+                                <div class="prop-address">{{ apt.property?.address }}</div>
+                            </td>
+                            <td>
+                                <div class="apt-date">{{ apt.appointment_date | date:'MMMM d, y' }}</div>
+                                <div class="apt-time">{{ apt.appointment_time.substring(0,5) }}</div>
+                            </td>
+                            <td class="tour-type">{{ apt.appointment_type }}</td>
+                            <td>
+                                <span class="status-badge" [ngClass]="apt.status.toLowerCase()">
+                                    {{ apt.status }}
+                                </span>
+                            </td>
+                            <td><a [routerLink]="['/appointments/details', apt.id]" class="view-link">View Details</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="appointment-section">
+            <h2 class="section-title">Past</h2>
+
+            <p *ngIf="pastAppointments.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px;">You have no past appointments.</p>
+            <p *ngIf="pastAppointments.length > 0 && filteredPast.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px;">No past appointments match your search.</p>
+
+            <div class="table-card" *ngIf="filteredPast.length > 0">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{{ userRole === 'tenant' ? 'Landlord' : 'Tenant' }}</th>
+                            <th>Property</th>
+                            <th>Date/Time</th>
+                            <th>Tour Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let apt of filteredPast">
+                            <td>{{ userRole === 'tenant' ? apt.landlord?.name : apt.tenant?.name }}</td>
+                            <td>
+                                <div class="prop-title">{{ apt.property?.title }}</div>
+                                <div class="prop-address">{{ apt.property?.address }}</div>
+                            </td>
+                            <td>
+                                <div class="apt-date">{{ apt.appointment_date | date:'MMMM d, y' }}</div>
+                                <div class="apt-time">{{ apt.appointment_time.substring(0,5) }}</div>
+                            </td>
+                            <td class="tour-type">{{ apt.appointment_type }}</td>
+                            <td>
+                                <span class="status-badge" [ngClass]="apt.status.toLowerCase()">
+                                    {{ apt.status }}
+                                </span>
+                            </td>
+                            <td><a [routerLink]="['/appointments/details', apt.id]" class="view-link">View Details</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+    </ng-container>
 </div>

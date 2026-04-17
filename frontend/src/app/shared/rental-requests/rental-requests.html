@@ -2,51 +2,65 @@
     <h1 class="page-title">Rental Requests</h1>
     <p class="page-subtitle">Track the status of your property rental applications.</p>
 
-    <div class="table-card">
-        <table>
-            <thead>
-                <tr>
-                    <th>{{ userRole === 'tenant' ? 'Landlord' : 'Tenant' }}</th>
-                    
-                    <th>Property</th>
-                    <th>Move-in Date</th>
-                    <th>Lease Period</th>
-                    <th>Date Applied</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngIf="requests.length === 0">
-                    <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280;">
-                        You haven't submitted any rental requests yet.
-                    </td>
-                </tr>
-                <tr *ngFor="let req of requests">
-                    <td style="font-weight: 600;">
-                        {{ userRole === 'tenant' ? req.landlord?.name : req.tenant?.name }}
-                    </td>
-                    
-                    <td style="font-weight: 600;">{{ req.property?.title }}</td>
-                    <td>
-                        <i class="fa-solid fa-calendar-day" style="color: #9ca3af; margin-right: 5px;"></i>
-                        {{ req.move_in_date | date:'MMM d, y' }}
-                    </td>
-                    <td>
-                        <div style="font-weight: 600;">{{ req.start_date | date:'MMM d, y' }}</div>
-                        <div style="font-size: 13px; color: #9ca3af;">to {{ req.end_date | date:'MMM d, y' }}</div>
-                    </td>
-                    <td style="color: #6b7280;">{{ req.created_at | date:'MMM d, y' }}</td>
-                    <td>
-                        <span class="status-badge" [ngClass]="req.status.toLowerCase()">
-                            {{ req.status }}
-                        </span>
-                    </td>
-                    <td>
-                        <a [routerLink]="['/rental-requests/details', req.id]" class="view-link">View Details</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="controls-container" style="margin-bottom: 30px;">
+        <div class="search-box" style="display: flex; align-items: center; background: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <i class="fa-solid fa-magnifying-glass" style="color: #9ca3af; margin-right: 12px;"></i>
+            <input type="text" placeholder="Search by property, name, or status..." 
+                   [(ngModel)]="searchText" (input)="applyFilters()"
+                   style="border: none; background: transparent; width: 100%; outline: none; font-size: 15px;">
+        </div>
     </div>
+
+    <app-loading-spinner *ngIf="isLoading" message="Fetching rental requests..."></app-loading-spinner>
+
+    <ng-container *ngIf="!isLoading">
+        
+        <p *ngIf="requests.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px; text-align: center;">
+            You haven't submitted or received any rental requests yet.
+        </p>
+        <p *ngIf="requests.length > 0 && filteredRequests.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px; text-align: center;">
+            No rental requests match your search.
+        </p>
+
+        <div class="table-card" *ngIf="filteredRequests.length > 0">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ userRole === 'tenant' ? 'Landlord' : 'Tenant' }}</th>
+                        <th>Property</th>
+                        <th>Move-in Date</th>
+                        <th>Lease Period</th>
+                        <th>Date Applied</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let req of filteredRequests">
+                        <td style="font-weight: 600;">
+                            {{ userRole === 'tenant' ? req.landlord?.name : req.tenant?.name }}
+                        </td>
+                        <td style="font-weight: 600;">{{ req.property?.title }}</td>
+                        <td>
+                            <i class="fa-solid fa-calendar-day" style="color: #9ca3af; margin-right: 5px;"></i>
+                            {{ req.move_in_date | date:'MMM d, y' }}
+                        </td>
+                        <td>
+                            <div style="font-weight: 600;">{{ req.start_date | date:'MMM d, y' }}</div>
+                            <div style="font-size: 13px; color: #9ca3af;">to {{ req.end_date | date:'MMM d, y' }}</div>
+                        </td>
+                        <td style="color: #6b7280;">{{ req.created_at | date:'MMM d, y' }}</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="req.status.toLowerCase()">
+                                {{ req.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <a [routerLink]="['/rental-requests/details', req.id]" class="view-link">View Details</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
 </div>

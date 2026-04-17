@@ -1,46 +1,65 @@
 <div class="page-container">
-    <div class="page-header">
+    <div class="page-header" style="margin-bottom: 20px;">
         <h1 class="page-title">{{ userRole === 'landlord' ? 'Tenant Maintenance Requests' : 'Maintenance Issues' }}</h1>
         <a *ngIf="userRole === 'tenant'" routerLink="/maintenance/report" class="btn-report">Report</a>
     </div>
 
-    <div class="table-card">
-        <table class="issue-table">
-            <thead>
-                <tr>
-                    <th>Status</th>
-                    <th *ngIf="userRole === 'landlord'">Property</th>
-                    <th>Category</th>
-                    <th>Urgency</th>
-                    <th>Latest Update</th>
-                    <th>Last Activity</th>
-                    <th style="text-align: right;">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let issue of issues">
-                    <td>
-                        <span class="status-pill" [ngClass]="getStatusClass(issue.status)">
-                            {{ issue.status }}
-                        </span>
-                    </td>
-                    <td *ngIf="userRole === 'landlord'" class="text-dark">{{ issue.property_address }}</td>
-                    <td class="text-blue">{{ issue.category }}</td>
-                    <td class="text-dark">{{ issue.urgency }}</td>
-                    <td class="text-gray truncate">{{ issue.latest_update }}</td>
-                    <td class="text-gray">{{ issue.updated_at | date:'MMM d, yyyy' }}</td>
-                    <td style="text-align: right;">
-                        <a [routerLink]="['/maintenance/details', issue.id]" class="action-link">
-                            {{ userRole === 'landlord' ? 'Manage' : 'View' }}
-                        </a>
-                    </td>
-                </tr>
-                <tr *ngIf="issues.length === 0">
-                    <td [attr.colspan]="userRole === 'landlord' ? 7 : 6" class="empty-state">
-                        No maintenance issues found.
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="controls-container" style="margin-bottom: 30px;">
+        <div class="search-box" style="display: flex; align-items: center; background: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <i class="fa-solid fa-magnifying-glass" style="color: #9ca3af; margin-right: 12px;"></i>
+            <input type="text" placeholder="Search by status, category, urgency, or property..." 
+                   [(ngModel)]="searchQuery" (input)="filterIssues()"
+                   style="border: none; background: transparent; width: 100%; outline: none; font-size: 15px;">
+        </div>
     </div>
+
+    <app-loading-spinner *ngIf="isLoading" message="Fetching maintenance records..."></app-loading-spinner>
+
+    <ng-container *ngIf="!isLoading">
+        <div class="table-card">
+            <table class="issue-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th *ngIf="userRole === 'landlord'">Property</th>
+                        <th>Category</th>
+                        <th>Urgency</th>
+                        <th>Latest Update</th>
+                        <th>Last Activity</th>
+                        <th style="text-align: right;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="issues.length === 0">
+                        <td [attr.colspan]="userRole === 'landlord' ? 7 : 6" class="empty-state">
+                            No maintenance issues have been reported.
+                        </td>
+                    </tr>
+                    <tr *ngIf="issues.length > 0 && filteredIssues.length === 0">
+                        <td [attr.colspan]="userRole === 'landlord' ? 7 : 6" class="empty-state">
+                            No maintenance issues match your search.
+                        </td>
+                    </tr>
+
+                    <tr *ngFor="let issue of filteredIssues">
+                        <td>
+                            <span class="status-pill" [ngClass]="getStatusClass(issue.status)">
+                                {{ issue.status }}
+                            </span>
+                        </td>
+                        <td *ngIf="userRole === 'landlord'" class="text-dark">{{ issue.property_address }}</td>
+                        <td class="text-blue">{{ issue.category }}</td>
+                        <td class="text-dark">{{ issue.urgency }}</td>
+                        <td class="text-gray truncate">{{ issue.latest_update }}</td>
+                        <td class="text-gray">{{ issue.updated_at | date:'MMM d, yyyy' }}</td>
+                        <td style="text-align: right;">
+                            <a [routerLink]="['/maintenance/details', issue.id]" class="action-link">
+                                {{ userRole === 'landlord' ? 'Manage' : 'View' }}
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
 </div>

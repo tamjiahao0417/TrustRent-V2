@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { LoadingSpinnerComponent } from '../../loading-spinner.component'; // 🌟 Import Spinner
 
 @Component({
   selector: 'app-contracts',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, LoadingSpinnerComponent], // 🌟 Add to imports
   templateUrl: './contracts.html',
   styleUrl: './contracts.css'
 })
@@ -16,6 +17,7 @@ export class Contracts implements OnInit {
   filteredContracts: any[] = [];
   searchQuery: string = '';
   userRole: string | null = '';
+  isLoading: boolean = true; // 🌟 Add loading state
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
@@ -30,14 +32,18 @@ export class Contracts implements OnInit {
       .subscribe({
         next: (data: any) => {
           this.contracts = data;
-          this.filteredContracts = data; // Initialize the filtered list
+          this.filteredContracts = data; 
+          this.isLoading = false; // 🌟 Hide spinner on success
           this.cdr.detectChanges();
         },
-        error: (err) => console.error('Error loading contracts', err)
+        error: (err) => {
+            console.error('Error loading contracts', err);
+            this.isLoading = false; // 🌟 Hide spinner on error
+            this.cdr.detectChanges();
+        }
       });
   }
 
-  // Search function to filter contracts by property address
   filterContracts() {
     if (!this.searchQuery) {
       this.filteredContracts = this.contracts;
