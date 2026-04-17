@@ -32,7 +32,7 @@ class DashboardController extends Controller
                     'contracts.rent_amount',
                     'properties.title as property_title', 
                     'properties.address as property_address', 
-                    //'properties.image as property_image',
+                    'properties.thumbnail as property_image', // 🌟 Change to thumbnail!
                     'landlords.name as landlord_name'
                 )
                 ->get();
@@ -92,12 +92,11 @@ class DashboardController extends Controller
                 ->select(
                     'properties.title', 
                     'properties.address', 
-                    //'properties.cover_image as property_image',
+                    'properties.thumbnail as property_image',
                     'tenants.email as tenant_email', 
                     'contracts.rent_amount'
                 )
-                ->orderBy('contracts.created_at', 'desc')
-                ->get();
+                ->get(); // 🌟 Just end it right here!
 
             return response()->json([
                 'totalProperties' => $totalProperties,

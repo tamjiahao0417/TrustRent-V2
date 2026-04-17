@@ -6,19 +6,35 @@
     <div class="controls-container">
         <div class="search-box">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search by address, city, or ZIP code">
+            <input type="text" placeholder="Search by address, city, or title" 
+                   [(ngModel)]="searchText" (input)="applyFilters()">
         </div>
-        <button class="btn-filter">
+        <button class="btn-filter" (click)="toggleFilters()" [class.active]="showFilters">
             Filter <i class="fa-solid fa-sliders"></i>
         </button>
+    </div>
+
+    <div class="filter-panel" *ngIf="showFilters">
+        <div class="filter-group">
+            <label>Max Price (RM)</label>
+            <input type="number" placeholder="e.g. 1500" [(ngModel)]="maxPrice" (input)="applyFilters()">
+        </div>
+        <div class="filter-group">
+            <label>Min Rooms</label>
+            <input type="number" placeholder="e.g. 2" [(ngModel)]="minRooms" (input)="applyFilters()">
+        </div>
     </div>
 
     <h2>All Available Listings</h2>
 
     <p *ngIf="isLoading">Loading properties...</p>
+    
+    <p *ngIf="!isLoading && filteredProperties.length === 0" class="no-results">
+        No properties match your search criteria.
+    </p>
 
-    <div class="property-list" *ngIf="!isLoading && properties.length > 0">
-        <div class="listing-card" *ngFor="let prop of properties" [routerLink]="['/properties/view', prop.id]">
+    <div class="property-list" *ngIf="!isLoading && filteredProperties.length > 0">
+        <div class="listing-card" *ngFor="let prop of filteredProperties" [routerLink]="['/properties/view', prop.id]">
             <div class="listing-info">
                 <span class="location"><i class="fa-solid fa-location-dot"></i> {{ prop.location }}</span>
                 <h3>{{ prop.title }}</h3>

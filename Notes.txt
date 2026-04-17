@@ -1,11 +1,13 @@
-add search filter property
 show image property in dashboard
 add admin role use case 
-session time
+add visual appointment 
+add chat page
 update model
 check logic
 
 
+
+progress 1
 update report
 update logbook
 demo slide?

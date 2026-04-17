@@ -64,8 +64,8 @@
             <div class="property-wide-card" *ngFor="let contract of dbData.activeContracts">
                 <div class="property-img-placeholder">
                     <img *ngIf="contract.property_image" 
-                         [src]="'http://localhost:8000/' + contract.property_image" 
-                         class="property-cover-img" alt="Property Image">
+                        [src]="'http://localhost:8000/uploads/' + contract.property_image" 
+                        class="property-cover-img" alt="Property Image">
                     
                     <i *ngIf="!contract.property_image" class="fa-solid fa-house" style="font-size: 40px; color: #ccc;"></i>
                 </div>
@@ -115,8 +115,8 @@
             <div class="property-wide-card" *ngFor="let prop of dbData.rentedProperties">
                 <div class="property-img-placeholder">
                     <img *ngIf="prop.property_image" 
-                         [src]="'http://localhost:8000/' + prop.property_image" 
-                         class="property-cover-img" alt="Property Image">
+                        [src]="'http://localhost:8000/uploads/' + prop.property_image" 
+                        class="property-cover-img" alt="Property Image">
                     
                     <i *ngIf="!prop.property_image" class="fa-solid fa-building" style="font-size: 40px; color: #ccc;"></i>
                 </div>
