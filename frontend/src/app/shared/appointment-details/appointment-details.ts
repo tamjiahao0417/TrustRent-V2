@@ -13,9 +13,13 @@ import { HttpClient } from '@angular/common/http';
 export class AppointmentDetails implements OnInit {
   appointment: any = null;
   endTime: string = '';
-  userRole: string | null = ''; // 1. Add this variable
+  userRole: string | null = ''; 
+  
+  // 🌟 NEW: Placeholder Google Meet link
+  meetLink: string = 'https://meet.google.com/wcz-vjqz-mhd'; 
 
   constructor(
+  // ... rest of your code stays exactly the same
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,

@@ -23,6 +23,13 @@
         <p>{{ appointment.appointment_type }}</p>
     </div>
 
+    <div class="info-group" *ngIf="appointment.status === 'Approved'">
+        <label>Virtual Meeting Link</label>
+        <a [href]="meetLink" target="_blank" class="btn-meet">
+            <i class="fa-solid fa-video"></i> Join Google Meet
+        </a>
+    </div>
+
     <div class="info-group">
         <label>Landlord Contact</label>
         <p class="contact-name">{{ appointment.landlord?.name }}</p>

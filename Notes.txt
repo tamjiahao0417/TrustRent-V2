@@ -1,12 +1,10 @@
 
 add admin role use case 
-add visual appointment 
-add chat page
-
-
-update model
+pdate model
 check logic
 
+maintenance
+ai api
 
 
 
@@ -17,9 +15,3 @@ update report
 update logbook
 demo slide?
 
-
-import { LoadingSpinnerComponent } from '../../loading-spinner.component'; // Adjust path if needed
-
-LoadingSpinnerComponent 
-
-<app-loading-spinner *ngIf="isLoading" message="Fetching available properties..."></app-loading-spinner>

@@ -5,11 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Contract;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ContractController extends Controller
 {
     public function store(Request $request)
     {
+        $existingContract = DB::table('contracts')
+            ->where('property_id', $request->input('property_id'))
+            ->whereIn('status', ['Draft', 'Pending Tenant', 'Active'])
+            ->exists();
+
+        if ($existingContract) {
+            return response()->json([
+                'message' => 'A contract already exists for this property!'
+            ], 400);
+        }
+
         $validated = $request->validate([
             'rental_request_id' => 'required|exists:rental_requests,id',
             'tenant_id' => 'required|exists:users,id',

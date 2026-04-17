@@ -48,6 +48,7 @@ export class RentalRequestDetails implements OnInit {
   }
 
   // --- LANDLORD ACTION ---
+  // --- LANDLORD ACTION ---
   updateStatus(newStatus: string) {
     if (confirm(`Are you sure you want to ${newStatus.toLowerCase()} this rental request?`)) {
       this.http.patch(`http://localhost:8000/api/rental-requests/${this.request.id}/status`, { status: newStatus })
@@ -57,7 +58,11 @@ export class RentalRequestDetails implements OnInit {
             this.request.status = newStatus; // Update the UI instantly
             this.cdr.detectChanges();
           },
-          error: (err) => alert('Failed to update status.')
+          error: (err) => {
+            // 🌟 NOW IT WILL SHOW THE REAL BACKEND MESSAGE!
+            console.error("Full error:", err);
+            alert(err.error?.message || 'Failed to update status. Check console for details.');
+          }
         });
     }
   }

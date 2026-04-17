@@ -109,7 +109,9 @@
 
             <div class="section-header" style="margin-top: 40px;">
                 <h2>My Rented Properties Overview</h2>
-                <a routerLink="/my-properties" class="btn-outline">View All Properties</a>
+                <a routerLink="/my-properties" class="btn-view-all">
+                    View All Properties <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
 
             <div class="property-wide-card" *ngFor="let prop of dbData.rentedProperties">

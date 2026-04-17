@@ -29,6 +29,9 @@ import { Maintenance } from './shared/maintenance/maintenance'; // Adjust path!
 import { MaintenanceDetails } from './shared/maintenance-details/maintenance-details'; // Adjust path!
 import { MaintenanceReport } from './tenant/maintenance-report/maintenance-report'; // Adjust path!
 import { EditMaintenance } from './tenant/edit-maintenance/edit-maintenance';
+import { Chat } from './shared/chat/chat';
+
+
 export const routes: Routes = [ 
   { path: 'login', component: Login },
   { path: 'register', component: Register },  
@@ -64,6 +67,7 @@ export const routes: Routes = [
       { path: 'maintenance/details/:id', component: MaintenanceDetails },
       { path: 'maintenance/report', component: MaintenanceReport },
       { path: 'edit-maintenance/:id', component: EditMaintenance },
+      { path: 'chat', component: Chat },
     ]
   },
 

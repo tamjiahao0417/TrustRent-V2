@@ -87,12 +87,21 @@
         </div>
 
         <div class="tenant-actions" *ngIf="userRole === 'tenant' && !isOwner">
-            <button class="btn-outline" (click)="goToBooking()">
-                Book Appointment
-            </button>
-            <button class="btn-solid" [routerLink]="['/apply-property', property.id]">
-                Apply Now
-            </button>
+            
+            <ng-container *ngIf="!property.is_rented">
+                <button class="btn-outline" (click)="goToBooking()">
+                    Book Appointment
+                </button>
+                <button class="btn-solid" [routerLink]="['/apply-property', property.id]">
+                    Apply Now
+                </button>
+            </ng-container>
+
+            <div *ngIf="property.is_rented" style="width: 100%; text-align: center; padding: 16px; background-color: #f9fafb; border-radius: 8px; color: #4b5563; font-weight: 600; border: 1px solid #e5e7eb;">
+                <i class="fa-solid fa-lock" style="color: #ef4444; margin-right: 8px;"></i> 
+                This property is currently rented and is no longer accepting applications or appointments.
+            </div>
+
         </div>
 
     </div> </div> <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">

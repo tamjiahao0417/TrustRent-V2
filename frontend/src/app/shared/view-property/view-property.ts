@@ -47,8 +47,14 @@ export class ViewProperty implements OnInit {
   }
 
   // Add this right below your isOwner() getter
+  // Add this right below your isOwner() getter
   goToBooking() {
     if (this.property && this.property.id) {
+      // 🌟 Safety check: Prevent booking if already rented
+      if (this.property.is_rented) {
+        alert('This property is already rented and unavailable for booking.');
+        return;
+      }
       this.router.navigate(['/book-appointment', this.property.id]);
     }
   }

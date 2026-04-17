@@ -1,13 +1,17 @@
 <header class="top-header">
     <div class="header-left">
-    </div>
+        </div>
 
     <div class="header-right">
-        <button class="icon-btn">
+        <button class="icon-btn" routerLink="/chat" title="Messages">
+            <i class="fa-regular fa-comments"></i>
+        </button>
+
+        <button class="icon-btn" title="Notifications">
             <i class="fa-regular fa-bell"></i>
         </button>
         
-        <div class="profile-circle" routerLink="/profile">
+        <div class="profile-circle" routerLink="/profile" title="My Profile">
             {{ user.name?.[0] | uppercase }}
         </div>
     </div>

@@ -1,0 +1,66 @@
+<div class="chat-layout">
+    
+    <div class="chat-sidebar">
+        <div class="sidebar-header">
+            <h2>Messages</h2>
+        </div>
+
+        <div class="contacts-list">
+            <p *ngIf="isLoadingContacts" class="loading-text">Loading contacts...</p>
+            <p *ngIf="!isLoadingContacts && contacts.length === 0" class="loading-text">No available contacts yet.</p>
+
+            <div class="contact-card" 
+                 *ngFor="let contact of contacts" 
+                 [class.active]="selectedContact?.id === contact.id"
+                 (click)="selectContact(contact)">
+                <div class="contact-avatar">{{ contact.name?.[0] | uppercase }}</div>
+                <div class="contact-info">
+                    <h4>{{ contact.name }}</h4>
+                    <p class="role-badge">{{ contact.role }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-main" *ngIf="selectedContact">
+        
+        <div class="chat-header">
+            <div class="contact-avatar">{{ selectedContact.name?.[0] | uppercase }}</div>
+            <h3>{{ selectedContact.name }}</h3>
+        </div>
+
+        <div class="chat-history" id="chat-history">
+            <app-loading-spinner *ngIf="isLoadingMessages" message="Loading conversation..."></app-loading-spinner>
+            
+            <p *ngIf="!isLoadingMessages && messages.length === 0" class="empty-chat">
+                Send a message to start the conversation!
+            </p>
+
+            <div class="message-wrapper" 
+                 *ngFor="let msg of messages" 
+                 [class.mine]="msg.sender_id == userId || msg.is_mine">
+                <div class="message-bubble">
+                    {{ msg.message }}
+                </div>
+                <div class="message-time">{{ msg.created_at | date:'shortTime' }}</div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" 
+                   placeholder="Type your message here..." 
+                   [(ngModel)]="newMessage" 
+                   (keyup.enter)="sendMessage()">
+            <button class="btn-send" (click)="sendMessage()" [disabled]="!newMessage.trim()">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="chat-main empty-state" *ngIf="!selectedContact">
+        <i class="fa-regular fa-comments empty-icon"></i>
+        <h3>Your Messages</h3>
+        <p>Select a conversation from the left menu to start chatting.</p>
+    </div>
+
+</div>

@@ -11,6 +11,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AiController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ChatController;
 
 // =========================================================
 // 1. PUBLIC ROUTES (Anyone can access these to log in)
@@ -84,6 +85,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/api/maintenance/{id}/status', [MaintenanceController::class, 'updateStatus']);
     Route::put('/api/maintenance/{id}', [MaintenanceController::class, 'update']);
 
+    Route::get('/api/chat/contacts', [ChatController::class, 'getContacts']);
+    Route::get('/api/chat/messages', [ChatController::class, 'getMessages']);
+    Route::post('/api/chat/send', [ChatController::class, 'sendMessage']);
 });
 
 // =========================================================
