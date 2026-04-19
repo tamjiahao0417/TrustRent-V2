@@ -53,6 +53,10 @@ class ContractController extends Controller
 
         $contract = Contract::create($validated);
 
+        DB::table('properties')
+            ->where('id', $request->input('property_id'))
+            ->update(['is_rented' => 1]);
+            
         return response()->json(['message' => 'Contract generated and sent to tenant!', 'data' => $contract], 201);
     }
 

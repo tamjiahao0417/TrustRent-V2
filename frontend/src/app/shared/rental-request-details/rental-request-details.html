@@ -81,14 +81,14 @@
 
     <div class="action-buttons" *ngIf="request.status === 'Approved' && userRole === 'landlord'">
         
-        <button *ngIf="!request.property?.is_rented" 
+        <button *ngIf="request.property?.is_rented == 0 || !request.property?.is_rented" 
                 class="btn-primary" 
                 style="background-color: #3b82f6; color: white; padding: 12px 30px; border-radius: 30px; border: none; font-weight: 600; cursor: pointer;" 
                 (click)="goToCreateContract()">
             Create Contract
         </button>
 
-        <div *ngIf="request.property?.is_rented" style="width: 100%; text-align: center; padding: 16px; background-color: #f8fafc; border-radius: 8px; color: #4b5563; font-weight: 600; border: 1px solid #e5e7eb;">
+        <div *ngIf="request.property?.is_rented == 1" style="width: 100%; text-align: center; padding: 16px; background-color: #f8fafc; border-radius: 8px; color: #4b5563; font-weight: 600; border: 1px solid #e5e7eb;">
             <i class="fa-solid fa-file-signature" style="color: #3b82f6; margin-right: 8px;"></i> 
             A contract has already been created for this property.
         </div>
