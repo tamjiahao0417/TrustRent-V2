@@ -40,15 +40,20 @@
 .sig-line { border-bottom: 1px solid #000; margin-top: 50px; margin-bottom: 5px; position: relative; height: 60px;}
 .sig-img { position: absolute; bottom: 0; left: 0; max-height: 80px; max-width: 100%; }
 .pending-sig { color: #ef4444; font-style: italic; font-weight: bold; position: absolute; bottom: 5px; }
+.legal-list { 
+    padding-left: 20px; 
+    margin-bottom: 20px; 
+    list-style-type: decimal; 
+}
+.legal-list li { 
+    margin-bottom: 15px; 
+    font-size: 14px; 
+    padding-left: 10px; 
+}
 
 /* Print Mode */
-@media print {
-    body { background: white; }
-    .no-print, .status-banner, app-sidebar, app-header { display: none !important; }
-    .page-container { padding: 0; background: white; }
-    .a4-document { box-shadow: none; padding: 0; width: 100%; max-width: 100%; margin: 0; }
-    .page-break { page-break-before: always; }
-}
+/* Print Mode */
+/* Print Mode */
 
 /* Sign & Accept Panel Styles */
 .signature-panel {

@@ -20,3 +20,67 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
 }
+
+/* =========================================
+   GLOBAL PRINT MODE (The "Nuclear" Fix)
+   ========================================= */
+   @media print {
+    /* 1. THE NUKE: Force absolutely EVERY element to unlock its scrolling and height */
+    * {
+        overflow: visible !important;
+        max-height: none !important;
+    }
+
+    /* 2. Specifically target Angular's custom component tags to break flexbox/grid */
+    html, 
+    body, 
+    app-root, 
+    app-contract-details, /* 🌟 Added the component tag itself! */
+    .app-layout, 
+    .main-content, 
+    .page-container {
+        display: block !important; 
+        height: auto !important;
+        min-height: auto !important;
+        position: static !important;
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* 3. Nuke the Sidebar, Header, and any UI buttons completely */
+    app-sidebar, 
+    app-header, 
+    .sidebar, 
+    .top-header, 
+    .no-print, 
+    .status-banner, 
+    .action-buttons, 
+    .signature-panel {
+        display: none !important;
+    }
+
+    /* 4. Reset the A4 document styling so it fills the paper perfectly */
+    .a4-document { 
+        box-shadow: none !important; 
+        padding: 0 !important; 
+        width: 100% !important; 
+        max-width: 100% !important; 
+        margin: 0 !important; 
+        border: none !important;
+    }
+
+    /* 5. Enforce Page Breaks */
+    .page-break { 
+        page-break-before: always !important; 
+        break-before: page !important; 
+    }
+    
+    /* 6. Prevent lists and signature boxes from being cut in half across pages */
+    .legal-list li, 
+    .schedule-table tr, 
+    .signature-section { 
+        page-break-inside: avoid !important; 
+        break-inside: avoid !important; 
+    }
+}

@@ -34,7 +34,9 @@
     <div class="a4-document">
         <div class="cover-page">
             <h1>TENANCY AGREEMENT</h1>
-            <p class="cover-address">{{ contract.property?.address }}</p>
+            <p style="margin: 0 auto; max-width: 60%; font-weight: bold; font-size: 16px;">
+                {{ contract.property?.address }}
+            </p>
             <p class="cover-title">BETWEEN</p>
             <p class="cover-name">{{ contract.landlord?.name }}</p>
             <p class="cover-title">AND</p>
@@ -43,33 +45,33 @@
         </div>
 
         <div class="page-break"></div>
-        <h2 class="schedule-title">FIRST SCHEDULE</h2>
+        <h2 style="text-align: center; text-decoration: none;">FIRST SCHEDULE</h2>
         <table class="schedule-table">
             <tr><th class="col-no">No.</th><th class="col-matter">Matters</th><th class="col-details">Details</th></tr>
             <tr><td class="col-no">1.</td><td class="col-matter">Agreement Date</td><td class="col-details">{{ contract.created_at | date:'d MMMM yyyy' }}</td></tr>
             <tr>
                 <td class="col-no">2.</td><td class="col-matter">Landlord</td>
-                <td class="col-details">Name: {{ contract.landlord?.name }}<br>IC No.: {{ contract.landlord_ic }}</td>
+                <td class="col-details">Name: {{ contract.landlord?.name }}<br>IC No.: {{ contract.landlord_ic || '____________________' }}</td>
             </tr>
             <tr>
                 <td class="col-no">3.</td><td class="col-matter">Tenant</td>
                 <td class="col-details">
                     Name: {{ contract.tenant?.name }}<br>
-                    IC No.: {{ contract.tenant_ic }}<br>
-                    Address: {{ contract.tenant_address }}
+                    IC No.: {{ contract.tenant_ic || '____________________' }}<br>
+                    Address: {{ contract.tenant_address || '_________________________________________' }}
                 </td>
             </tr>
             <tr><td class="col-no">4.</td><td class="col-matter">Address of the Property</td><td class="col-details">{{ contract.property?.address }}</td></tr>
             <tr><td class="col-no">5.</td><td class="col-matter">Type of Property</td><td class="col-details">Residential Property</td></tr>
         </table>
 
-        <h2 class="schedule-title">SECOND SCHEDULE</h2>
+        <h2 style="text-align: center; text-decoration: none;">SECOND SCHEDULE</h2>
         <table class="schedule-table">
             <tr><th class="col-no">No.</th><th class="col-matter">Matters</th><th class="col-details">Details</th></tr>
-            <tr><td class="col-no">1.</td><td class="col-matter">Period of Tenancy</td><td class="col-details">{{ durationText }} with an option to renew for another year.</td></tr>
+            <tr><td class="col-no">1.</td><td class="col-matter">Period of Tenancy</td><td class="col-details">{{ durationText }} with an option to renew for another year at the then prevailing market rental to be mutually agreed upon.</td></tr>
             <tr><td class="col-no">2.</td><td class="col-matter">Effective Date</td><td class="col-details">{{ contract.start_date | date:'d MMMM yyyy' }} to {{ contract.end_date | date:'d MMMM yyyy' }}.</td></tr>
             <tr><td class="col-no">3.</td><td class="col-matter">Monthly Rent</td><td class="col-details">RM {{ contract.rent_amount | number:'1.2-2' }}</td></tr>
-            <tr><td class="col-no">4.</td><td class="col-matter">Method of Payment</td><td class="col-details">Payment must be made on the first day and NOT EXCEED the {{ contract.due_date }} of each month via Online Transfer.</td></tr>
+            <tr><td class="col-no">4.</td><td class="col-matter">Method of Payment</td><td class="col-details">Payment must be made on the first day and NOT EXCEED the seventh day of each month via Online Transfer.</td></tr>
             <tr>
                 <td class="col-no">5.</td><td class="col-matter">Initial payment</td>
                 <td class="col-details">
@@ -85,27 +87,65 @@
 
         <div class="page-break"></div>
 
-        <p>This agreement was made on <span class="bold-text">{{ contract.created_at | date:'d MMMM yyyy' }}</span>, between <span class="bold-text">{{ contract.landlord?.name | uppercase }}</span> (Landlord) and <span class="bold-text">{{ contract.tenant?.name | uppercase }}</span> (Tenant).</p>
-        <p>WHEREAS the Landlord is the registered owner of the house located at <span class="bold-text">{{ contract.property?.address }}</span>.</p>
+        <p>This agreement was made on <span class="bold-text">{{ contract.created_at | date:'d MMMM yyyy' }}</span>, between <span class="bold-text">{{ contract.landlord?.name | uppercase }}</span> (from now on referred to as 'Landlord') and <span class="bold-text">{{ contract.tenant?.name | uppercase }}</span> (from now on referred to as 'Tenant').</p>
+        <p>WHEREAS the Landlord is the registered owner of the house located at <span class="bold-text">{{ contract.property?.address }}</span> (from now on referred to as the "Said House").</p>
+        <p>AND WHEREAS the Landlord now agrees to lease, and the Tenant agrees to rent the Said House for <span class="bold-text">{{ durationText }}</span>, from <span class="bold-text">{{ contract.start_date | date:'d MMMM yyyy' }}</span> to <span class="bold-text">{{ contract.end_date | date:'d MMMM yyyy' }}</span>, subject to the terms and conditions contained herein.</p>
         
         <h2>THE TENANT NOW AGREES WITH THE LANDLORD AS FOLLOWS:</h2>
         <ol class="legal-list">
-            <li>The Tenant shall pay the Landlord a sum of <span class="bold-text">RM {{ contract.rent_amount | number:'1.2-2' }}</span>.</li>
+            <li>The Tenant shall pay the Landlord a sum of <span class="bold-text">RM {{ contract.rent_amount | number:'1.2-2' }}</span>. The detailed payment schedule is as stated in the Second Schedule. Failure to make full payment will cancel this agreement, and the deposit will not be refunded.</li>
+            <li>The Tenant is personally and/or jointly responsible for paying the amount in paragraph (1).</li>
+            <li>Not to use and/or allow the Said House and/or any part thereof to be used for illegal, unlawful, or immoral activities, whether business or trade, gambling, or protecting criminals in any form whatsoever.</li>
+            <li>The Tenant shall not rent or hand over either wholly or partially any part of the Said House, including parking, to any other person without the prior written consent of the Landlord.</li>
+            <li>The Tenant shall not allow and/or carry out any changes or additions to the exterior or interior of the Said House in any way whatsoever without the Landlord's prior written consent.</li>
+            <li>The Tenant shall not keep and/or breed any animals within the premises of the Said House or anywhere within the compound of the Said House.</li>
+            <li>The Tenant shall not bring or store any weapon, explosive material, poisonous or hazardous material that is easily flammable or combustible into the Said House unless after complying with the legal requirements.</li>
+            <li>Maintain the cleanliness of the entire interior and exterior of the Said House, including the corridor, staircase, and the surroundings of the Said House.</li>
             <li>Maintain and ensure that the condition of the Said House throughout the rental period is always in a good and habitable condition.</li>
-            </ol>
-
-        <p style="white-space: pre-line; margin-top: 20px;"><strong>ADDITIONAL TERMS:</strong><br>{{ contract.additional_terms }}</p>
+            <li>Obtain permission from the Landlord before hanging picture frames or furniture.</li>
+            <li>The Tenant is only allowed to install additional locks with the Landlord's written consent.</li>
+            <li>Not to allow or permit any matter that violates the law, house rules, government regulations.</li>
+            <li>The Tenant shall not engage in or allow anyone to engage in any immoral or unlawful act in the Said House.</li>
+            <li>The Tenant shall settle any disputes with neighbors peacefully and responsibly.</li>
+            <li>Allow the Landlord or his/her authorized representative or employees to enter the Said House at any time to inspect or repair the house.</li>
+            <li>The Tenant is responsible for repairing any damage caused by the Tenant's use or negligence.</li>
+            <li>Responsible for timely electricity, water, and sewerage bill payments.</li>
+            <li>The Tenant agrees to rent the Said House in its current condition.</li>
+        </ol>
 
         <div class="page-break"></div>
 
-        <<div class="signature-section">
+        <h2>LANDLORD'S RESPONSIBILITIES:</h2>
+        <ol class="legal-list">
+            <li>Repair any significant damage (such as leaks, wiring) that occurs on the Said House that is not caused by the Tenant's negligence or use.</li>
+            <li>The Landlord will return the deposit to the tenant within 21 days after the rental period ends or is terminated.</li>
+            <li>Ensure that safety measures have been taken before the Tenant moves into the Said House.</li>
+        </ol>
+
+        <h2>AGREEMENT BETWEEN LANDLORD AND TENANT:</h2>
+        <ol class="legal-list">
+            <li>The Landlord shall hand over the house keys to the Tenant after the Tenant pays the deposit.</li>
+            <li>If the agreement ends or the Landlord or Tenant terminates it, it is the Tenant's responsibility to immediately hand over the house keys and access card.</li>
+            <li>If the Landlord receives no rental payment on the agreed date as stated in the Second Schedule (4), the deposit will be used to pay the arrears.</li>
+            <li>If the Tenant wishes to renew the rental period when the period contained in this agreement ends, the Tenant must give written notice to the Landlord at least two (2) months before.</li>
+            <li>The Landlord has the right not to renew the rental period.</li>
+            <li>The Landlord has the right to terminate this rental period immediately if there is a violation of the terms of this agreement.</li>
+            <li>The Tenant has the right to terminate the rental by giving written notice to the Landlord for at least two (2) months or the deposit will not be refunded.</li>
+            <li>During the notice period, the Tenant must pay the monthly rent as usual and cannot use the deposit to pay the monthly rent.</li>
+            <li>Termination by the Tenant will not release the Tenant from paying the Landlord any outstanding payments.</li>
+            <li>Any disputes between the Landlord and Tenant regarding the rental of the House shall be resolved peacefully and amicably.</li>
+        </ol>
+
+        <p style="margin-top: 40px;">IN WITNESS WHEREOF the parties hereto have hereunto set their hands on the day and year first above written.</p>
+
+        <div class="signature-section">
             <div class="sig-block">
                 <div class="sig-line">
                     <img *ngIf="contract.landlord_signature" [src]="contract.landlord_signature" class="sig-img">
                 </div>
                 <p class="bold-text">LANDLORD</p>
                 <p>Name: {{ contract.landlord?.name }}</p>
-                <p>IC No: {{ contract.landlord_ic }}</p>
+                <p>IC No: {{ contract.landlord_ic || '____________________' }}</p>
             </div>
 
             <div class="sig-block">
@@ -115,7 +155,7 @@
                 </div>
                 <p class="bold-text">TENANT</p>
                 <p>Name: {{ contract.tenant?.name }}</p>
-                <p>IC No: {{ contract.tenant_ic }}</p>
+                <p>IC No: {{ contract.tenant_ic || '____________________' }}</p>
             </div>
         </div>
     </div>
