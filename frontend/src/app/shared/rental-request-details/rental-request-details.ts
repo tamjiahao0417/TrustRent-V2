@@ -67,5 +67,16 @@ export class RentalRequestDetails implements OnInit {
     }
   }
 
+  // --- LANDLORD ACTION: NAVIGATE TO CREATE CONTRACT ---
+  goToCreateContract() {
+    // 🌟 Safety check: Prevent navigation if the property is already marked as rented
+    if (this.request.property?.is_rented) {
+        alert('A contract already exists for this property. You cannot create another one.');
+        return;
+    }
+    // If safe, navigate to the creation form!
+    this.router.navigate(['/contracts/create', this.request.id]);
+  }
+
   goBack() { this.location.back(); }
 }
