@@ -29,27 +29,27 @@ class AiController extends Controller
 
             // NOTE: If this is still "gen-lang-client...", Google will reject it! 
             // Real API keys almost always start with "AIza..."
-            $apiKey = "AQ.Ab8RN6Ic6FlZL_1NyfIcqGINekqR_mm8FuQyoSohGlCWhjc1qA"; 
+            $apiKey = "AIzaSyBL5tigg7bcV80ly60fBrNr-M-KWgOn1bE"; 
 
             $prompt = "You are an expert real estate appraiser in Malaysia. Analyze the following property and estimate a fair monthly rental price in RM (Malaysian Ringgit). 
-Property Details:
-- Type: " . $validated['type'] . "
-- Location: " . $validated['location'] . "
-- Size: " . $validated['size'] . " sqft
-- Bedrooms: " . $validated['rooms'] . "
-- Furnishing: " . $validated['furnishing'] . "
-- Features: " . ($validated['features'] ?? 'None') . "
+            Property Details:
+            - Type: " . $validated['type'] . "
+            - Location: " . $validated['location'] . "
+            - Size: " . $validated['size'] . " sqft
+            - Bedrooms: " . $validated['rooms'] . "
+            - Furnishing: " . $validated['furnishing'] . "
+            - Features: " . ($validated['features'] ?? 'None') . "
 
-Based on the Malaysian property market, respond ONLY with a valid JSON object matching this exact structure. Do not include Markdown blocks like ```json.
-{
-  \"price_range\": \"RM [Low End] - RM [High End] / month\",
-  \"factors\": {
-    \"location\": \"Explain why this specific location affects the price (1-2 sentences).\",
-    \"size\": \"Explain how the size and bedroom count affect the price.\",
-    \"features\": \"Explain how the furnishing and specific features add value.\",
-    \"trends\": \"Provide a realistic 1-sentence market trend for this type of property.\"
-  }
-}";
+            Based on the Malaysian property market, respond ONLY with a valid JSON object matching this exact structure. Do not include Markdown blocks like ```json.
+            {
+            \"price_range\": \"RM [Low End] - RM [High End] / month\",
+            \"factors\": {
+                \"location\": \"Explain why this specific location affects the price (1-2 sentences).\",
+                \"size\": \"Explain how the size and bedroom count affect the price.\",
+                \"features\": \"Explain how the furnishing and specific features add value.\",
+                \"trends\": \"Provide a realistic 1-sentence market trend for this type of property.\"
+            }
+            }";
 
             // Send the request using the current, active Gemini 2.5 Flash model
             $response = Http::withOptions(['verify' => false]) 
