@@ -19,6 +19,7 @@ export class Sidebar implements OnInit {
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
+    // This will grab 'admin', 'landlord', or 'tenant' automatically
     this.userRole = localStorage.getItem('user_role') || '';
   }
 

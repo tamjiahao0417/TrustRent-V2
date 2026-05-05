@@ -51,14 +51,24 @@ export class Login {
         } else {
             this.errorMessage = response.message || 'Invalid credentials.';
             this.isLoading = false;
-            this.cdr.detectChanges(); // 🌟 3. Force UI to redraw!
+            this.cdr.detectChanges(); 
         }
       },
       error: (error) => {
         console.error("Login API Error:", error);
-        this.errorMessage = error?.error?.message || 'Login failed. Please check your email and password.';
+        
+        // 🌟 Handle specific backend error codes
+        if (error.status === 403) {
+            // Displays the specific suspension message from Laravel
+            this.errorMessage = error.error.message || 'Your account has been suspended.';
+        } else if (error.status === 401) {
+            this.errorMessage = 'Incorrect email or password.';
+        } else {
+            this.errorMessage = 'An error occurred during login. Please try again.';
+        }
+        
         this.isLoading = false; 
-        this.cdr.detectChanges(); // 🌟 4. Force UI to redraw here too!
+        this.cdr.detectChanges(); // Force UI to show the error message!
       }
     });
   }

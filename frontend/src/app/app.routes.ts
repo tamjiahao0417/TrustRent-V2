@@ -30,7 +30,7 @@ import { MaintenanceDetails } from './shared/maintenance-details/maintenance-det
 import { MaintenanceReport } from './tenant/maintenance-report/maintenance-report'; // Adjust path!
 import { EditMaintenance } from './tenant/edit-maintenance/edit-maintenance';
 import { Chat } from './shared/chat/chat';
-
+import { UserManagementComponent } from './admin/user-management/user-management';
 
 export const routes: Routes = [ 
   { path: 'login', component: Login },
@@ -68,6 +68,7 @@ export const routes: Routes = [
       { path: 'maintenance/report', component: MaintenanceReport },
       { path: 'edit-maintenance/:id', component: EditMaintenance },
       { path: 'chat', component: Chat },
+      { path: 'user-management', component: UserManagementComponent },
     ]
   },
 

@@ -7,61 +7,76 @@
     </div>
 
     <nav class="nav-menu">
+        <!-- Visible to ALL Roles (Admin, Landlord, Tenant) -->
         <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-table-cells-large"></i> 
             <span *ngIf="!collapsed">Dashboard</span>
         </a>
 
+        <!-- 🌟 ADMIN ONLY: User Management -->
+        <a *ngIf="userRole === 'admin'" routerLink="/user-management" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-users"></i> 
+            <span *ngIf="!collapsed">User Management</span>
+        </a>
+
+        <!-- Landlord Only -->
         <a *ngIf="userRole === 'landlord'" routerLink="/my-properties" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-house-user"></i> 
             <span *ngIf="!collapsed">My Properties</span>
         </a>
 
-        <a routerLink="/property-listings" routerLinkActive="active" class="nav-item">
+        <!-- Landlord & Tenant Only (Hidden from Admin) -->
+        <a *ngIf="userRole !== 'admin'" routerLink="/property-listings" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-magnifying-glass"></i> 
             <span *ngIf="!collapsed">Property Listings</span>
         </a>
 
-        <a routerLink="/appointments" routerLinkActive="active" class="nav-item">
+        <a *ngIf="userRole !== 'admin'" routerLink="/appointments" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-calendar-days"></i> 
             <span *ngIf="!collapsed">My Appointments</span>
         </a>
 
-        <a routerLink="/rental-requests" routerLinkActive="active" class="nav-item">
+        <a *ngIf="userRole !== 'admin'" routerLink="/rental-requests" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-list-ul"></i> 
             <span *ngIf="!collapsed">Rental Requests</span>
         </a>
 
-        <a routerLink="/contracts" routerLinkActive="active" class="nav-item">
+        <a *ngIf="userRole !== 'admin'" routerLink="/contracts" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-file-invoice"></i> 
             <span *ngIf="!collapsed">Rental Contracts</span>
         </a>
 
+        <!-- Tenant Only -->
         <a *ngIf="userRole === 'tenant'" routerLink="/rent-payment" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-money-bill"></i> 
             <span *ngIf="!collapsed">Make Payment</span>
         </a>
 
+        <!-- Visible to ALL Roles -->
         <a routerLink="/transactions" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-credit-card"></i> 
             <span *ngIf="!collapsed">Transaction History</span>
         </a>
 
-        <a routerLink="/ai-pricing" routerLinkActive="active" class="nav-item">
+        <!-- Landlord & Tenant Only -->
+        <a *ngIf="userRole !== 'admin'" routerLink="/ai-pricing" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-wand-magic-sparkles"></i> 
             <span *ngIf="!collapsed">AI Pricing Assistant</span>
         </a>
 
+        <!-- Tenant Only -->
         <a *ngIf="userRole === 'tenant'" routerLink="/ai-matching" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-wand-magic-sparkles"></i> 
             <span *ngIf="!collapsed">AI Matching Page</span>
         </a>
 
-        <a routerLink="/maintenance" routerLinkActive="active" class="nav-item">
+        <!-- Landlord & Tenant Only -->
+        <a *ngIf="userRole !== 'admin'" routerLink="/maintenance" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-wrench"></i> 
             <span *ngIf="!collapsed">Maintenance Issue</span>
         </a>
 
+        <!-- Visible to ALL Roles -->
         <a routerLink="/reports" routerLinkActive="active" class="nav-item">
             <i class="fa-solid fa-desktop"></i> 
             <span *ngIf="!collapsed">Reports</span>
@@ -74,4 +89,4 @@
             <span *ngIf="!collapsed">Logout</span>
         </button>
     </div>
-</div>  
+</div>

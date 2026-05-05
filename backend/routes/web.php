@@ -12,18 +12,21 @@ use App\Http\Controllers\AiController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\AdminController;
 
 // =========================================================
 // 1. PUBLIC ROUTES (Anyone can access these to log in)
 // =========================================================
 Route::post('/api/register', [AuthController::class, 'register']);
 Route::post('/api/login', [AuthController::class, 'login']);
-
+// 🌟 Add ->withoutMiddleware(['auth']) to the end of these two lines!
+Route::get('/api/admin/users', [AdminController::class, 'getUsers'])->withoutMiddleware(['auth']);
+Route::patch('/api/admin/users/{id}/suspend', [AdminController::class, 'suspendUser'])->withoutMiddleware(['auth']);
+Route::patch('/api/admin/users/{id}/activate', [AdminController::class, 'activateUser'])->withoutMiddleware(['auth']);
 // =========================================================
 // 2. PRIVATE ROUTES (The Security Guard checks the 1-minute timer here!)
 // =========================================================
-Route::middleware('auth')->group(function () {
-    
+Route::middleware(['auth', \App\Http\Middleware\CheckIfSuspended::class])->group(function () {    
     // User & Profile
     Route::put('/api/user/update', [AuthController::class, 'updateProfile']);
     Route::get('/api/user/details', [AuthController::class, 'getUserDetails']); 
@@ -88,6 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/chat/contacts', [ChatController::class, 'getContacts']);
     Route::get('/api/chat/messages', [ChatController::class, 'getMessages']);
     Route::post('/api/chat/send', [ChatController::class, 'sendMessage']);
+
 });
 
 // =========================================================

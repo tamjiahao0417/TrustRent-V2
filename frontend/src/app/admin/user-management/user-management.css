@@ -1,0 +1,34 @@
+.page-container { padding: 40px; background-color: #ffffff; min-height: 100vh; font-family: sans-serif; }
+
+/* Table Styles */
+.table-container { border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+.user-table { width: 100%; border-collapse: collapse; text-align: left; }
+.user-table th { padding: 16px 24px; background-color: #ffffff; border-bottom: 1px solid #e5e7eb; color: #4b5563; font-weight: 600; font-size: 14px; }
+.user-table td { padding: 16px 24px; border-bottom: 1px solid #e5e7eb; color: #111827; font-size: 14px; vertical-align: middle; }
+.username-cell { color: #6b7280; } /* Matches gray text in mockup */
+
+/* Badges */
+.role-badge, .status-badge { padding: 6px 16px; border-radius: 20px; background-color: #f3f4f6; color: #374151; font-weight: 500; font-size: 13px; display: inline-block; }
+.status-badge.active { background-color: #f3f4f6; } /* Mockup shows gray for active too */
+
+/* Action Buttons */
+.btn-suspend { background: none; border: none; color: #6b7280; font-weight: 700; cursor: pointer; font-size: 14px; }
+.btn-suspend:hover { color: #111827; text-decoration: underline; }
+.text-suspended { color: #9ca3af; font-weight: 700; font-size: 14px; }
+
+/* Modal Styles */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.4); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.modal-content { background-color: #ffffff; padding: 40px; border-radius: 16px; width: 400px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+.modal-content h2 { margin-top: 0; font-size: 24px; font-weight: 800; color: #111827; margin-bottom: 15px; }
+.modal-content p { color: #4b5563; margin-bottom: 30px; font-size: 15px; }
+
+/* Modal Actions */
+.modal-actions { display: flex; gap: 15px; justify-content: center; }
+.btn-cancel, .btn-confirm { padding: 12px 30px; border-radius: 30px; font-weight: 600; font-size: 14px; cursor: pointer; border: none; flex: 1; transition: 0.2s; }
+.btn-cancel { background-color: #f3f4f6; color: #111827; }
+.btn-cancel:hover { background-color: #e5e7eb; }
+.btn-confirm { background-color: #dbeafe; color: #1e40af; } /* Matches the light blue in mockup */
+.btn-confirm:hover { background-color: #bfdbfe; }
+/* New Activate/Resume Button Styles */
+.btn-activate { background: none; border: none; color: #10b981; font-weight: 700; cursor: pointer; font-size: 14px; }
+.btn-activate:hover { color: #047857; text-decoration: underline; }

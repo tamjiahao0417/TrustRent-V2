@@ -37,6 +37,7 @@ class AuthController extends Controller
     }
 
     // --- 2. LOGIN LOGIC ---
+    // --- 2. LOGIN LOGIC ---
     public function login(Request $request)
     {
         // 1. Validate inputs
@@ -46,10 +47,22 @@ class AuthController extends Controller
         ]);
 
         // 2. Attempt to login
-        // This automatically checks the 'users' table and verifies the hashed password
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
             $user = Auth::user();
+
+            // 🌟 THE NEW SUSPENSION CHECK 🌟
+            if ($user->status === 'Suspended') {
+                Auth::logout(); // Force them back out!
+                $request->session()->invalidate(); // Destroy the session
+                $request->session()->regenerateToken(); 
+
+                return response()->json([
+                    'message' => 'Your account has been suspended. Please contact the administrator.'
+                ], 403); // 403 Forbidden
+            }
+
+            // 3. If Active, proceed normally
+            $request->session()->regenerate();
 
             return response()->json([
                 'message' => 'Login successful',
@@ -57,7 +70,7 @@ class AuthController extends Controller
             ], 200);
         }
 
-        // 3. If it fails
+        // 4. If password/email is wrong
         return response()->json(['message' => 'Invalid email or password.'], 401);
     }
 
