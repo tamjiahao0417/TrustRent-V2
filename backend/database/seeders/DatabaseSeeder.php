@@ -15,11 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // ❌ DELETE OR COMMENT OUT THIS LINE:
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // ✅ LEAVE ONLY YOUR CUSTOM SEEDER:
+        $this->call(UserSeeder::class);
     }
 }

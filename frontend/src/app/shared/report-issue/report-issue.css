@@ -1,0 +1,18 @@
+.page-container { padding: 30px; background-color: #f9fafb; min-height: 100vh; max-width: 800px; }
+.page-title { font-size: 28px; font-weight: 800; color: #111; margin-bottom: 5px; }
+.page-subtitle { color: #6b7280; margin-bottom: 30px; }
+
+.form-card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #e5e7eb; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #374151; }
+.form-control { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; outline: none; box-sizing: border-box; }
+.form-control:focus { border-color: #3b82f6; }
+.file-input { padding: 9px; }
+
+.btn-submit { background-color: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; float: right; transition: 0.2s; }
+.btn-submit:hover:not(:disabled) { background-color: #2563eb; }
+.btn-submit:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+.alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; }
+.alert-success { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.alert-danger { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }

@@ -19,18 +19,33 @@
         <div class="table-card">
             <table class="contract-table">
                 <thead>
-                    <tr><th>Date</th><th>Amount</th><th>Type</th><th>Status</th><th>Action</th></tr>
+                    <tr>
+                        <th>Date</th>
+                        <!-- 🌟 These columns ONLY appear for the Admin -->
+                        <th *ngIf="userRole === 'admin'">Tenant</th>
+                        <th *ngIf="userRole === 'admin'">Landlord</th>
+                        
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr *ngIf="transactions.length === 0">
-                        <td colspan="5" class="empty-state">You have no transactions yet.</td>
+                        <td [attr.colspan]="userRole === 'admin' ? 7 : 5" class="empty-state">You have no transactions yet.</td>
                     </tr>
                     <tr *ngIf="transactions.length > 0 && filteredTransactions.length === 0">
-                        <td colspan="5" class="empty-state">No transactions match your search.</td>
+                        <td [attr.colspan]="userRole === 'admin' ? 7 : 5" class="empty-state">No transactions match your search.</td>
                     </tr>
                     
                     <tr *ngFor="let tx of filteredTransactions">
                         <td>{{ tx.created_at | date:'MM/dd/yyyy' }}</td>
+                        
+                        <!-- 🌟 Show the names if the user is an Admin -->
+                        <td *ngIf="userRole === 'admin'" style="font-weight: 500;">{{ tx.tenant?.name || 'N/A' }}</td>
+                        <td *ngIf="userRole === 'admin'" style="font-weight: 500;">{{ tx.landlord?.name || 'N/A' }}</td>
+                        
                         <td style="color:#6b7280; font-weight: 600;">RM {{ tx.amount | number:'1.2-2' }}</td>
                         <td style="color:#9ca3af;">{{ tx.type }}</td>
                         <td><span class="status-pill">{{ tx.status }}</span></td>

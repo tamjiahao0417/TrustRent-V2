@@ -1,0 +1,69 @@
+<div class="page-container" *ngIf="report">
+    <a (click)="goBack()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Reports</a>
+    
+    <div class="header-container">
+        <h1 class="page-title">Issue Details</h1>
+        <span class="status-pill" [ngClass]="report.status.toLowerCase().replace(' ', '-')">{{ report.status }}</span>
+    </div>
+
+    <!-- 🌟 ADMIN ACTIONS PANEL (Only visible to Admins!) -->
+    <div class="admin-panel" *ngIf="userRole === 'admin'">
+        <h3><i class="fa-solid fa-shield-halved"></i> Admin Resolution</h3>
+        <div class="admin-actions">
+            <select [(ngModel)]="newStatus" class="form-control">
+                <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+            </select>
+            <button (click)="updateStatus()" class="btn-primary">Update Status</button>
+        </div>
+    </div>
+
+    <!-- Issue Information Grid -->
+    <h2 class="section-title">Issue Information</h2>
+    <div class="info-grid">
+        <div class="info-item">
+            <p>Issue Type</p>
+            <h4>{{ report.issue_type }}</h4>
+        </div>
+        <div class="info-item">
+            <p>Reporter</p>
+            <h4>{{ report.reporter?.name || 'Unknown User' }} (ID: #{{ report.reporter_id }})</h4>
+        </div>
+        
+        <div class="info-item">
+            <p>Description</p>
+            <h4>{{ report.description }}</h4>
+        </div>
+        <div class="info-item">
+            <p>Date/Time</p>
+            <h4>{{ report.created_at | date:'MMMM d, y, h:mm a' }}</h4>
+        </div>
+
+        <div class="info-item">
+            <p>Related User</p>
+            <h4>{{ report.related_user?.name || 'None' }}</h4>
+        </div>
+        <div class="info-item">
+            <p>Attachments</p>
+            <h4 *ngIf="!report.attachment_path">None</h4>
+            <h4 *ngIf="report.attachment_path">
+                <!-- Links to Laravel's public storage -->
+                <a [href]="'http://localhost:8000/storage/' + report.attachment_path" target="_blank" class="action-link">
+                    <i class="fa-solid fa-paperclip"></i> View File
+                </a>
+            </h4>
+        </div>
+    </div>
+
+    <!-- Activity Section -->
+    <h2 class="section-title">Activity</h2>
+    <div class="activity-box">
+        <div class="avatar-placeholder"><i class="fa-solid fa-user"></i></div>
+        <div class="activity-content">
+            <div class="activity-header">
+                <strong>{{ report.reporter?.name || 'User' }}</strong> 
+                <span class="date">{{ report.created_at | date:'MMMM d, y, h:mm a' }}</span>
+            </div>
+            <p class="activity-text">{{ report.description }}</p>
+        </div>
+    </div>
+</div>

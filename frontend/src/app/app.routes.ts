@@ -31,6 +31,9 @@ import { MaintenanceReport } from './tenant/maintenance-report/maintenance-repor
 import { EditMaintenance } from './tenant/edit-maintenance/edit-maintenance';
 import { Chat } from './shared/chat/chat';
 import { UserManagementComponent } from './admin/user-management/user-management';
+import { ReportIssueComponent } from './shared/report-issue/report-issue';
+import { ReportsListComponent } from './shared/reports-list/reports-list';
+import { ReportDetailsComponent } from './shared/report-details/report-details';
 
 export const routes: Routes = [ 
   { path: 'login', component: Login },
@@ -69,6 +72,9 @@ export const routes: Routes = [
       { path: 'edit-maintenance/:id', component: EditMaintenance },
       { path: 'chat', component: Chat },
       { path: 'user-management', component: UserManagementComponent },
+      { path: 'reports/create', component: ReportIssueComponent },
+      { path: 'reports', component: ReportsListComponent },
+      { path: 'reports/details/:id', component: ReportDetailsComponent },
     ]
   },
 

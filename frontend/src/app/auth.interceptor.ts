@@ -6,20 +6,28 @@ import { catchError, throwError } from 'rxjs';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
 
-  // 🌟 Clone the request to automatically attach the session cookie!
-  const securedReq = req.clone({
-    withCredentials: true
-  });
+  // 🌟 1. Grab the token from memory
+  const token = localStorage.getItem('token');
 
-  // Pass the SECURED request forward, and watch for errors
-  return next(securedReq).pipe(
+  // 🌟 2. Clone the request and AUTOMATICALLY staple the token to it!
+  let authReq = req;
+  if (token) {
+    authReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json'
+      }
+    });
+  }
+
+  // 🌟 3. Send the SECURED request forward, then watch for errors
+  return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       
-      // 🌟 Check for BOTH dead sessions (401) and Suspended accounts (403)
+      // If Laravel rejects the token (401) or user is suspended (403)
       if (error.status === 401 || error.status === 403) {
         console.warn(`Auth Error (${error.status}): Kicking back to login...`);
         
-        // If it's specifically a suspension, show an alert before redirecting
         if (error.status === 403) {
             alert('Your account has been suspended. You have been logged out.');
         }

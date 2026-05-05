@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http'; 
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // 🌟 Add HttpHeaders here
 
 @Component({
   selector: 'app-user-management',
@@ -11,8 +11,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UserManagementComponent implements OnInit {
   users: any[] = [];
-  
-  // 🌟 Updated Modal Variables
   showModal: boolean = false;
   modalAction: 'suspend' | 'activate' = 'suspend';
   selectedUser: any = null;
@@ -23,8 +21,22 @@ export class UserManagementComponent implements OnInit {
     this.fetchUsers();
   }
 
+  // 🌟 Helper method to get headers
+  // 🌟 Update this method in your user-management.ts file
+  private getHeaders() {
+    const token = localStorage.getItem('token'); 
+    console.log("My Auth Token is:", token);
+    
+    // 🌟 Using .set() guarantees Angular attaches these to the network request
+    return new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json');
+  }
   fetchUsers() {
-    this.http.get('http://127.0.0.1:8000/api/admin/users').subscribe({
+    // 🌟 The Cache Buster: Forces the browser to ignore the saved HTML
+    const bypassCache = new Date().getTime();
+    
+    this.http.get(`http://localhost:8000/api/admin/users?t=${bypassCache}`).subscribe({
       next: (data: any) => {
         this.users = data.map((user: any) => {
             if (!user.status) user.status = 'Active';
@@ -36,7 +48,6 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  // 🌟 Dynamic Modal Opener
   openConfirmModal(user: any, action: 'suspend' | 'activate') {
     this.selectedUser = user;
     this.modalAction = action;
@@ -48,20 +59,19 @@ export class UserManagementComponent implements OnInit {
     this.selectedUser = null; 
   }
 
-  // 🌟 Dynamic Confirm Button (Handles BOTH Suspend and Activate)
   confirmAction() {
     if (!this.selectedUser) return;
 
-    // Determine the correct endpoint and status based on the button clicked
     const endpoint = this.modalAction === 'suspend' ? 'suspend' : 'activate';
     const newStatus = this.modalAction === 'suspend' ? 'Suspended' : 'Active';
 
-    this.http.patch(`http://127.0.0.1:8000/api/admin/users/${this.selectedUser.id}/${endpoint}`, {}).subscribe({
+    // 🌟 Pass the headers into the PATCH request too!
+    this.http.patch(`http://localhost:8000/api/admin/users/${this.selectedUser.id}/${endpoint}`, {}, { headers: this.getHeaders() }).subscribe({
       next: () => {
         alert(`User ${this.modalAction}ed successfully.`);
-        this.selectedUser.status = newStatus; // Update the UI
+        this.selectedUser.status = newStatus;
         this.closeModal();
-        this.cdr.detectChanges(); // Force HTML redraw
+        this.cdr.detectChanges(); 
       },
       error: () => {
         alert(`Failed to ${this.modalAction} account.`);

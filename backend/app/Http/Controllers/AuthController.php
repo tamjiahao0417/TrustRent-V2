@@ -38,6 +38,7 @@ class AuthController extends Controller
 
     // --- 2. LOGIN LOGIC ---
     // --- 2. LOGIN LOGIC ---
+    // --- 2. LOGIN LOGIC ---
     public function login(Request $request)
     {
         // 1. Validate inputs
@@ -47,26 +48,26 @@ class AuthController extends Controller
         ]);
 
         // 2. Attempt to login
+        // 2. Attempt to login
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+            // Fetch the user instance using your specific Model
+            $user = User::find(Auth::id());
 
             // 🌟 THE NEW SUSPENSION CHECK 🌟
             if ($user->status === 'Suspended') {
-                Auth::logout(); // Force them back out!
-                $request->session()->invalidate(); // Destroy the session
-                $request->session()->regenerateToken(); 
-
+                Auth::logout();
                 return response()->json([
                     'message' => 'Your account has been suspended. Please contact the administrator.'
-                ], 403); // 403 Forbidden
+                ], 403);
             }
 
-            // 3. If Active, proceed normally
-            $request->session()->regenerate();
+            // 3. Generate the Sanctum Token
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'message' => 'Login successful',
-                'user' => $user
+                'user' => $user,
+                'token' => $token 
             ], 200);
         }
 

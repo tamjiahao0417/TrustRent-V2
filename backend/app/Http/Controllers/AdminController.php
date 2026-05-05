@@ -4,13 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     // Fetch all users for the table
-    public function getUsers()
+    public function getUsers(Request $request)
     {
-        // Assuming we don't want the admin to suspend themselves, we exclude 'admin'
+        // 🌟 Explicitly grab the user using the Sanctum guard we proved works!
+        $user = $request->user('sanctum');
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found or token invalid.'], 401);
+        }
+
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Unauthorized access.'], 403);
+        }
+
         $users = User::where('role', '!=', 'admin')->orderBy('id', 'asc')->get();
         return response()->json($users);
     }

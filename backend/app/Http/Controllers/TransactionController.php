@@ -70,21 +70,61 @@ class TransactionController extends Controller
     }
 
     // Fetches all transactions for the List view
+    // Fetches all transactions for the List view
     public function index(Request $request)
     {
-        $userId = $request->query('user_id');
-        $role = $request->query('role');
-        $column = ($role === 'tenant') ? 'tenant_id' : 'landlord_id';
+        // 🌟 1. Grab the user securely from their token
+        $user = $request->user('sanctum');
 
-        $txs = Transaction::with(['property'])->where($column, $userId)->orderBy('created_at', 'desc')->get();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        // 🌟 2. If Admin, get ALL transactions
+        if ($user->role === 'admin') {
+            // We load tenant and landlord data so the Admin table can display names!
+            $txs = Transaction::with(['property', 'tenant', 'landlord'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } 
+        // 🌟 3. If Landlord, get only their received payments
+        else if ($user->role === 'landlord') {
+            $txs = Transaction::with(['property', 'tenant', 'landlord'])
+                ->where('landlord_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } 
+        // 🌟 4. If Tenant, get only their sent payments
+        else {
+            $txs = Transaction::with(['property', 'tenant', 'landlord'])
+                ->where('tenant_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+
         return response()->json($txs);
     }
 
     // Fetches a single transaction for the Details view
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $tx = Transaction::with(['property', 'tenant', 'landlord', 'contract'])->find($id);
-        if (!$tx) return response()->json(['message' => 'Not found'], 404);
+        
+        if (!$tx) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
+        $user = $request->user('sanctum');
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        // 🌟 SECURITY CHECK: Block access UNLESS they are an Admin, or the specific Tenant/Landlord involved
+        if ($user->role !== 'admin' && $user->id !== $tx->tenant_id && $user->id !== $tx->landlord_id) {
+            return response()->json(['message' => 'Unauthorized access.'], 403);
+        }
+
         return response()->json($tx);
     }
 }

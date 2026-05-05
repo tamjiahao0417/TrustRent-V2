@@ -42,6 +42,11 @@ export class Login {
     this.http.post('http://localhost:8000/api/login', loginData).subscribe({
       next: (response: any) => {
         if (response && response.user) {
+            
+            // 🌟 ADD THIS LINE TO SAVE THE TOKEN! 🌟
+            // Note: Check your Laravel AuthController to see if it sends back 'token' or 'access_token'
+            localStorage.setItem('token', response.token); 
+
             localStorage.setItem('user_role', response.user.role);
             localStorage.setItem('user_name', response.user.name || response.user.email.split('@')[0]);
             localStorage.setItem('user_id', response.user.id);

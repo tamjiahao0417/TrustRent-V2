@@ -14,10 +14,12 @@ import { LoadingSpinnerComponent } from '../../loading-spinner.component'; // �
 })
 export class Transactions implements OnInit {
   transactions: any[] = [];
-  filteredTransactions: any[] = []; // 🌟 Array for search results
+  filteredTransactions: any[] = []; 
+  isLoading: boolean = true; 
+  searchQuery: string = '';  
   
-  isLoading: boolean = true; // 🌟 Loading state
-  searchQuery: string = '';  // 🌟 Search input state
+  // 🌟 1. Add a variable to store the role
+  userRole: string = ''; 
 
   constructor(
     private http: HttpClient, 
@@ -25,10 +27,11 @@ export class Transactions implements OnInit {
   ) {}
 
   ngOnInit() {
-    const userId = localStorage.getItem('user_id');
-    const role = localStorage.getItem('user_role') || localStorage.getItem('role'); 
-
-    this.http.get(`http://localhost:8000/api/transactions?user_id=${userId}&role=${role}`).subscribe({
+    // 🌟 2. Save the role when the page loads
+    this.userRole = localStorage.getItem('user_role') || ''; 
+    
+    // Because of our Interceptor, we don't even need to pass ?user_id or &role in the URL anymore!
+    this.http.get(`http://localhost:8000/api/transactions`).subscribe({
       next: (data: any) => {
         // Extract array safely
         this.transactions = Array.isArray(data) ? data : (data.data || []);

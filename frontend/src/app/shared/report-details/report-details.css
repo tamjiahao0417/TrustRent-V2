@@ -1,0 +1,38 @@
+.page-container { padding: 30px; background-color: #ffffff; min-height: 100vh; max-width: 900px; }
+
+.btn-back { color: #6b7280; text-decoration: none; cursor: pointer; display: inline-block; margin-bottom: 20px; font-weight: 600; transition: 0.2s;}
+.btn-back:hover { color: #111; }
+
+.header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #e5e7eb; padding-bottom: 15px;}
+.page-title { font-size: 32px; font-weight: 800; color: #111; margin: 0; }
+
+/* Admin Panel */
+.admin-panel { background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 20px; margin-bottom: 30px; }
+.admin-panel h3 { margin-top: 0; margin-bottom: 15px; color: #0f172a; font-size: 16px; }
+.admin-actions { display: flex; gap: 15px; }
+.form-control { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; width: 200px; outline: none; }
+.btn-primary { background-color: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s;}
+.btn-primary:hover { background-color: #2563eb; }
+
+/* Status Pills */
+.status-pill { padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 700; }
+.status-pill.open, .status-pill.resolved { background-color: #f3f4f6; color: #374151; }
+.status-pill.request-more { background-color: #eff6ff; color: #60a5fa; }
+.status-pill.warn { background-color: #f3f4f6; color: #9ca3af; }
+.status-pill.invalid { background-color: #fee2e2; color: #ef4444; }
+
+/* Grid Info */
+.section-title { font-size: 18px; font-weight: bold; color: #111; margin-top: 40px; margin-bottom: 20px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; }
+.info-item p { color: #6b7280; font-size: 14px; margin-bottom: 5px; margin-top: 0; }
+.info-item h4 { font-size: 15px; color: #111; margin: 0; font-weight: 500; }
+.action-link { color: #3b82f6; text-decoration: none; font-weight: bold; }
+.action-link:hover { text-decoration: underline; }
+
+/* Activity Section */
+.activity-box { display: flex; gap: 15px; margin-top: 20px; }
+.avatar-placeholder { width: 40px; height: 40px; background-color: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 18px; flex-shrink: 0;}
+.activity-content { background-color: #f9fafb; padding: 15px; border-radius: 10px; width: 100%; border: 1px solid #e5e7eb;}
+.activity-header { margin-bottom: 8px; }
+.activity-header .date { color: #9ca3af; font-size: 12px; margin-left: 10px; }
+.activity-text { margin: 0; color: #374151; font-size: 14px; line-height: 1.5; }
