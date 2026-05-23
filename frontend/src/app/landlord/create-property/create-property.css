@@ -1,24 +1,25 @@
 /* Main Page Wrapper */
-.page-container {
-    padding: 32px 40px;
-    max-width: 900px; /* Keeps the form from stretching too wide on big screens */
-}
+/* 🌟 .page-container rule deleted so it inherits the fluid width from styles.css! */
 
 .header-flex h1 {
     font-size: 28px;
     font-weight: 800;
-    color: #111827;
+    color: var(--text-dark);
     margin-top: 0;
     margin-bottom: 24px;
 }
 
 /* The White Form Card */
+/* Update this in create-property.css */
 .form-card {
-    background-color: #ffffff;
-    border-radius: 12px;
-    border: 1px solid #f3f4f6;
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
     padding: 40px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    
+    /* 🌟 Add this to stretch it completely */
+    width: 100%; 
 }
 
 /* Form Spacing & Labels */
@@ -30,7 +31,7 @@
     display: block;
     font-size: 14px;
     font-weight: 700;
-    color: #111827;
+    color: var(--text-dark);
     margin-bottom: 10px;
 }
 
@@ -39,44 +40,46 @@
 .form-group textarea {
     width: 100%;
     padding: 14px 16px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
     font-size: 15px;
-    color: #111827;
-    background-color: #ffffff;
+    color: var(--text-dark);
+    background-color: var(--white);
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     font-family: inherit;
 }
 
-.form-group input::placeholder {
-    color: #9ca3af;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #2563eb;
+    border-color: var(--primary-blue);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* 3-Column Grid for Location, Price, Rooms */
 .grid-3 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 24px;
 }
 
 /* File Upload Specifics */
 .file-input {
-    background-color: #f9fafb !important;
+    background-color: var(--bg-main) !important;
     padding: 10px !important;
     cursor: pointer;
 }
 
 .form-group small {
     display: block;
-    color: #6b7280;
+    color: var(--text-muted);
     font-size: 13px;
     margin-top: 8px;
 }
@@ -99,8 +102,14 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.preview-image:hover {
+    opacity: 0.8;
 }
 
 /* The Red 'X' Delete Button */
@@ -108,8 +117,8 @@
     position: absolute;
     top: -8px;
     right: -8px;
-    background-color: #ef4444;
-    color: white;
+    background-color: var(--danger-red);
+    color: var(--white);
     border: none;
     border-radius: 50%;
     width: 24px;
@@ -121,11 +130,11 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: background-color 0.2s;
+    transition: filter 0.2s;
 }
 
 .remove-btn:hover {
-    background-color: #dc2626;
+    filter: brightness(0.85); /* Slightly darkens the red */
 }
 
 /* Action Buttons (List Property & Cancel) */
@@ -137,28 +146,29 @@
 }
 
 .btn-black {
-    background-color: #111111;
-    color: #ffffff;
+    background-color: var(--text-dark);
+    color: var(--white);
     border: none;
     padding: 12px 28px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-weight: 700;
     font-size: 15px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: opacity 0.2s;
 }
 
 .btn-black:hover:not([disabled]) {
-    background-color: #333333;
+    opacity: 0.85;
 }
 
 .btn-black[disabled] {
-    background-color: #9ca3af;
+    background-color: var(--text-muted);
     cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .btn-cancel {
-    color: #6b7280;
+    color: var(--text-muted);
     text-decoration: none;
     font-weight: 500;
     font-size: 15px;
@@ -166,16 +176,7 @@
 }
 
 .btn-cancel:hover {
-    color: #111827;
-}
-
-/* Add a hover effect so the user knows they can click the small picture */
-.preview-image {
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-}
-.preview-image:hover {
-    opacity: 0.8;
+    color: var(--text-dark);
 }
 
 /* The Dark Background Overlay */
@@ -185,19 +186,19 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85); /* 85% transparent black */
-    z-index: 9999; /* Ensures it stays on top of the navbar and footer */
+    background-color: rgba(17, 24, 39, 0.9); /* Dark text color as RGB */
+    z-index: 9999; 
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer; /* Clicking anywhere in the dark area closes it */
+    cursor: pointer; 
 }
 
 /* The Full Size Image */
 .image-modal img {
     max-width: 90%;
     max-height: 90vh;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     box-shadow: 0 4px 24px rgba(0,0,0,0.6);
     cursor: default;
 }
@@ -207,7 +208,7 @@
     position: absolute;
     top: 24px;
     right: 40px;
-    color: white;
+    color: var(--white);
     font-size: 40px;
     font-weight: bold;
     cursor: pointer;
@@ -215,5 +216,5 @@
 }
 
 .close-modal:hover {
-    color: #ef4444; /* Turns red when hovered */
+    color: var(--danger-red);
 }

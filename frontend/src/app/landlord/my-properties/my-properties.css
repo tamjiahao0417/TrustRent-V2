@@ -1,7 +1,5 @@
-.page-container {
-    padding: 24px 32px;
-    max-width: 1200px;
-}
+/* --- PAGE LAYOUT --- */
+/* 🌟 Note: .page-container was intentionally DELETED so this page fluidly fits the browser window! */
 
 .header-flex {
     display: flex;
@@ -10,150 +8,156 @@
     margin-bottom: 24px;
 }
 
-h1 { font-size: 28px; margin: 0; font-weight: 800; }
-.subtitle { color: #6b7280; margin: 4px 0 0 0; font-size: 14px; }
+h1 { font-size: 28px; margin: 0; font-weight: 800; color: var(--text-dark); }
+.subtitle { color: var(--text-muted); margin: 4px 0 0 0; font-size: 14px; }
 
 .btn-create {
-    background-color: #f3f4f6;
-    color: #111111;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
     padding: 10px 20px;
     border-radius: 20px;
+    border: 1px solid var(--border-color);
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
     transition: background 0.2s;
 }
-.btn-create:hover { background-color: #e5e7eb; }
+.btn-create:hover { background-color: var(--border-color); }
 
-/* Search and Filter */
+/* --- SEARCH & FILTER CONTROLS --- */
 .controls-container { margin-bottom: 30px; }
 
 .search-box {
     display: flex;
     align-items: center;
-    background-color: #f9fafb;
+    background-color: var(--white);
     padding: 12px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     margin-bottom: 16px;
+    border: 1px solid var(--border-color);
 }
-.search-box i { color: #9ca3af; margin-right: 12px; }
+
+.search-box i { color: var(--text-muted); margin-right: 12px; }
+
 .search-box input {
     border: none;
     background: transparent;
     width: 100%;
     outline: none;
     font-size: 15px;
+    color: var(--text-dark);
 }
 
 .btn-filter {
-    background-color: #f3f4f6;
-    border: none;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
     padding: 8px 16px;
     border-radius: 20px;
     font-weight: 600;
     cursor: pointer;
     font-size: 14px;
+    transition: 0.2s ease;
 }
 
-h2 { font-size: 20px; margin-bottom: 16px; }
+.btn-filter:hover { background-color: var(--border-color); }
+.btn-filter.active { background: var(--text-dark); color: var(--white); border-color: var(--text-dark); }
 
-/* Property Cards matching your screenshot */
-.property-list {
+h2 { font-size: 20px; margin-bottom: 16px; color: var(--text-dark); }
+
+/* --- THE DROPDOWN FILTER MENU --- */
+.filter-panel {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    gap: 20px;
+    background: var(--white);
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    margin-top: -16px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border-color);
+    animation: slideDown 0.2s ease-out;
 }
+
+.filter-group { display: flex; flex-direction: column; gap: 6px; }
+.filter-group label { font-size: 13px; font-weight: 700; color: var(--text-muted); }
+.filter-group input {
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    outline: none;
+    font-size: 14px;
+    color: var(--text-dark);
+    transition: border-color 0.2s;
+}
+
+/* 🌟 Primary blue glow on focus! */
+.filter-group input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+/* --- PROPERTY CARDS --- */
+.property-list { display: flex; flex-direction: column; gap: 16px; }
 
 .property-card {
     display: flex;
     justify-content: space-between;
-    background: #ffffff;
-    border: 1px solid #f3f4f6;
-    border-radius: 12px;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
     padding: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     cursor: pointer;
-    transition: border-color 0.2s;
+    transition: all 0.2s ease;
 }
 
-.property-card:hover { border-color: #d1d5db; }
+/* 🌟 Smooth lift effect */
+.property-card:hover { 
+    border-color: var(--text-muted); 
+    box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+}
 
 .card-info { flex: 1; padding-right: 20px; }
 
-.location { color: #6b7280; font-size: 13px; display: block; margin-bottom: 8px; }
+.location { color: var(--text-muted); font-size: 13px; display: block; margin-bottom: 8px; }
 .location i { margin-right: 4px; }
 
-.card-info h3 { margin: 0 0 8px 0; font-size: 20px; font-weight: 700; }
-.details { color: #6b7280; font-size: 14px; margin: 0 0 16px 0; }
+.card-info h3 { margin: 0 0 8px 0; font-size: 20px; font-weight: 700; color: var(--text-dark); }
+.details { color: var(--text-muted); font-size: 14px; margin: 0 0 16px 0; }
 
 .price-badge {
     display: inline-block;
-    background-color: #f8fafc;
-    color: #111;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
     font-weight: 700;
     padding: 6px 16px;
     border-radius: 20px;
     font-size: 14px;
-    border: 1px solid #f3f4f6;
+    border: 1px solid var(--border-color);
 }
 
 .card-image img {
     width: 260px;
     height: 160px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-main);
 }
 
-/* --- NEW FILTER MENU STYLES --- */
-.filter-panel {
-    display: flex;
-    gap: 20px;
-    background: #f9fafb;
-    padding: 16px 20px;
-    border-radius: 8px;
-    margin-top: -16px;
-    margin-bottom: 24px;
-    border: 1px solid #e5e7eb;
-    animation: slideDown 0.2s ease-out;
+/* --- EMPTY STATES --- */
+.empty-state { 
+    text-align: center; 
+    padding: 40px; 
+    border: 2px dashed var(--border-color); 
+    border-radius: var(--radius-lg); 
+    background: var(--white); 
+    margin-top: 20px;
 }
+.empty-state h3 { color: var(--text-dark); margin-bottom: 8px; margin-top: 0; }
+.empty-state p { color: var(--text-muted); margin: 0;}
 
-.filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.filter-group label {
-    font-size: 13px;
-    font-weight: 700;
-    color: #4b5563;
-}
-
-.filter-group input {
-    padding: 10px 14px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    outline: none;
-    font-size: 14px;
-    transition: border-color 0.2s;
-}
-
-.filter-group input:focus {
-    border-color: #111;
-}
-
-.btn-filter.active {
-    background: #111;
-    color: white;
-}
-
-.no-results {
-    text-align: center;
-    color: #6b7280;
-    font-size: 16px;
-    margin-top: 40px;
-    font-style: italic;
-}
+.no-results { text-align: center; color: var(--text-muted); font-size: 16px; margin-top: 40px; font-style: italic; }
 
 @keyframes slideDown {
     from { opacity: 0; transform: translateY(-10px); }

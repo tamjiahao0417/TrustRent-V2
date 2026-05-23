@@ -1,4 +1,7 @@
-:root {
+/* =========================================
+   1. GLOBAL VARIABLES & RESET
+   ========================================= */
+   :root {
     --primary-blue: #2563eb;
     --success-green: #10b981;
     --danger-red: #ef4444;
@@ -14,6 +17,11 @@
     --header-height: 70px;
 }
 
+/* 🌟 UNIVERSAL FIX: Stops padding from breaking the 100% width */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     background-color: var(--bg-main);
     color: var(--text-dark);
@@ -22,9 +30,26 @@ body {
 }
 
 /* =========================================
-   GLOBAL PRINT MODE (The "Nuclear" Fix)
+   2. GLOBAL FLUID LAYOUT
    ========================================= */
-   @media print {
+/* 🌟 This must be OUTSIDE of the print mode so it works on your screen! */
+.page-container {
+    padding: 30px 5%;
+    width: 100%;
+    max-width: 100%; 
+    margin: 0 auto;
+}
+
+/* Make sure long text (like Hashes) breaks cleanly */
+h1, h2, h3, p, span, div {
+    word-break: break-word;
+}
+
+
+/* =========================================
+   3. GLOBAL PRINT MODE (The "Nuclear" Fix)
+   ========================================= */
+@media print {
     /* 1. THE NUKE: Force absolutely EVERY element to unlock its scrolling and height */
     * {
         overflow: visible !important;
@@ -35,7 +60,7 @@ body {
     html, 
     body, 
     app-root, 
-    app-contract-details, /* 🌟 Added the component tag itself! */
+    app-contract-details, 
     .app-layout, 
     .main-content, 
     .page-container {
@@ -44,8 +69,8 @@ body {
         min-height: auto !important;
         position: static !important;
         background: white !important;
+        padding: 0 !important; /* Removes padding when printing */
         margin: 0 !important;
-        padding: 0 !important;
     }
 
     /* 3. Nuke the Sidebar, Header, and any UI buttons completely */

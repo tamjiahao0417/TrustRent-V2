@@ -1,86 +1,64 @@
-.page-container { padding: 32px 40px; max-width: 1000px; }
-.back-link { color: #6b7280; text-decoration: none; font-weight: 500; margin-bottom: 24px; display: inline-block; }
-.back-link:hover { color: #111; }
+
+.back-link { color: var(--text-muted); text-decoration: none; font-weight: 500; margin-bottom: 24px; display: inline-block; transition: 0.2s;}
+.back-link:hover { color: var(--text-dark); }
 
 .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.header-row h1 { margin: 0; font-size: 28px; font-weight: 800; }
-.rented-badge { background: #dbeafe; color: #1e40af; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 14px; }
+.header-row h1 { margin: 0; font-size: 28px; font-weight: 800; color: var(--text-dark); }
+
+/* Rented Badge - using a light blue mix to keep it distinct */
+.rented-badge { background: #dbeafe; color: var(--primary-blue); padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 14px; }
 
 /* Photo Gallery Grid */
 .photo-grid { display: flex; gap: 16px; margin-bottom: 40px; height: 400px; }
 .main-photo { flex: 2; height: 100%; }
-.main-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
+.main-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); }
 .side-photos { flex: 1; display: flex; flex-direction: column; gap: 16px; }
-.side-photos img { width: 100%; height: calc(50% - 8px); object-fit: cover; border-radius: 16px; }
+.side-photos img { width: 100%; height: calc(50% - 8px); object-fit: cover; border-radius: var(--radius-lg); }
 
 /* Details Card */
-.details-card { background: white; border: 1px solid #f3f4f6; border-radius: 16px; padding: 40px; }
+.details-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; }
 .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;}
-.card-top h2 { margin: 0; font-size: 24px; font-weight: 800; }
-.price { font-size: 24px; font-weight: 700; color: #16a34a; text-align: right; }
-.price span { display: block; font-size: 14px; color: #6b7280; font-weight: 400; margin-top: 4px; }
-.address { color: #6b7280; margin-bottom: 40px; }
+.card-top h2 { margin: 0; font-size: 24px; font-weight: 800; color: var(--text-dark); }
+.price { font-size: 24px; font-weight: 700; color: var(--success-green); text-align: right; }
+.price span { display: block; font-size: 14px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
+.address { color: var(--text-muted); margin-bottom: 40px; }
 
 .section { margin-bottom: 40px; }
-.section h3 { font-size: 18px; margin-bottom: 12px; }
-.section p { color: #4b5563; line-height: 1.6; }
+.section h3 { font-size: 18px; margin-bottom: 12px; color: var(--text-dark); }
+.section p { color: var(--text-muted); line-height: 1.6; }
 
 /* 2x2 Info Grid */
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; border-top: 1px solid #f3f4f6; border-bottom: 1px solid #f3f4f6; padding: 32px 0; margin-bottom: 32px;}
-.info-box label { color: #6b7280; font-size: 13px; display: block; margin-bottom: 8px; }
-.info-box p { font-weight: 700; margin: 0; font-size: 16px; color: #111; }
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 32px 0; margin-bottom: 32px;}
+.info-box label { color: var(--text-muted); font-size: 13px; display: block; margin-bottom: 8px; }
+.info-box p { font-weight: 700; margin: 0; font-size: 16px; color: var(--text-dark); }
 
 /* Buttons */
 .actions { display: flex; gap: 16px; align-items: center; }
-.btn-edit { background: #3b82f6; color: white; padding: 12px 24px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; text-decoration: none;}
-.btn-delete { background: white; color: #ef4444; border: 1px solid #ef4444; padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-.lock-text { color: #ef4444; font-weight: 700; font-size: 14px; }   
+.btn-edit { background: var(--primary-blue); color: var(--white); padding: 12px 24px; border-radius: var(--radius-sm); border: none; font-weight: 700; cursor: pointer; text-decoration: none; transition: 0.2s; }
+.btn-edit:hover { filter: brightness(0.9); }
+.btn-delete { background: var(--white); color: var(--danger-red); border: 1px solid var(--danger-red); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; transition: 0.2s;}
+.btn-delete:hover { background: #fef2f2; }
+.lock-text { color: var(--danger-red); font-weight: 700; font-size: 14px; }   
 
 /* Additional Photos Gallery */
-.extra-photos-section {
-    margin-bottom: 40px;
-}
-
-.extra-photos-section h3 {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: #111;
-}
-
-.extra-gallery-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-}
+.extra-photos-section { margin-bottom: 40px; }
+.extra-photos-section h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-dark); }
+.extra-gallery-grid { display: flex; flex-wrap: wrap; gap: 16px; }
 
 .gallery-item {
-    width: calc(25% - 12px); /* Puts 4 photos per row */
+    width: calc(25% - 12px);
     height: 160px;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    border: 1px solid #f3f4f6;
+    border: 1px solid var(--border-color);
 }
 
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.gallery-item img:hover {
-    transform: scale(1.05); /* Slight zoom effect when you hover over them! */
-}
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.gallery-item img:hover { transform: scale(1.05); }
 
 /* Make images look clickable */
-.clickable-image {
-    cursor: pointer;
-    transition: filter 0.2s ease;
-}
-.clickable-image:hover {
-    filter: brightness(0.85); /* Slightly darkens the image on hover to indicate it can be clicked */
-}
+.clickable-image { cursor: pointer; transition: filter 0.2s ease; }
+.clickable-image:hover { filter: brightness(0.85); }
 
 /* The Dark Background Overlay */
 .image-modal {
@@ -89,7 +67,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(17, 24, 39, 0.9); /* Replaced with text-dark rgb */
     z-index: 9999; 
     display: flex;
     justify-content: center;
@@ -101,7 +79,7 @@
 .image-modal img {
     max-width: 90%;
     max-height: 90vh;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     box-shadow: 0 4px 24px rgba(0,0,0,0.6);
     cursor: default;
 }
@@ -111,56 +89,68 @@
     position: absolute;
     top: 24px;
     right: 40px;
-    color: white;
+    color: var(--white);
     font-size: 40px;
     font-weight: bold;
     cursor: pointer;
     transition: color 0.2s;
 }
 
-.close-modal:hover {
-    color: #ef4444; 
-}
+.close-modal:hover { color: var(--danger-red); }
 
 /* --- Tenant Action Buttons --- */
 .tenant-actions {
     display: flex;
     gap: 15px;
     margin-top: 30px;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--border-color);
     padding-top: 30px;
 }
 
 .btn-outline {
     flex: 1;
     padding: 16px;
-    background-color: #ffffff;
-    color: #111827;
-    border: 2px solid #111827;
-    border-radius: 8px;
+    background-color: var(--white);
+    color: var(--text-dark);
+    border: 2px solid var(--text-dark);
+    border-radius: var(--radius-sm);
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.btn-outline:hover {
-    background-color: #f3f4f6;
-}
+.btn-outline:hover { background-color: var(--bg-main); }
 
 .btn-solid {
     flex: 1;
     padding: 16px;
-    background-color: #111827;
-    color: #ffffff;
-    border: 2px solid #111827;
-    border-radius: 8px;
+    background-color: var(--text-dark);
+    color: var(--white);
+    border: 2px solid var(--text-dark);
+    border-radius: var(--radius-sm);
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.btn-solid:hover {
-    background-color: #000000;
+.btn-solid:hover { opacity: 0.9; }
+
+/* 🌟 The new CSS for the rented warning banner */
+.rented-warning-banner {
+    width: 100%;
+    text-align: center;
+    padding: 16px;
+    background-color: var(--bg-main);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+}
+
+.rented-warning-banner i {
+    color: var(--danger-red);
+    margin-right: 8px;
 }
