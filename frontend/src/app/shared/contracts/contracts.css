@@ -1,20 +1,17 @@
-.page-container {
-    padding: 30px;
-    background-color: #f9fafb;
-    min-height: 100vh;
-}
+/* 🌟 Layout inherited from global .page-container! */
 
 .page-title {
     font-size: 32px;
     font-weight: 800;
+    margin-top: 0;
     margin-bottom: 25px;
-    color: #111;
+    color: var(--text-dark);
 }
 
-/* Search Bar Styles */
+/* --- SEARCH BAR --- */
 .search-container {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     max-width: 100%;
 }
 
@@ -23,30 +20,39 @@
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: #9ca3af;
+    color: var(--text-muted);
 }
 
 .search-bar {
     width: 100%;
     padding: 14px 15px 14px 45px;
-    border-radius: 8px;
-    border: none;
-    background-color: #f3f4f6;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background-color: var(--white);
     font-size: 15px;
-    color: #111;
+    color: var(--text-dark);
     outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-bar::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
 }
 
 .search-bar:focus {
-    background-color: #e5e7eb;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* Table Card Styles */
+/* --- TABLE CARD --- */
 .table-card {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
     overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
 table {
@@ -59,39 +65,71 @@ th {
     padding: 16px 20px;
     font-size: 14px;
     font-weight: 700;
-    color: #111;
-    background-color: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
+    color: var(--text-dark);
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-color);
 }
 
 td {
     padding: 20px;
-    border-bottom: 1px solid #f3f4f6;
+    border-top: 1px solid var(--border-color);
     vertical-align: middle;
     font-size: 14px;
 }
 
-/* Status Pill Styles */
+/* 🌟 Premium hover effect for table rows */
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: var(--bg-main);
+}
+
+/* --- TEXT UTILITIES (Replaced inline styles) --- */
+.bold-text { font-weight: 600; color: var(--text-dark); }
+.muted-text { color: var(--text-muted); }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+.empty-state-text { 
+    color: var(--text-muted); 
+    font-style: italic; 
+    padding: 40px !important; 
+}
+
+.address-cell {
+    color: var(--primary-blue);
+    max-width: 200px;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* --- STATUS PILLS --- */
 .status-pill {
     display: inline-block;
     padding: 6px 16px;
     border-radius: 20px;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
+    border: 1px solid transparent;
 }
 
 .status-pill i { margin-right: 5px; }
 
 .status-pill.draft { background-color: #fef08a; color: #854d0e; }
-.status-pill.pending { background-color: #dbeafe; color: #1e40af; }
-.status-pill.active { background-color: #dcfce7; color: #16a34a; }
+.status-pill.pending { background-color: var(--bg-main); color: var(--text-dark); border-color: var(--border-color); }
+.status-pill.active { background-color: #dcfce7; color: var(--success-green); }
 
+/* --- ACTION LINKS --- */
 .view-link {
-    color: #3b82f6;
-    font-weight: 700;
+    color: var(--primary-blue);
+    font-weight: 600;
     text-decoration: none;
+    transition: filter 0.2s;
 }
 
 .view-link:hover {
+    filter: brightness(0.85);
     text-decoration: underline;
 }

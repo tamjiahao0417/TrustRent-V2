@@ -1,27 +1,71 @@
-.appointments-container {
-    padding: 30px;
-    background-color: #f9fafb;
-    min-height: 100vh;
-}
+/* 🌟 Layout inherited from global .page-container! */
 
 .main-title {
     font-size: 32px;
     font-weight: 800;
     margin-bottom: 40px;
+    margin-top: 0;
+    color: var(--text-dark);
+}
+
+/* --- SEARCH CONTROLS --- */
+.controls-container {
+    margin-bottom: 30px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.search-box i {
+    color: var(--text-muted);
+    margin-right: 12px;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+    font-size: 15px;
+    color: var(--text-dark);
+}
+
+.search-box input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* --- SECTIONS & TABLES --- */
+.appointment-section {
+    margin-bottom: 50px;
 }
 
 .section-title {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 20px;
+    color: var(--text-dark);
+}
+
+.empty-state-text {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 30px;
 }
 
 .table-card {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
     overflow: hidden;
     margin-bottom: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
 table {
@@ -34,22 +78,32 @@ th {
     padding: 16px 24px;
     font-size: 14px;
     font-weight: 600;
-    color: #111827;
-    background-color: #ffffff;
+    color: var(--text-dark);
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-color);
 }
 
 td {
     padding: 20px 24px;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--border-color);
     vertical-align: middle;
     font-size: 14px;
 }
 
-.prop-title { font-weight: 700; color: #111827; }
-.prop-address { font-size: 12px; color: #6b7280; margin-top: 4px; }
-.apt-date { color: #9ca3af; }
-.apt-time { color: #111827; font-weight: 500; }
-.tour-type { color: #9ca3af; }
+/* 🌟 Premium hover effect for table rows */
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: var(--bg-main);
+}
+
+.prop-title { font-weight: 700; color: var(--text-dark); }
+.prop-address { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.apt-date { color: var(--text-muted); }
+.apt-time { color: var(--text-dark); font-weight: 600; margin-top: 4px; }
+.tour-type { color: var(--text-muted); font-weight: 500; }
 
 /* Status Badges */
 .status-badge {
@@ -57,16 +111,34 @@ td {
     border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
+    display: inline-block;
+    border: 1px solid transparent;
 }
 
-.pending { background-color: #f3f4f6; color: #111827; }
-.approved { background-color: #f0fdf4; color: #16a34a; }
-.rejected { background-color: #fef2f2; color: #dc2626; }
+.pending { 
+    background-color: var(--bg-main); 
+    color: var(--text-dark); 
+    border-color: var(--border-color);
+}
+
+.approved { 
+    background-color: #dcfce7; /* Light green tint */
+    color: var(--success-green); 
+}
+
+.rejected { 
+    background-color: #fee2e2; /* Light red tint */
+    color: var(--danger-red); 
+}
 
 .view-link {
-    color: #6b7280;
+    color: var(--text-muted);
     font-weight: 600;
     text-decoration: none;
+    transition: color 0.2s;
 }
 
-.view-link:hover { color: #111827; }
+.view-link:hover { 
+    color: var(--text-dark); 
+    text-decoration: underline;
+}

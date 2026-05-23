@@ -2,12 +2,11 @@
     <h1 class="page-title">Rental Requests</h1>
     <p class="page-subtitle">Track the status of your property rental applications.</p>
 
-    <div class="controls-container" style="margin-bottom: 30px;">
-        <div class="search-box" style="display: flex; align-items: center; background: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
-            <i class="fa-solid fa-magnifying-glass" style="color: #9ca3af; margin-right: 12px;"></i>
+    <div class="controls-container">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="Search by property, name, or status..." 
-                   [(ngModel)]="searchText" (input)="applyFilters()"
-                   style="border: none; background: transparent; width: 100%; outline: none; font-size: 15px;">
+                   [(ngModel)]="searchText" (input)="applyFilters()">
         </div>
     </div>
 
@@ -15,10 +14,10 @@
 
     <ng-container *ngIf="!isLoading">
         
-        <p *ngIf="requests.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px; text-align: center;">
+        <p *ngIf="requests.length === 0" class="empty-state-text">
             You haven't submitted or received any rental requests yet.
         </p>
-        <p *ngIf="requests.length > 0 && filteredRequests.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px; text-align: center;">
+        <p *ngIf="requests.length > 0 && filteredRequests.length === 0" class="empty-state-text">
             No rental requests match your search.
         </p>
 
@@ -37,19 +36,19 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let req of filteredRequests">
-                        <td style="font-weight: 600;">
+                        <td class="bold-text">
                             {{ userRole === 'tenant' ? req.landlord?.name : req.tenant?.name }}
                         </td>
-                        <td style="font-weight: 600;">{{ req.property?.title }}</td>
+                        <td class="bold-text">{{ req.property?.title }}</td>
                         <td>
-                            <i class="fa-solid fa-calendar-day" style="color: #9ca3af; margin-right: 5px;"></i>
-                            {{ req.move_in_date | date:'MMM d, y' }}
+                            <i class="fa-solid fa-calendar-day icon-muted"></i>
+                            <span class="bold-text">{{ req.move_in_date | date:'MMM d, y' }}</span>
                         </td>
                         <td>
-                            <div style="font-weight: 600;">{{ req.start_date | date:'MMM d, y' }}</div>
-                            <div style="font-size: 13px; color: #9ca3af;">to {{ req.end_date | date:'MMM d, y' }}</div>
+                            <div class="bold-text">{{ req.start_date | date:'MMM d, y' }}</div>
+                            <div class="muted-text">to {{ req.end_date | date:'MMM d, y' }}</div>
                         </td>
-                        <td style="color: #6b7280;">{{ req.created_at | date:'MMM d, y' }}</td>
+                        <td class="muted-text" style="margin-top: 0;">{{ req.created_at | date:'MMM d, y' }}</td>
                         <td>
                             <span class="status-badge" [ngClass]="req.status.toLowerCase()">
                                 {{ req.status }}

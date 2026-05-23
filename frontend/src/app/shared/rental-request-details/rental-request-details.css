@@ -1,124 +1,172 @@
-.details-container {
-    padding: 40px;
-    max-width: 600px;
-}
+/* 🌟 Layout inherited from global .page-container! */
 
 .back-link {
-    color: #6b7280;
+    color: var(--text-muted);
     text-decoration: none;
     font-size: 14px;
-    margin-bottom: 30px;
-    display: block;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+.back-link:hover {
+    color: var(--text-dark);
+}
+
+/* 🌟 The New Card Wrapper */
+.details-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 100%; 
+    box-sizing: border-box; 
 }
 
 .page-title {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 800;
+    margin-top: 0;
     margin-bottom: 30px;
+    color: var(--text-dark);
 }
 
-.info-group {
-    margin-bottom: 25px;
-}
-
-.info-group label {
-    display: block;
-    font-weight: 700;
-    font-size: 16px;
-    color: #111827;
-    margin-bottom: 8px;
-}
-
-.info-group p {
-    color: #4b5563;
-    font-size: 16px;
-    margin: 0;
-}
-
-.status-text { font-weight: 700; }
-.pending { color: #6b7280; }
-.approved { color: #16a34a; }
-
-.action-buttons {
-    display: flex;
-    gap: 15px;
-    margin-top: 40px;
-}
-
-.btn-edit, .btn-delete {
-    padding: 12px 30px;
-    border-radius: 30px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: #f3f4f6; /* Soft gray from screenshot */
-    color: #111827;
-    transition: 0.2s;
-}
-
-.btn-edit:hover, .btn-delete:hover {
-    background-color: #e5e7eb;
-}
-
-.btn-approve {
-    padding: 12px 30px;
-    border-radius: 30px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: #16a34a; /* Green */
-    color: white;
-    transition: 0.2s;
-}
-.btn-approve:hover { background-color: #15803d; }
-
-.btn-reject {
-    padding: 12px 30px;
-    border-radius: 30px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: #dc2626; /* Red */
-    color: white;
-    transition: 0.2s;
-}
-.btn-reject:hover { background-color: #b91c1c; }    
-
-/* Add this to your details CSS file for the 2-column layout */
 .section-header {
     font-size: 18px;
     font-weight: 800;
     margin-top: 30px;
     margin-bottom: 20px;
+    color: var(--text-dark);
 }
+
+/* 🌟 Responsive Grid to neatly stack info on small windows */
 .info-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px 40px;
     padding-bottom: 30px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
 }
+
+.info-item label {
+    display: block;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.info-item div {
+    color: var(--text-dark);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.text-block {
+    color: var(--text-dark);
+    font-size: 15px;
+    line-height: 1.6;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.last-block {
+    border-bottom: none;
+    padding-bottom: 10px;
+}
+
+/* --- STATUS COLORS --- */
+.status-text { font-weight: 700; }
+.pending { color: var(--text-muted); }
+.approved { color: var(--success-green); }
+.rejected { color: var(--danger-red); }
+
+/* --- ACTION BUTTONS --- */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+    align-items: center;
+}
+
+.btn-edit, .btn-delete {
+    padding: 12px 30px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    font-weight: 600;
+    cursor: pointer;
+    background-color: var(--white);
+    color: var(--text-dark);
+    transition: 0.2s;
+}
+
+.btn-edit:hover { background-color: var(--bg-main); }
+
+.btn-delete { color: var(--danger-red); border-color: var(--danger-red); }
+.btn-delete:hover { background-color: #fef2f2; }
 
 .btn-approve {
     padding: 12px 30px;
-    border-radius: 30px;
+    border-radius: var(--radius-sm);
     border: none;
     font-weight: 600;
     cursor: pointer;
-    background-color: #16a34a; /* TrustRent Green */
-    color: white;
+    background-color: var(--success-green);
+    color: var(--white);
     transition: 0.2s;
 }
-.btn-approve:hover { background-color: #15803d; }
+.btn-approve:hover { filter: brightness(0.9); }
 
 .btn-reject {
     padding: 12px 30px;
-    border-radius: 30px;
+    border-radius: var(--radius-sm);
     border: none;
     font-weight: 600;
     cursor: pointer;
-    background-color: #fef2f2; /* Soft Red Background */
-    color: #dc2626; /* Red Text */
+    background-color: var(--danger-red);
+    color: var(--white);
     transition: 0.2s;
 }
-.btn-reject:hover { background-color: #fee2e2; }
+.btn-reject:hover { filter: brightness(0.9); }
+
+.btn-primary {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 12px 30px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-primary:hover { filter: brightness(0.9); }
+
+/* --- BANNERS --- */
+.contract-exists-banner {
+    width: 100%;
+    text-align: center;
+    padding: 16px;
+    background-color: var(--bg-main);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+}
+
+.contract-exists-banner i {
+    color: var(--primary-blue);
+    margin-right: 8px;
+}
+
+/* Mobile scaling */
+@media (max-width: 768px) {
+    .details-card { padding: 20px; }
+}

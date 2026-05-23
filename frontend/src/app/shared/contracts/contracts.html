@@ -24,33 +24,33 @@
                         <th>Rent Amount</th>
                         <th>Start Date</th>
                         <th>End Date</th>
-                        <th style="text-align: center;">Status</th>
-                        <th style="text-align: right;">Action</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-right">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngIf="filteredContracts.length === 0">
-                        <td colspan="7" style="text-align: center; padding: 40px; color: #6b7280; font-style: italic;">
+                        <td colspan="7" class="empty-state-text text-center">
                             No contracts match your search.
                         </td>
                     </tr>
                     <tr *ngFor="let contract of filteredContracts">
-                        <td style="color: #111; font-weight: 600;">
+                        <td class="bold-text">
                             {{ contract.created_at | date:'MMM d, y' }}
                         </td>
                         
-                        <td style="color: #3b82f6; max-width: 200px; line-height: 1.5;">
+                        <td class="address-cell">
                             {{ contract.property?.address }}
                         </td>
                         
-                        <td style="color: #111; font-weight: 600;">
+                        <td class="bold-text">
                             RM {{ contract.rent_amount | number:'1.0-0' }}
                         </td>
                         
-                        <td style="color: #9ca3af;">{{ contract.start_date | date:'MMM d, y' }}</td>
-                        <td style="color: #9ca3af;">{{ contract.end_date | date:'MMM d, y' }}</td>
+                        <td class="muted-text">{{ contract.start_date | date:'MMM d, y' }}</td>
+                        <td class="muted-text">{{ contract.end_date | date:'MMM d, y' }}</td>
                         
-                        <td style="text-align: center;">
+                        <td class="text-center">
                             
                             <span class="status-pill pending" *ngIf="contract.status === 'Draft' && userRole === 'tenant'">
                                 <i class="fa-solid fa-clock"></i> Waiting for Landlord Edits
@@ -79,7 +79,7 @@
 
                         </td>
 
-                        <td style="text-align: right;">
+                        <td class="text-right">
                             <a [routerLink]="['/contracts/details', contract.id]" class="view-link">View</a>
                         </td>
                     </tr>

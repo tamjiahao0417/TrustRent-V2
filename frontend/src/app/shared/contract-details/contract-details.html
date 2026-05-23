@@ -11,8 +11,7 @@
 
         <button *ngIf="contract.status === 'Active' && !contract.blockchain_hash && userRole === 'landlord'" 
                 type="button" 
-                class="btn-primary" 
-                style="background-color: #eab308; color: white;" 
+                class="btn-primary btn-warning" 
                 (click)="sealContractOnBlockchain()">
             <i class="fa-solid fa-link"></i> Seal on Blockchain (Pay Gas)
         </button>
@@ -23,8 +22,7 @@
 
         <a *ngIf="contract.status === 'Draft' && userRole === 'landlord'" 
            [routerLink]="['/contracts/edit', contract.id]" 
-           class="btn-primary" 
-           style="background-color: #3b82f6; color: white; text-decoration: none;">
+           class="btn-primary btn-blue">
             <i class="fa-solid fa-pen-to-square"></i> Edit & Re-Sign Contract
         </a>
 
@@ -34,7 +32,7 @@
     <div class="a4-document">
         <div class="cover-page">
             <h1>TENANCY AGREEMENT</h1>
-            <p style="margin: 0 auto; max-width: 60%; font-weight: bold; font-size: 16px;">
+            <p class="cover-address">
                 {{ contract.property?.address }}
             </p>
             <p class="cover-title">BETWEEN</p>
@@ -45,7 +43,7 @@
         </div>
 
         <div class="page-break"></div>
-        <h2 style="text-align: center; text-decoration: none;">FIRST SCHEDULE</h2>
+        <h2 class="schedule-title">FIRST SCHEDULE</h2>
         <table class="schedule-table">
             <tr><th class="col-no">No.</th><th class="col-matter">Matters</th><th class="col-details">Details</th></tr>
             <tr><td class="col-no">1.</td><td class="col-matter">Agreement Date</td><td class="col-details">{{ contract.created_at | date:'d MMMM yyyy' }}</td></tr>
@@ -65,7 +63,7 @@
             <tr><td class="col-no">5.</td><td class="col-matter">Type of Property</td><td class="col-details">Residential Property</td></tr>
         </table>
 
-        <h2 style="text-align: center; text-decoration: none;">SECOND SCHEDULE</h2>
+        <h2 class="schedule-title">SECOND SCHEDULE</h2>
         <table class="schedule-table">
             <tr><th class="col-no">No.</th><th class="col-matter">Matters</th><th class="col-details">Details</th></tr>
             <tr><td class="col-no">1.</td><td class="col-matter">Period of Tenancy</td><td class="col-details">{{ durationText }} with an option to renew for another year at the then prevailing market rental to be mutually agreed upon.</td></tr>

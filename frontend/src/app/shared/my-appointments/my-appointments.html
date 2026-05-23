@@ -1,12 +1,11 @@
-<div class="appointments-container">
+<div class="page-container">
     <h1 class="main-title">My Appointments</h1>
 
-    <div class="controls-container" style="margin-bottom: 30px;">
-        <div class="search-box" style="display: flex; align-items: center; background: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
-            <i class="fa-solid fa-magnifying-glass" style="color: #9ca3af; margin-right: 12px;"></i>
+    <div class="controls-container">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
             <input type="text" placeholder="Search by property, landlord, or tenant..." 
-                   [(ngModel)]="searchText" (input)="applyFilters()"
-                   style="border: none; background: transparent; width: 100%; outline: none; font-size: 15px;">
+                   [(ngModel)]="searchText" (input)="applyFilters()">
         </div>
     </div>
 
@@ -17,8 +16,8 @@
         <section class="appointment-section">
             <h2 class="section-title">Upcoming</h2>
             
-            <p *ngIf="upcomingAppointments.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px;">You have no upcoming appointments.</p>
-            <p *ngIf="upcomingAppointments.length > 0 && filteredUpcoming.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px;">No upcoming appointments match your search.</p>
+            <p *ngIf="upcomingAppointments.length === 0" class="empty-state-text">You have no upcoming appointments.</p>
+            <p *ngIf="upcomingAppointments.length > 0 && filteredUpcoming.length === 0" class="empty-state-text">No upcoming appointments match your search.</p>
 
             <div class="table-card" *ngIf="filteredUpcoming.length > 0">
                 <table>
@@ -59,8 +58,8 @@
         <section class="appointment-section">
             <h2 class="section-title">Past</h2>
 
-            <p *ngIf="pastAppointments.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px;">You have no past appointments.</p>
-            <p *ngIf="pastAppointments.length > 0 && filteredPast.length === 0" style="color: #6b7280; font-style: italic; margin-bottom: 30px;">No past appointments match your search.</p>
+            <p *ngIf="pastAppointments.length === 0" class="empty-state-text">You have no past appointments.</p>
+            <p *ngIf="pastAppointments.length > 0 && filteredPast.length === 0" class="empty-state-text">No past appointments match your search.</p>
 
             <div class="table-card" *ngIf="filteredPast.length > 0">
                 <table>

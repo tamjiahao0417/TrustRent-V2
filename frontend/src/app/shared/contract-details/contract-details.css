@@ -1,34 +1,98 @@
-.page-container { padding: 30px; background-color: #f9fafb; min-height: 100vh; }
+/* 🌟 Layout inherited from global .page-container! */
 
-/* Status Banner */
-.status-banner { padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; font-size: 15px; }
+/* --- STATUS BANNER --- */
+.status-banner { 
+    padding: 15px 20px; 
+    border-radius: var(--radius-sm); 
+    margin-bottom: 20px; 
+    font-weight: 700; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    font-size: 15px; 
+}
+
 .status-draft { background-color: #fef08a; color: #854d0e; border: 1px solid #fde047; }
 .status-waiting { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
 .status-needs-seal { background-color: #fef08a; color: #854d0e; border: 1px solid #fde047; }
-.status-active { background-color: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
+.status-active { background-color: #dcfce7; color: var(--success-green); border: 1px solid #bbf7d0; }
 
-/* Buttons */
-.action-buttons { display: flex; justify-content: center; gap: 15px; margin: 20px 0 40px 0; }
-.btn-primary { background-color: #111; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 700; font-size: 15px; cursor: pointer; }
-.btn-verify { background-color: #8b5cf6; }
-.btn-back { padding: 12px 30px; border: 1px solid #d1d5db; border-radius: 8px; color: #111; font-weight: 700; cursor: pointer; background: white; }
+/* --- BUTTONS --- */
+.action-buttons { 
+    display: flex; 
+    justify-content: center; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+    margin: 20px 0 40px 0; 
+}
 
-/* A4 Document Styling */
-.a4-document { background: white; max-width: 210mm; margin: 0 auto; padding: 40mm 25mm; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-family: "Times New Roman", Times, serif; color: #000; line-height: 1.6; text-align: justify; }
+.btn-primary { 
+    background-color: var(--text-dark); 
+    color: var(--white); 
+    border: none; 
+    padding: 12px 30px; 
+    border-radius: var(--radius-sm); 
+    font-weight: 700; 
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+    text-decoration: none; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px;
+}
+
+.btn-primary:hover { filter: brightness(0.85); }
+.btn-verify { background-color: #8b5cf6; } /* Kept purple for Web3 actions */
+.btn-warning { background-color: #eab308; color: var(--white); }
+.btn-blue { background-color: var(--primary-blue); color: var(--white); }
+
+.btn-back { 
+    padding: 12px 30px; 
+    border: 1px solid var(--border-color); 
+    border-radius: var(--radius-sm); 
+    color: var(--text-dark); 
+    font-weight: 700; 
+    cursor: pointer; 
+    background: var(--white); 
+    transition: 0.2s; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center;
+}
+.btn-back:hover { background-color: var(--bg-main); }
+
+
+/* ==============================================
+   A4 LEGAL DOCUMENT STYLING
+   No UI variables used here to protect Print Mode! 
+   ============================================== */
+.a4-document { 
+    background: white; 
+    max-width: 210mm; 
+    margin: 0 auto; 
+    padding: 40mm 25mm; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+    font-family: "Times New Roman", Times, serif; 
+    color: #000; 
+    line-height: 1.6; 
+    text-align: justify; 
+}
 .a4-document h1 { text-align: center; font-size: 22px; margin-bottom: 40px; font-weight: bold; }
-.a4-document h2 { font-size: 16px; margin-top: 30px; margin-bottom: 15px; font-weight: bold; text-decoration: underline; }
-.a4-document p { margin-bottom: 15px; font-size: 14px; }
+.a4-document h2 { font-size: 16px; margin-top: 30px; margin-bottom: 15px; font-weight: bold; text-decoration: underline; color: #000;}
+.a4-document p { margin-bottom: 15px; font-size: 14px; color: #000;}
 .bold-text { font-weight: bold; }
+
 .cover-page { text-align: center; padding-top: 50px; padding-bottom: 50px; }
+.cover-address { margin: 0 auto; max-width: 60%; font-weight: bold; font-size: 16px; }
 .cover-title { font-weight: bold; font-size: 16px; margin: 30px 0; }
 .cover-name { font-weight: bold; font-size: 20px; margin: 10px 0; text-transform: uppercase; }
 .cover-date { font-weight: bold; font-size: 16px; margin-top: 50px; text-transform: uppercase; }
-.cover-address { margin: 0 auto; max-width: 60%; font-weight: bold; font-size: 16px; }
 
 /* Schedules */
-.schedule-title { text-align: center; text-decoration: none; }
+.schedule-title { text-align: center; text-decoration: none !important; }
 .schedule-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 14px; }
-.schedule-table th, .schedule-table td { border: 1px solid #000; padding: 10px 15px; vertical-align: top; }
+.schedule-table th, .schedule-table td { border: 1px solid #000; padding: 10px 15px; vertical-align: top; color: #000;}
 .schedule-table th { font-weight: bold; text-align: left; }
 .col-no { width: 5%; text-align: center; }
 .col-matter { width: 35%; font-weight: bold; }
@@ -40,69 +104,65 @@
 .sig-line { border-bottom: 1px solid #000; margin-top: 50px; margin-bottom: 5px; position: relative; height: 60px;}
 .sig-img { position: absolute; bottom: 0; left: 0; max-height: 80px; max-width: 100%; }
 .pending-sig { color: #ef4444; font-style: italic; font-weight: bold; position: absolute; bottom: 5px; }
-.legal-list { 
-    padding-left: 20px; 
-    margin-bottom: 20px; 
-    list-style-type: decimal; 
-}
-.legal-list li { 
-    margin-bottom: 15px; 
-    font-size: 14px; 
-    padding-left: 10px; 
-}
 
-/* Print Mode */
-/* Print Mode */
-/* Print Mode */
+.legal-list { padding-left: 20px; margin-bottom: 20px; list-style-type: decimal; }
+.legal-list li { margin-bottom: 15px; font-size: 14px; padding-left: 10px; color: #000;}
 
-/* Sign & Accept Panel Styles */
+/* ==============================================
+   WEB UI: SIGN & ACCEPT PANEL (Fluid & Responsive)
+   ============================================== */
 .signature-panel {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
     padding: 40px;
     text-align: center;
     margin: 40px auto 0 auto;
+    width: 100%;
     max-width: 800px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .signature-panel h2 {
+    margin-top: 0;
     margin-bottom: 8px;
     font-size: 24px;
     font-weight: 800;
-    color: #111;
+    color: var(--text-dark);
+    text-decoration: none;
 }
 
 .text-muted {
-    color: #6b7280;
+    color: var(--text-muted);
     font-size: 14px;
     margin-bottom: 25px;
 }
 
 .canvas-container {
-    border: 1px dashed #d1d5db;
-    border-radius: 12px;
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
     padding: 20px;
-    background: #f9fafb;
+    background: var(--bg-main);
     display: inline-block;
     margin-bottom: 25px;
     width: 100%;
-    max-width: 550px;
+    box-sizing: border-box;
 }
 
 .canvas-container canvas {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
     width: 100%;
+    max-width: 500px; /* Limits drawing area visually */
     cursor: crosshair;
 }
 
 .btn-clear-sig {
     background: none;
     border: none;
-    color: #ef4444;
+    color: var(--danger-red);
     font-weight: 700;
     font-size: 14px;
     margin-top: 15px;
@@ -112,7 +172,10 @@
     justify-content: center;
     gap: 8px;
     width: 100%;
+    transition: 0.2s;
 }
+
+.btn-clear-sig:hover { filter: brightness(0.85); }
 
 .signature-actions {
     display: flex;
@@ -122,25 +185,25 @@
 }
 
 .btn-agree {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--primary-blue);
+    color: var(--white);
     border: none;
     padding: 12px 30px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
 }
 
-.btn-agree:hover { background-color: #2563eb; }
+.btn-agree:hover { filter: brightness(0.9); }
 
 .btn-request-edit {
-    background-color: #ef4444;
-    color: white;
+    background-color: var(--danger-red);
+    color: var(--white);
     border: none;
     padding: 12px 30px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
@@ -150,4 +213,12 @@
     transition: 0.2s;
 }
 
-.btn-request-edit:hover { background-color: #dc2626; }
+.btn-request-edit:hover { filter: brightness(0.9); }
+
+/* --- RESPONSIVE SCALING --- */
+@media (max-width: 768px) {
+    .a4-document { padding: 20mm 15mm; }
+    .signature-panel { padding: 20px; }
+    .action-buttons { flex-direction: column; }
+    .btn-primary, .btn-back { width: 100%; justify-content: center; }
+}

@@ -1,29 +1,151 @@
-.page-container { padding: 30px; background-color: #f9fafb; min-height: 100vh; }
-.assistant-container { max-width: 800px; background: white; border-radius: 12px; padding: 40px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+/* 🌟 Layout inherited from global .page-container! */
 
-.page-title { font-size: 26px; color: #111; margin-bottom: 5px; font-weight: 800; margin-top: 0;}
-.page-subtitle { font-size: 15px; color: #6b7280; margin-bottom: 25px; margin-top: 0;}
-.intro-text { font-size: 15px; color: #4b5563; line-height: 1.6; margin-bottom: 30px; }
+/* Update this in ai-pricing.css */
+.assistant-container { 
+    width: 100%;
 
-.form-row { display: flex; gap: 20px; margin-bottom: 20px; }
-.form-group { flex: 1; margin-bottom: 20px; }
-.form-control { width: 100%; padding: 14px 15px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; background: white; box-sizing: border-box;}
-.form-control:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+    /* 🌟 Change this from 800px to 100% to force it to stretch! */
+    max-width: 100%; 
+    
+    margin: 0 auto; 
+    background: var(--white); 
+    border-radius: var(--radius-lg); 
+    padding: 40px; 
+    border: 1px solid var(--border-color); 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
+    box-sizing: border-box;
+}
 
-.submit-area { display: flex; justify-content: flex-end; align-items: center; margin-top: 20px; }
-.btn-ai { background-color: #bfdbfe; color: #1e3a8a; border: none; padding: 14px 28px; border-radius: 30px; font-weight: bold; font-size: 15px; cursor: pointer; transition: background 0.2s; }
-.btn-ai:hover:not(:disabled) { background-color: #93c5fd; }
-.btn-ai:disabled { opacity: 0.7; cursor: not-allowed; }
+.page-title { font-size: 28px; color: var(--text-dark); margin-bottom: 5px; font-weight: 800; margin-top: 0;}
+.page-subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 25px; margin-top: 0;}
+.intro-text { font-size: 15px; color: var(--text-dark); line-height: 1.6; margin-bottom: 30px; }
 
-.loader { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin-right: 15px; }
+/* 🌟 Responsive Grid for inputs */
+.form-row { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 24px; 
+    margin-bottom: 24px; 
+}
+
+.form-group { margin-bottom: 24px; }
+
+.form-control { 
+    width: 100%; 
+    padding: 14px 16px; 
+    border: 1px solid var(--border-color); 
+    border-radius: var(--radius-sm); 
+    font-size: 15px; 
+    outline: none; 
+    background: var(--white); 
+    color: var(--text-dark);
+    box-sizing: border-box;
+    transition: 0.2s ease;
+    font-family: inherit;
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+.form-control:focus { 
+    border-color: var(--primary-blue); 
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); 
+}
+
+.submit-area { 
+    display: flex; 
+    justify-content: flex-end; 
+    align-items: center; 
+    margin-top: 30px; 
+}
+
+/* Updated Button using Global variables */
+.btn-ai { 
+    background-color: var(--text-dark); 
+    color: var(--white); 
+    border: none; 
+    padding: 14px 28px; 
+    border-radius: var(--radius-sm); 
+    font-weight: 700; 
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+
+.btn-ai:hover:not(:disabled) { opacity: 0.85; }
+.btn-ai:disabled { background-color: var(--text-muted); cursor: not-allowed; opacity: 0.6;}
+
+/* The Spinner */
+.loader { 
+    border: 3px solid var(--border-color); 
+    border-top: 3px solid var(--primary-blue); 
+    border-radius: 50%; 
+    width: 20px; 
+    height: 20px; 
+    animation: spin 1s linear infinite; 
+    margin-right: 15px; 
+}
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* Results Section */
-.results-section { margin-top: 40px; border-top: 1px solid #e5e7eb; padding-top: 30px; }
-.result-heading { font-size: 22px; font-weight: 800; color: #111; margin-bottom: 15px; }
-.result-desc { font-size: 15px; color: #4b5563; line-height: 1.6; margin-bottom: 15px; }
-.price-text { font-size: 28px; font-weight: 800; color: #111; margin: 25px 0; }
+/* --- AI RESULTS SECTION --- */
+.results-section { 
+    margin-top: 40px; 
+    border-top: 1px solid var(--border-color); 
+    padding-top: 30px; 
+}
 
-.factors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px; border-top: 1px solid #e5e7eb; padding-top: 30px; }
-.factor-item h4 { font-size: 14px; color: #9ca3af; font-weight: normal; margin-bottom: 8px; margin-top: 0; }
-.factor-item p { font-size: 15px; color: #111; line-height: 1.6; margin: 0; font-weight: 500; }
+.result-heading { 
+    font-size: 20px; 
+    font-weight: 800; 
+    color: var(--text-dark); 
+    margin-bottom: 15px; 
+    margin-top: 0;
+}
+
+.result-heading.push-down { margin-top: 40px; }
+
+.result-desc { 
+    font-size: 15px; 
+    color: var(--text-muted); 
+    line-height: 1.6; 
+    margin-bottom: 15px; 
+}
+
+.price-text { 
+    font-size: 32px; 
+    font-weight: 800; 
+    color: var(--success-green); 
+    margin: 25px 0; 
+}
+
+.factors-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 30px; 
+    margin-top: 20px; 
+    border-top: 1px solid var(--border-color); 
+    padding-top: 30px; 
+}
+
+.factor-item h4 { 
+    font-size: 14px; 
+    color: var(--text-muted); 
+    font-weight: 700; 
+    margin-bottom: 8px; 
+    margin-top: 0; 
+}
+
+.factor-item p { 
+    font-size: 15px; 
+    color: var(--text-dark); 
+    line-height: 1.6; 
+    margin: 0; 
+    font-weight: 500; 
+}
+
+/* Shrink form padding on small mobile screens */
+@media (max-width: 768px) {
+    .assistant-container { padding: 20px; }
+}
