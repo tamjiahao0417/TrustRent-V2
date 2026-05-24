@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Property;
+use Illuminate\Support\Facades\Log;
 
 class AiController extends Controller
 {
@@ -81,6 +82,88 @@ class AiController extends Controller
                 'success' => false, 
                 'error' => 'Laravel Crash: ' . $e->getMessage() . ' on line ' . $e->getLine()
             ], 200);
+        }
+    }
+
+    public function match(Request $request)
+    {
+        // 1. Validate the user's input
+        $request->validate([
+            'budget_min' => 'required|numeric',
+            'budget_max' => 'required|numeric',
+            'location' => 'required|string',
+        ]);
+
+        try {
+            // 2. Fetch all available properties from your database
+            // (We only send the necessary text to the LLM to save tokens/money)
+            $properties = Property::where('status', 'available') // Remove ->where(...) entirely if you don't have a status column!
+                ->get(['id', 'title', 'price', 'address', 'features', 'description']);
+
+            if ($properties->isEmpty()) {
+                return response()->json(['matches' => []]);
+            }
+
+            // 3. Construct the System Prompt for the LLM
+            $systemPrompt = "You are an expert real estate AI matchmaker. You will be given a user's rental preferences and a list of available properties. " .
+                "Analyze the semantic meaning of the descriptions, features, and locations. " .
+                "Return a strict JSON object with a single key 'matches'. This key must contain an array of objects representing the top matches. " .
+                "Each object must have exactly three keys: 'id' (the integer ID of the property), 'match_score' (an integer from 0-100), and 'match_reasons' (an array of 3 short, personalized string sentences explaining exactly why this property fits their specific lifestyle/prompt).";
+
+            // 4. Construct the User Prompt with the actual JSON data
+            $userPrompt = json_encode([
+                'user_preferences' => $request->all(),
+                'available_properties' => $properties->toArray()
+            ]);
+
+            // 5. Call the OpenAI API
+            $response = Http::withToken(env('OPENAI_API_KEY'))
+                ->timeout(15) // Prevent hanging
+                ->post('https://api.openai.com/v1/chat/completions', [
+                    'model' => 'gpt-4o-mini',
+                    'response_format' => ['type' => 'json_object'], // 🌟 Forces valid JSON output
+                    'messages' => [
+                        ['role' => 'system', 'content' => $systemPrompt],
+                        ['role' => 'user', 'content' => $userPrompt]
+                    ]
+                ]);
+
+            if ($response->failed()) {
+                Log::error('OpenAI API Error: ' . $response->body());
+                throw new \Exception('Failed to communicate with AI provider.');
+            }
+
+            // 6. Decode the AI's response
+            $aiResult = json_decode($response->json('choices.0.message.content'), true);
+            $aiMatches = $aiResult['matches'] ?? [];
+
+            // 7. Map the AI's suggested IDs back to your FULL database records
+            // This ensures we get the real images, landlord details, etc.
+            $finalMatches = [];
+            foreach ($aiMatches as $aiMatch) {
+                // Find the real property in our database
+                $realProperty = Property::find($aiMatch['id']);
+                
+                if ($realProperty) {
+                    // Inject the AI's custom score and reasons into the model temporarily
+                    $realProperty->match_score = $aiMatch['match_score'];
+                    $realProperty->match_reasons = $aiMatch['match_reasons'];
+                    $finalMatches[] = $realProperty;
+                }
+            }
+
+            // Sort them by the AI's score, highest first
+            usort($finalMatches, function ($a, $b) {
+                return $b->match_score <=> $a->match_score;
+            });
+
+            // 8. Return exactly what Angular is expecting!
+            return response()->json(['matches' => array_slice($finalMatches, 0, 10)]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'AI Matching Engine is temporarily unavailable. Error: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

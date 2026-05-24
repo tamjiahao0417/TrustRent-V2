@@ -34,6 +34,8 @@ import { UserManagementComponent } from './admin/user-management/user-management
 import { ReportIssueComponent } from './shared/report-issue/report-issue';
 import { ReportsListComponent } from './shared/reports-list/reports-list';
 import { ReportDetailsComponent } from './shared/report-details/report-details';
+import { EditReportComponent } from './shared/edit-report/edit-report';
+import { AiMatchingComponent } from './shared/ai-matching/ai-matching';
 
 export const routes: Routes = [ 
   { path: 'login', component: Login },
@@ -75,6 +77,8 @@ export const routes: Routes = [
       { path: 'reports/create', component: ReportIssueComponent },
       { path: 'reports', component: ReportsListComponent },
       { path: 'reports/details/:id', component: ReportDetailsComponent },
+      { path: 'reports/edit/:id', component: EditReportComponent },
+      { path: 'ai-matching', component: AiMatchingComponent },
     ]
   },
 

@@ -115,6 +115,13 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\CheckIfSuspended::class]
     Route::get('/api/reports/{id}', [ReportController::class, 'show']);
     Route::patch('/api/reports/{id}/status', [ReportController::class, 'updateStatus']);
 
+    // 🌟 ADD THIS NEW LINE FOR EDITING REPORTS:
+    Route::put('/api/reports/{id}', [ReportController::class, 'update']);
+
+    // 🌟 ALSO UPDATE THIS LINE to include /api/ so your delete button works properly!
+    Route::delete('/api/reports/{id}', [ReportController::class, 'destroy']);
+    
+    Route::post('/api/ai/match', [AiController::class, 'match']);
 });
 
 // =========================================================

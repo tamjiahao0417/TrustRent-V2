@@ -64,11 +64,10 @@
             <span *ngIf="!collapsed">AI Pricing Assistant</span>
         </a>
 
-        <!-- Tenant Only -->
-        <!-- <a *ngIf="userRole === 'tenant'" routerLink="/ai-matching" routerLinkActive="active" class="nav-item">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> 
-            <span *ngIf="!collapsed">AI Matching Page</span>
-        </a> -->
+        <a *ngIf="userRole !== 'admin'" routerLink="/ai-matching" routerLinkActive="active" class="nav-item">
+            <i class="fa-solid fa-handshake-angle"></i> 
+            <span *ngIf="!collapsed">AI Matchmaker</span>
+        </a>
 
         <!-- Landlord & Tenant Only -->
         <a *ngIf="userRole !== 'admin'" routerLink="/maintenance" routerLinkActive="active" class="nav-item">

@@ -1,0 +1,69 @@
+<div class="page-container">
+    <a (click)="goBack()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Cancel Edit</a>
+    <h1 class="page-title">Edit Report</h1>
+    <p class="page-subtitle">Update the details of your reported issue.</p>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        <i class="fa-solid fa-triangle-exclamation"></i> {{ errorMessage }}
+    </div>
+
+    <div class="form-card" *ngIf="reportData">
+        
+        <div class="form-group">
+            <label>Issue Type <span class="required">*</span></label>
+            <select [(ngModel)]="reportData.issue_type" class="form-control">
+                <option value="" disabled>Select issue type</option>
+                <option *ngFor="let type of issueTypes" [value]="type">{{ type }}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Description <span class="required">*</span></label>
+            <textarea [(ngModel)]="reportData.description" rows="5" class="form-control" placeholder="Provide details about the issue..."></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group" style="width: 100%;">
+                <label>Update Attachments (Optional)</label>
+                <input type="file" (change)="onFileSelected($event)" class="form-control file-input" accept="image/*" multiple #fileInput>
+                
+                <div *ngIf="existingMedia.length > 0">
+                    <p style="font-size: 13px; font-weight: 600; margin-top: 15px;">Current Attachments</p>
+                    <div class="preview-container">
+                        <div class="preview-wrapper" *ngFor="let url of existingMedia; let i = index">
+                            <img [src]="'http://localhost:8000/storage/' + url" class="preview-image" (click)="openExistingImage(url)">
+                            <button type="button" class="remove-btn" (click)="removeExistingImage(i)">&times;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="previewMedia.length > 0">
+                    <p style="font-size: 13px; font-weight: 600; margin-top: 15px; color: var(--primary-blue);">New Attachments</p>
+                    <div class="preview-container">
+                        <div class="preview-wrapper" *ngFor="let media of previewMedia; let i = index">
+                            <img [src]="media.url" class="preview-image" (click)="openImage(media.url)">
+                            <button type="button" class="remove-btn" (click)="removeNewImage(i)">&times;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Related User ID (Optional)</label>
+                <input type="number" [(ngModel)]="reportData.related_user_id" class="form-control" placeholder="Enter User ID if this involves someone else">
+            </div>
+        </div>
+
+        <div class="submit-area">
+            <button (click)="submitUpdate()" class="btn-primary" [disabled]="isSubmitting">
+                <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isSubmitting" style="margin-right: 8px;"></i>
+                {{ isSubmitting ? 'Updating...' : 'Save Changes' }}
+            </button>
+        </div>
+    </div>
+
+    <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">
+        <span class="close-modal">&times;</span>
+        <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">
+    </div>
+</div>

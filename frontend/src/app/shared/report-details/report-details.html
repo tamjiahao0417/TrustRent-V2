@@ -42,14 +42,29 @@
                 <p>Related User</p>
                 <h4>{{ report.related_user?.name || 'None' }}</h4>
             </div>
-            <div class="info-item">
+            <div class="info-item" style="grid-column: 1 / -1;">
                 <p>Attachments</p>
-                <h4 *ngIf="!report.attachment_path">None</h4>
-                <h4 *ngIf="report.attachment_path">
-                    <a [href]="'http://localhost:8000/storage/' + report.attachment_path" target="_blank" class="action-link">
-                        <i class="fa-solid fa-paperclip"></i> View File
-                    </a>
-                </h4>
+                <h4 *ngIf="reportAttachments.length === 0">None</h4>
+                
+                <div *ngIf="reportAttachments.length > 0" class="attachment-container" style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px;">
+                    <div *ngFor="let att of reportAttachments">
+                        
+                        <div *ngIf="isImage(att)" class="preview-wrapper" style="width: 150px; height: 150px; border-radius: 8px; overflow: hidden; border: 1px solid #ccc;">
+                            <img [src]="'http://localhost:8000/storage/' + att" 
+                                 style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;"
+                                 (click)="openFullScreen('http://localhost:8000/storage/' + att)">
+                        </div>
+
+                        <a *ngIf="!isImage(att)" [href]="'http://localhost:8000/storage/' + att" target="_blank" class="action-link">
+                            <i class="fa-solid fa-paperclip"></i> Download File
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="image-modal" *ngIf="fullScreenImage" (click)="closeFullScreen()">
+                <span class="close-modal">&times;</span>
+                <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">
             </div>
         </div>
 
@@ -63,6 +78,11 @@
                 </div>
                 <p class="activity-text">{{ report.description }}</p>
             </div>
+        </div>
+
+        <div class="action-btns" *ngIf="userRole !== 'admin' && report.status === 'Open'">
+            <button class="btn-light" [routerLink]="['/reports/edit', report.id]">Edit Report</button> 
+            <button class="btn-danger" (click)="deleteReport()">Delete Report</button>
         </div>
 
     </div>

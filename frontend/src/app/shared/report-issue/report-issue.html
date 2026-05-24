@@ -25,9 +25,16 @@
         </div>
 
         <div class="form-row">
-            <div class="form-group">
+            <div class="form-group" style="width: 100%;">
                 <label>Attachments (Optional)</label>
-                <input type="file" (change)="onFileSelected($event)" class="form-control file-input">
+                <input type="file" (change)="onFileSelected($event)" class="form-control file-input" accept="image/*" multiple #fileInput>
+                
+                <div class="preview-container" *ngIf="previewMedia.length > 0">
+                    <div class="preview-wrapper" *ngFor="let media of previewMedia; let i = index">
+                        <img [src]="media.url" class="preview-image" (click)="openImage(media.url)">
+                        <button type="button" class="remove-btn" (click)="removeImage(i)">&times;</button>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -41,5 +48,10 @@
                 {{ isSubmitting ? 'Submitting...' : 'Submit Report' }}
             </button>
         </div>
+    </div>
+
+    <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">
+        <span class="close-modal">&times;</span>
+        <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">
     </div>
 </div>

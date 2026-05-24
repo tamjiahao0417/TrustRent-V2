@@ -1,0 +1,91 @@
+<div class="page-container">
+    <div class="header-section">
+        <h1 class="page-title"><i class="fa-solid fa-wand-magic-sparkles text-blue"></i> AI Rental Matchmaker</h1>
+        <p class="page-subtitle">Find your perfect rental partner based on preferences, budget, and lifestyle.</p>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="errorMessage">
+        <i class="fa-solid fa-triangle-exclamation"></i> {{ errorMessage }}
+    </div>
+
+    <div class="form-card" *ngIf="!hasSearched">
+        <h2 class="section-title">Your Rental Preferences</h2>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label>Preferred Location <span class="required">*</span></label>
+                <input type="text" [(ngModel)]="preferences.location" class="form-control" placeholder="e.g. Kuala Lumpur, Johor Bahru">
+            </div>
+            
+            <div class="form-group">
+                <label>Min Budget (RM) <span class="required">*</span></label>
+                <input type="number" [(ngModel)]="preferences.budget_min" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label>Max Budget (RM) <span class="required">*</span></label>
+                <input type="number" [(ngModel)]="preferences.budget_max" class="form-control">
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label>Must-Have Features</label>
+            <div class="features-grid">
+                <label class="feature-checkbox" *ngFor="let feature of availableFeatures">
+                    <input type="checkbox" [checked]="preferences.features.includes(feature)" (change)="toggleFeature(feature)">
+                    <span>{{ feature }}</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="submit-area">
+            <button class="btn-primary" (click)="findMatches()" [disabled]="isLoading">
+                <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isLoading" style="margin-right: 8px;"></i>
+                {{ isLoading ? 'AI is Analyzing Listings...' : 'Find My Perfect Match' }}
+            </button>
+        </div>
+    </div>
+
+    <div class="results-view" *ngIf="hasSearched && !isLoading">
+        <div class="results-header">
+            <h2>Top Matches Found</h2>
+            <button class="btn-light" (click)="resetSearch()"><i class="fa-solid fa-sliders"></i> Adjust Filters</button>
+        </div>
+
+        <div class="empty-state" *ngIf="matches.length === 0">
+            <i class="fa-solid fa-face-frown-open text-muted" style="font-size: 40px; margin-bottom: 15px;"></i>
+            <h3>No strong matches found.</h3>
+            <p>Try adjusting your criteria to improve recommendations (e.g., increase budget, widen location range).</p>
+            <button class="btn-primary" (click)="resetSearch()" style="margin-top: 15px;">Refine Preferences</button>
+        </div>
+
+        <div class="match-grid">
+            <div class="match-card" *ngFor="let match of matches">
+                <div class="match-image">
+                    <img [src]="match.images ? 'http://localhost:8000/storage/' + match.images[0] : 'assets/placeholder-house.png'" alt="Property">
+                    
+                    <div class="score-badge" [ngClass]="{'high-match': match.match_score >= 80, 'med-match': match.match_score < 80}">
+                        {{ match.match_score }}% Match
+                    </div>
+                </div>
+                
+                <div class="match-info">
+                    <h3>{{ match.title || 'Beautiful Rental Unit' }}</h3>
+                    <p class="location"><i class="fa-solid fa-location-dot"></i> {{ match.address || match.city }}</p>
+                    <p class="price">RM {{ match.price }} <span class="text-muted">/ month</span></p>
+                    
+                    <div class="match-reasons">
+                        <p class="reason-title">Why it's a match:</p>
+                        <ul>
+                            <li *ngFor="let reason of match.match_reasons">
+                                <i class="fa-solid fa-check text-success"></i> {{ reason }}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button class="btn-primary w-100 mt-3" [routerLink]="['/properties', match.id]">View Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -219,3 +219,82 @@
     .admin-actions { flex-direction: column; }
     .form-control, .btn-primary { width: 100%; }
 }
+
+
+
+/* --- REPORTER ACTION BUTTONS --- */
+.action-btns { 
+    display: flex; 
+    gap: 15px; 
+    margin-top: 40px; 
+    padding-top: 30px; 
+    border-top: 1px solid var(--border-color); 
+    flex-wrap: wrap;
+}
+
+.btn-light { 
+    background: var(--white); 
+    color: var(--text-dark); 
+    border: 2px solid var(--border-color); 
+    padding: 14px 32px; 
+    border-radius: var(--radius-sm); 
+    font-weight: 700; 
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+.btn-light:hover { 
+    border-color: var(--text-dark); 
+}
+
+.btn-danger { 
+    background: var(--white); 
+    padding: 14px 32px; 
+    border-radius: var(--radius-sm); 
+    color: var(--danger-red); 
+    font-weight: 700; 
+    border: 2px solid var(--danger-red); 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+.btn-danger:hover { 
+    background-color: var(--danger-red); 
+    color: var(--white);
+}
+
+/* Mobile scaling for the new buttons */
+@media (max-width: 768px) {
+    .action-btns { flex-direction: column; }
+    .btn-light, .btn-danger { width: 100%; text-align: center; }
+}
+
+/* Add these to report-details.css */
+.attachment-container { margin-top: 10px; }
+
+.preview-wrapper {
+    width: 200px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.preview-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.preview-image:hover { opacity: 0.8; }
+
+/* Modal styles - same as edit-report.css */
+.image-modal {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(17, 24, 39, 0.9); z-index: 9999;
+    display: flex; justify-content: center; align-items: center; cursor: pointer;
+}
+.image-modal img { max-width: 90%; max-height: 90vh; border-radius: var(--radius-sm); cursor: default; }
+.close-modal {
+    position: absolute; top: 24px; right: 40px; color: white;
+    font-size: 40px; font-weight: bold; cursor: pointer;
+}
