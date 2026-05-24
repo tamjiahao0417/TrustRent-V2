@@ -1,124 +1,162 @@
-.page-container {
-    max-width: 800px;
-    margin: 40px 20px;
-    padding: 0 20px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-}
+/* 🌟 Layout inherited from global .page-container! */
 
-.back-link {
-    color: #6b7280;
+.btn-back {
+    color: var(--text-muted);
     text-decoration: none;
-    font-weight: 500;
-    margin-bottom: 20px;
-    display: inline-block;
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
-.back-link:hover {
-    color: #111827;
+.btn-back:hover {
+    color: var(--text-dark);
 }
 
 .page-title {
     font-size: 32px;
-    font-weight: 700;
-    color: #111827;
+    font-weight: 800;
+    color: var(--text-dark);
     margin-bottom: 30px;
+    margin-top: 0;
 }
 
-.form-group {
-    margin-bottom: 24px;
+/* --- THE FLUID FORM CARD --- */
+.form-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
+
+/* --- FORM ELEMENTS --- */
+.form-group { margin-bottom: 24px; }
 
 .form-group label {
     display: block;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 8px;
-    color: #111827;
+    color: var(--text-dark);
+    font-size: 14px;
 }
 
 .form-control {
     width: 100%;
-    padding: 14px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
     font-size: 15px;
     box-sizing: border-box;
     outline: none;
-    transition: all 0.2s;
+    background: var(--white);
+    color: var(--text-dark);
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-control:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .readonly-input {
-    background-color: #f3f4f6;
-    color: #6b7280;
+    background-color: var(--bg-main);
+    color: var(--text-muted);
     cursor: not-allowed;
+    font-weight: 600;
 }
 
-.date-time-row {
-    display: flex;
-    gap: 20px;
+/* 🌟 Auto-stacking grid for inputs */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
 }
 
-.date-time-row .form-group {
-    flex: 1;
-}
-
-/* Custom Pill Radio Buttons matching your screenshot */
+/* --- PILLS (Replaced inline styles) --- */
 .pill-group {
     display: flex;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
 .pill-radio {
-    padding: 10px 24px;
-    border: 1px solid #d1d5db;
+    padding: 12px 24px;
+    border: 1px solid var(--border-color);
     border-radius: 30px;
     cursor: pointer;
     font-weight: 600;
-    color: #374151;
-    transition: all 0.2s;
+    color: var(--text-muted);
+    transition: 0.2s;
+    background: var(--white);
+}
+
+.pill-radio:hover {
+    border-color: var(--text-dark);
+    color: var(--text-dark);
 }
 
 .pill-radio.active {
-    background-color: #ffffff;
-    border-color: #111827;
-    color: #111827;
-    box-shadow: 0 0 0 1px #111827; /* Extra thickness like the screenshot */
+    background-color: var(--bg-main);
+    border-color: var(--text-dark);
+    color: var(--text-dark);
+    box-shadow: 0 0 0 1px var(--text-dark);
 }
 
-.btn-submit {
-    padding: 14px 32px;
-    background-color: #3b82f6;
-    color: white;
+.hidden-radio {
+    display: none;
+}
+
+/* --- ACTION BUTTON --- */
+.submit-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-primary {
+    background-color: var(--text-dark);
+    color: var(--white);
     border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s;
-    float: right;
+    transition: 0.2s;
 }
 
-.btn-submit:hover {
-    background-color: #2563eb;
+.btn-primary:hover {
+    opacity: 0.85;
 }
 
+/* --- ALERTS --- */
 .error-banner {
-    color: #ef4444; 
-    background: #fef2f2; 
-    padding: 10px; 
-    border-radius: 8px; 
-    margin-bottom: 20px; 
-    font-size: 14px; 
-    border: 1px solid #fee2e2;
+    color: var(--danger-red);
+    background-color: #fee2e2;
+    padding: 15px 20px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 24px;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid #fecaca;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Clearfix for the submit button */
-.submit-container::after {
-    content: "";
-    clear: both;
-    display: table;
+/* Mobile scaling */
+@media (max-width: 768px) {
+    .form-card { padding: 20px; }
+    .submit-area { justify-content: center; }
+    .btn-primary { width: 100%; }
 }

@@ -1,18 +1,17 @@
 <div class="page-container">
     <div class="header-actions">
         <h1 class="page-title">Issue Reported</h1>
-        <!-- 🌟 Here is your Report button linking to the create page! -->
-        <button routerLink="/reports/create" class="btn-light">Report</button>
+        <button routerLink="/reports/create" class="btn-primary">Report</button>
     </div>
 
-    <!-- Search Bar -->
-    <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" placeholder="Search reports" 
-               [(ngModel)]="searchQuery" (input)="applyFilters()">
+    <div class="controls-container">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search reports..." 
+                   [(ngModel)]="searchQuery" (input)="applyFilters()">
+        </div>
     </div>
 
-    <!-- Filter Tabs -->
     <div class="tabs-container">
         <button *ngFor="let tab of tabs" 
                 (click)="setTab(tab)" 
@@ -22,7 +21,6 @@
         </button>
     </div>
 
-    <!-- Data Table -->
     <div class="table-card">
         <table class="report-table">
             <thead>
@@ -31,7 +29,7 @@
                     <th>Reported User</th>
                     <th>Type</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                    <th class="text-right">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,12 +37,11 @@
                     <td colspan="5" class="empty-state">No reports found.</td>
                 </tr>
                 <tr *ngFor="let report of filteredReports">
-                    <td style="font-weight: 500;">{{ report.reference_id }}</td>
+                    <td class="bold-text">{{ report.reference_id }}</td>
                     
-                    <!-- Shows the related user, or the reporter, or N/A -->
-                    <td>{{ report.related_user?.name || report.reporter?.name || 'System / General' }}</td>
+                    <td class="bold-text">{{ report.related_user?.name || report.reporter?.name || 'System / General' }}</td>
                     
-                    <td style="color: #6b7280;">{{ report.issue_type }}</td>
+                    <td class="muted-text">{{ report.issue_type }}</td>
                     
                     <td>
                         <span class="status-pill" [ngClass]="report.status.toLowerCase().replace(' ', '-')">
@@ -52,8 +49,9 @@
                         </span>
                     </td>
                     
-                    <!-- 🌟 Links to the details page (Next Step!) -->
-                    <td><a [routerLink]="['/reports/details', report.id]" class="action-link">View</a></td>
+                    <td class="text-right">
+                        <a [routerLink]="['/reports/details', report.id]" class="action-link">View</a>
+                    </td>
                 </tr>
             </tbody>
         </table>

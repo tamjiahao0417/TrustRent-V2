@@ -2,19 +2,17 @@
     <h1 class="page-title">Report an Issue</h1>
     <p class="page-subtitle">Let us know if you're experiencing technical problems or user misconduct.</p>
 
-    <!-- Success Message -->
     <div *ngIf="successMessage" class="alert alert-success">
         <i class="fa-solid fa-circle-check"></i> {{ successMessage }}
     </div>
 
-    <!-- Error Message (EF1 / EF2) -->
     <div *ngIf="errorMessage" class="alert alert-danger">
         <i class="fa-solid fa-triangle-exclamation"></i> {{ errorMessage }}
     </div>
 
     <div class="form-card">
         <div class="form-group">
-            <label>Issue Type *</label>
+            <label>Issue Type <span class="required">*</span></label>
             <select [(ngModel)]="issueData.issue_type" class="form-control">
                 <option value="" disabled>Select issue type</option>
                 <option *ngFor="let type of issueTypes" [value]="type">{{ type }}</option>
@@ -22,22 +20,26 @@
         </div>
 
         <div class="form-group">
-            <label>Description *</label>
-            <textarea [(ngModel)]="issueData.description" rows="5" class="form-control" placeholder="Provide details about the issue..."></textarea>
+            <label>Description <span class="required">*</span></label>
+            <textarea [(ngModel)]="issueData.description" rows="6" class="form-control" placeholder="Provide details about the issue..."></textarea>
         </div>
 
-        <div class="form-group">
-            <label>Attachments (Optional)</label>
-            <input type="file" (change)="onFileSelected($event)" class="form-control file-input">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Attachments (Optional)</label>
+                <input type="file" (change)="onFileSelected($event)" class="form-control file-input">
+            </div>
+
+            <div class="form-group">
+                <label>Related User ID (Optional)</label>
+                <input type="number" [(ngModel)]="issueData.related_user_id" class="form-control" placeholder="Enter User ID if this involves someone else">
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>Related User ID (Optional)</label>
-            <input type="number" [(ngModel)]="issueData.related_user_id" class="form-control" placeholder="Enter User ID if this involves someone else">
+        <div class="submit-area">
+            <button (click)="submitReport()" class="btn-primary" [disabled]="isSubmitting">
+                {{ isSubmitting ? 'Submitting...' : 'Submit Report' }}
+            </button>
         </div>
-
-        <button (click)="submitReport()" class="btn-submit" [disabled]="isSubmitting">
-            {{ isSubmitting ? 'Submitting...' : 'Submit' }}
-        </button>
     </div>
 </div>

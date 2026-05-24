@@ -1,16 +1,16 @@
-<div class="dashboard-container">
+<div class="page-container">
     <header class="welcome-section">
         <h1>Welcome Back, {{ userName | titlecase }}!</h1>
         <p *ngIf="userRole === 'landlord'">Here is an overview of your property portfolio.</p>
         <p *ngIf="userRole === 'tenant'">Here is an overview of your current rental status.</p>
     </header>
 
-    <div *ngIf="isLoading" style="text-align: center; padding: 50px;">
+    <div *ngIf="isLoading" class="status-message">
         <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
         <p>Loading your dashboard...</p>
     </div>
 
-    <div *ngIf="!isLoading && !dbData" style="text-align: center; padding: 50px; color: #ef4444;">
+    <div *ngIf="!isLoading && !dbData" class="status-message error">
         <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
         <p>Failed to load dashboard data. Please check your console.</p>
     </div>
@@ -23,17 +23,17 @@
                 <div class="alert-content">
                     <i class="fa-solid fa-circle-exclamation alert-icon"></i>
                     <div>
-                        <h3 style="margin: 0;">Next Rent Payment Due</h3>
-                        <p style="margin: 5px 0 0 0;">
+                        <h3 class="alert-title">Next Rent Payment Due</h3>
+                        <p class="alert-desc">
                             You owe <strong>RM {{ dbData.pendingPayment.amount }}</strong> 
                             by <strong>{{ dbData.pendingPayment.due_date | date }}</strong>.
                         </p>
                     </div>
                 </div>
-                <a routerLink="/rent-payment" class="btn-black">Pay Now</a>
+                <a routerLink="/rent-payment" class="btn-primary">Pay Now</a>
             </div>
 
-            <div class="stats-grid tenant-stats">
+            <div class="stats-grid">
                 <div class="stat-card">
                     <label>Open Maintenance Issues</label>
                     <div class="value">
@@ -59,7 +59,7 @@
                 <a routerLink="/ai-matching" class="action-card"><i class="fa-solid fa-house-user"></i><span>Find New Home</span></a>
             </div>
 
-            <div class="section-header" style="margin-top: 40px;"><h2>My Rented Properties</h2></div>
+            <div class="section-header mt-40"><h2>My Rented Properties</h2></div>
             
             <div class="property-wide-card" *ngFor="let contract of dbData.activeContracts">
                 <div class="property-img-placeholder">
@@ -67,7 +67,7 @@
                         [src]="'http://localhost:8000/uploads/' + contract.property_image" 
                         class="property-cover-img" alt="Property Image">
                     
-                    <i *ngIf="!contract.property_image" class="fa-solid fa-house" style="font-size: 40px; color: #ccc;"></i>
+                    <i *ngIf="!contract.property_image" class="fa-solid fa-house empty-icon"></i>
                 </div>
                 <div class="property-details">
                     <div class="property-title-row">
@@ -84,10 +84,10 @@
                 </div>
             </div>
             
-            <div class="property-wide-card" *ngIf="dbData.activeContracts?.length === 0" style="padding: 40px; text-align: center; display: block;">
+            <div class="property-wide-card empty-state-card" *ngIf="dbData.activeContracts?.length === 0">
                 <h3>No Active Lease</h3>
-                <p style="color: #666;">You are not currently renting any properties through TrustRent.</p>
-                <a routerLink="/property-listings" class="btn-black" style="display: inline-block; margin-top: 15px;">Browse Listings</a>
+                <p>You are not currently renting any properties through TrustRent.</p>
+                <a routerLink="/property-listings" class="btn-primary mt-15">Browse Listings</a>
             </div>
         </ng-container>
 
@@ -104,10 +104,10 @@
                 <a routerLink="/properties/create" class="action-card"><i class="fa-solid fa-plus"></i><span>Add Property</span></a>
                 <a routerLink="/rental-requests" class="action-card"><i class="fa-solid fa-bell"></i><span>Rental Requests</span></a>
                 <a routerLink="/maintenance" class="action-card"><i class="fa-solid fa-wrench"></i><span>Maintenance</span></a>
-                <a routerLink="/reports" class="action-card"><i class="fa-solid fa-chart-line"></i><span>Financials</span></a>
+                <a routerLink="/transactions" class="action-card"><i class="fa-solid fa-chart-line"></i><span>Financials</span></a>
             </div>
 
-            <div class="section-header" style="margin-top: 40px;">
+            <div class="section-header mt-40">
                 <h2>My Rented Properties Overview</h2>
                 <a routerLink="/my-properties" class="btn-view-all">
                     View All Properties <i class="fa-solid fa-arrow-right"></i>
@@ -120,7 +120,7 @@
                         [src]="'http://localhost:8000/uploads/' + prop.property_image" 
                         class="property-cover-img" alt="Property Image">
                     
-                    <i *ngIf="!prop.property_image" class="fa-solid fa-building" style="font-size: 40px; color: #ccc;"></i>
+                    <i *ngIf="!prop.property_image" class="fa-solid fa-building empty-icon"></i>
                 </div>
                 <div class="property-details">
                     <div class="property-title-row">
@@ -137,9 +137,9 @@
                 </div>
             </div>
             
-            <div class="property-wide-card" *ngIf="dbData.rentedProperties?.length === 0" style="padding: 40px; text-align: center; display: block;">
+            <div class="property-wide-card empty-state-card" *ngIf="dbData.rentedProperties?.length === 0">
                 <h3>No Rented Properties Yet</h3>
-                <p style="color: #666;">You don't have any active rental contracts right now.</p>
+                <p>You don't have any active rental contracts right now.</p>
             </div>
         </ng-container>
 

@@ -1,5 +1,8 @@
 <div class="page-container">
-    <a (click)="goBack()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Issues</a>
+    <a (click)="goBack()" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i> Back to Issues
+    </a>
+    
     <h1 class="page-title">Report Maintenance Issue</h1>
 
     <div class="form-card">
@@ -20,41 +23,42 @@
                 <textarea [(ngModel)]="reportData.description" name="description" class="form-control" rows="5" placeholder="Describe the issue in detail..." required></textarea>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-row">
                 <div class="form-group">
                     <label>Category</label>
                     <select [(ngModel)]="reportData.category" name="category" class="form-control" required>
                         <option value="" disabled>Select a category</option>
                         <option value="Plumbing">Plumbing</option>
                         <option value="Electrical">Electrical</option>
-                        <option value="Structural">Structural</option>
+                        <option value="HVAC">HVAC (AC/Heating)</option>
                         <option value="Appliance">Appliance</option>
-                        <option value="General">General Maintenance</option>
+                        <option value="Structural">Structural</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Urgency</label>
                     <select [(ngModel)]="reportData.urgency" name="urgency" class="form-control" required>
-                        <option value="" disabled>Select urgency</option>
-                        <option value="Low">Low (Can wait a few weeks)</option>
-                        <option value="Medium">Medium (Needs attention soon)</option>
-                        <option value="High">High (Immediate attention required)</option>
+                        <option value="" disabled>Select urgency level</option>
+                        <option value="Low">Low - Not urgent</option>
+                        <option value="Medium">Medium - Needs attention soon</option>
+                        <option value="High">High - Urgent / Safety concern</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Upload Photos or Videos (Optional)</label>
-                <input type="file" class="file-input" (change)="onFileSelected($event)" accept="image/*,video/*" multiple>
-                <small>You can select multiple files. Add media to help us understand the issue better. Max size: 5MB per file.</small>
+                <label>Upload Images or Video (Optional)</label>
+                <input type="file" (change)="onFileSelected($event)" class="form-control file-input" multiple accept="image/*,video/*">
+                                <small class="help-text">You can upload multiple images and media to help us understand the issue better. Max size: 5MB per file.</small>
                 
                 <div class="preview-container" *ngIf="previewMedia.length > 0">
                     <div class="preview-wrapper" *ngFor="let media of previewMedia; let i = index">
                         
                         <img *ngIf="media.type.startsWith('image')" [src]="media.url" class="preview-image" alt="Issue Preview" (click)="openImage(media.url)">
                         
-                        <video *ngIf="media.type.startsWith('video')" [src]="media.url" class="preview-image" style="background: #000;" controls></video>
+                        <video *ngIf="media.type.startsWith('video')" [src]="media.url" class="preview-image video-preview" controls></video>
                         
                         <button type="button" class="remove-btn" (click)="removeImage(i)">&times;</button>
                     </div>
@@ -66,8 +70,8 @@
                 <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">
             </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn-submit" [disabled]="isLoading">
+            <div class="submit-area">
+                <button type="submit" class="btn-primary" [disabled]="isLoading">
                     <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isLoading" style="margin-right: 8px;"></i>
                     {{ isLoading ? 'Reporting...' : 'Submit Report' }}
                 </button>

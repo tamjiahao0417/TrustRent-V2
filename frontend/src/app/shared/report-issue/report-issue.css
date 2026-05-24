@@ -1,18 +1,112 @@
-.page-container { padding: 30px; background-color: #f9fafb; min-height: 100vh; max-width: 800px; }
-.page-title { font-size: 28px; font-weight: 800; color: #111; margin-bottom: 5px; }
-.page-subtitle { color: #6b7280; margin-bottom: 30px; }
+/* 🌟 Layout inherited from global .page-container! */
 
-.form-card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #e5e7eb; }
-.form-group { margin-bottom: 20px; }
-.form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #374151; }
-.form-control { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; outline: none; box-sizing: border-box; }
-.form-control:focus { border-color: #3b82f6; }
-.file-input { padding: 9px; }
+.page-title { 
+    font-size: 32px; 
+    font-weight: 800; 
+    color: var(--text-dark); 
+    margin-bottom: 8px; 
+    margin-top: 0;
+}
 
-.btn-submit { background-color: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; float: right; transition: 0.2s; }
-.btn-submit:hover:not(:disabled) { background-color: #2563eb; }
-.btn-submit:disabled { background-color: #9ca3af; cursor: not-allowed; }
+.page-subtitle { 
+    color: var(--text-muted); 
+    margin-bottom: 30px; 
+    font-size: 16px;
+    margin-top: 0;
+}
 
-.alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; }
-.alert-success { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
-.alert-danger { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+/* --- THE FLUID FORM CARD --- */
+.form-card { 
+    background: var(--white); 
+    padding: 40px; 
+    border-radius: var(--radius-lg); 
+    border: 1px solid var(--border-color); 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 100%; 
+    box-sizing: border-box; 
+}
+
+/* --- FORM ELEMENTS --- */
+.form-group { margin-bottom: 24px; }
+.form-group label { 
+    display: block; 
+    font-weight: 700; 
+    margin-bottom: 10px; 
+    color: var(--text-dark); 
+    font-size: 14px;
+}
+.required { color: var(--danger-red); }
+
+/* 🌟 Auto-stacking grid for optional fields */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.form-control { 
+    width: 100%; 
+    padding: 14px 16px; 
+    border: 1px solid var(--border-color); 
+    border-radius: var(--radius-sm); 
+    font-size: 15px; 
+    outline: none; 
+    box-sizing: border-box; 
+    background: var(--white);
+    color: var(--text-dark);
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control::placeholder { color: var(--text-muted); opacity: 0.7; }
+.form-control:focus { 
+    border-color: var(--primary-blue); 
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); 
+}
+
+.file-input { 
+    background: var(--bg-main) !important; 
+    padding: 10px 16px; 
+    cursor: pointer;
+}
+
+/* --- ACTION BUTTON --- */
+.submit-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn-primary { 
+    background-color: var(--text-dark); 
+    color: var(--white); 
+    border: none; 
+    padding: 14px 32px; 
+    border-radius: var(--radius-sm); 
+    font-weight: 700; 
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+.btn-primary:hover:not(:disabled) { opacity: 0.85; }
+.btn-primary:disabled { background-color: var(--text-muted); cursor: not-allowed; opacity: 0.7; }
+
+/* --- ALERTS --- */
+.alert { 
+    padding: 16px 20px; 
+    border-radius: var(--radius-sm); 
+    margin-bottom: 24px; 
+    font-weight: 600; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+.alert-success { background-color: #dcfce7; color: var(--success-green); border: 1px solid #bbf7d0; }
+.alert-danger { background-color: #fee2e2; color: var(--danger-red); border: 1px solid #fecaca; }
+
+/* Mobile scaling */
+@media (max-width: 768px) {
+    .form-card { padding: 20px; }
+}

@@ -19,12 +19,12 @@
             <table class="issue-table">
                 <thead>
                     <tr>
-                        <th>Status</th>
                         <th *ngIf="userRole === 'landlord'">Property</th>
                         <th>Category</th>
                         <th>Urgency</th>
                         <th>Latest Update</th>
                         <th>Last Activity</th>
+                        <th>Status</th>
                         <th class="text-right">Action</th>
                     </tr>
                 </thead>
@@ -41,16 +41,24 @@
                     </tr>
 
                     <tr *ngFor="let issue of filteredIssues">
+                        
+                        <td *ngIf="userRole === 'landlord'">
+                            <div class="text-dark bold-text address-wrap">
+                                {{ issue.property_address }}
+                            </div>
+                        </td>
+                        
+                        <td class="text-blue">{{ issue.category }}</td>
+                        <td class="text-dark">{{ issue.urgency }}</td>
+                        <td class="text-gray truncate">{{ issue.latest_update }}</td>
+                        <td class="text-gray">{{ issue.updated_at | date:'MMM d, yyyy' }}</td>
+                        
                         <td>
                             <span class="status-pill" [ngClass]="getStatusClass(issue.status)">
                                 {{ issue.status }}
                             </span>
                         </td>
-                        <td *ngIf="userRole === 'landlord'" class="text-dark bold-text">{{ issue.property_address }}</td>
-                        <td class="text-blue">{{ issue.category }}</td>
-                        <td class="text-dark">{{ issue.urgency }}</td>
-                        <td class="text-gray truncate">{{ issue.latest_update }}</td>
-                        <td class="text-gray">{{ issue.updated_at | date:'MMM d, yyyy' }}</td>
+
                         <td class="text-right">
                             <a [routerLink]="['/maintenance/details', issue.id]" class="action-link">
                                 {{ userRole === 'landlord' ? 'Manage' : 'View' }}

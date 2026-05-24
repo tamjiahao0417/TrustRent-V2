@@ -84,6 +84,7 @@
     border-bottom: 1px solid var(--border-color); 
     background-color: var(--white);
     font-weight: 700; 
+    white-space: nowrap; /* Keeps headers cleanly on one line */
 }
 
 .issue-table td { 
@@ -105,7 +106,17 @@ tbody tr:hover { background-color: var(--bg-main); }
 .text-blue { color: var(--primary-blue); font-weight: 600; }
 .bold-text { font-weight: 600; }
 .text-right { text-align: right; }
-.truncate { max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.truncate { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* 🌟 The new class that stops addresses from squishing the table */
+/* 🌟 Allows long addresses to stack on multiple lines cleanly */
+.address-wrap {
+    max-width: 300px; /* Keeps the column from getting too wide */
+    white-space: normal; /* This is the magic rule that allows it to wrap! */
+    line-height: 1.5; /* Adds nice spacing between the wrapped lines */
+    word-wrap: break-word;
+}
 
 /* Status Pills */
 .status-pill { 

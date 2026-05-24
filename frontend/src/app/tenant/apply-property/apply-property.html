@@ -1,5 +1,5 @@
 <div class="page-container">
-    <a (click)="goBack()" class="back-link" style="cursor: pointer;">
+    <a (click)="goBack()" class="btn-back">
         <i class="fa-solid fa-arrow-left"></i> Back to Property
     </a>
 
@@ -9,21 +9,23 @@
         Applying for: <strong>{{ property.title }}</strong>
     </p>
 
-    <div *ngIf="errorMessage" class="error-banner">
-        {{ errorMessage }}
-    </div>
-
     <div class="form-card" *ngIf="property">
         <form (submit)="onSubmit($event)">
 
-            <div class="form-group">
-                <label>Start date</label>
-                <input type="date" name="start_date" [(ngModel)]="startDate" [min]="minDate" class="form-control" required>
+            <div *ngIf="errorMessage" class="error-banner">
+                <i class="fa-solid fa-triangle-exclamation"></i> {{ errorMessage }}
             </div>
 
-            <div class="form-group">
-                <label>End date</label>
-                <input type="date" name="end_date" [(ngModel)]="endDate" [min]="minDate" class="form-control" required>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Start date</label>
+                    <input type="date" name="start_date" [(ngModel)]="startDate" [min]="minDate" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>End date</label>
+                    <input type="date" name="end_date" [(ngModel)]="endDate" [min]="minDate" class="form-control" required>
+                </div>
             </div>
 
             <div class="form-group">
@@ -33,11 +35,11 @@
 
             <div class="form-group">
                 <label>Notes (optional)</label>
-                <textarea name="notes" [(ngModel)]="notes" class="form-control" placeholder="Any special requests or details for the landlord..."></textarea>
+                <textarea name="notes" [(ngModel)]="notes" class="form-control" rows="4" placeholder="Any special requests or details for the landlord..."></textarea>
             </div>
 
-            <div class="submit-container">
-                <button type="submit" class="btn-submit">Submit Request</button>
+            <div class="submit-area">
+                <button type="submit" class="btn-primary">Submit Request</button>
             </div>
         </form>
     </div>

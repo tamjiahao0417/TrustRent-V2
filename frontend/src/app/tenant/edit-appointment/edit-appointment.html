@@ -1,5 +1,5 @@
 <div class="page-container">
-    <a (click)="goBack()" class="back-link" style="cursor: pointer;">
+    <a (click)="goBack()" class="btn-back">
         <i class="fa-solid fa-arrow-left"></i> Cancel
     </a>
 
@@ -13,7 +13,7 @@
                 <input type="text" class="form-control readonly-input" [value]="propertyTitle" readonly>
             </div>
 
-            <div class="date-time-row">
+            <div class="form-row">
                 <div class="form-group">
                     <label>Select Date</label>
                     <input type="date" name="date" [(ngModel)]="appointmentDate" [min]="minDate" class="form-control" required>
@@ -29,22 +29,22 @@
                 <label>Appointment Type</label>
                 <div class="pill-group">
                     <label class="pill-radio" [class.active]="appointmentType === 'Physical'">
-                        <input type="radio" name="type" value="Physical" [(ngModel)]="appointmentType" required style="display: none;">
+                        <input type="radio" name="type" value="Physical" [(ngModel)]="appointmentType" required class="hidden-radio">
                         Physical
                     </label>
                     <label class="pill-radio" [class.active]="appointmentType === 'Virtual'">
-                        <input type="radio" name="type" value="Virtual" [(ngModel)]="appointmentType" required style="display: none;">
+                        <input type="radio" name="type" value="Virtual" [(ngModel)]="appointmentType" required class="hidden-radio">
                         Virtual
                     </label>
                 </div>
             </div>
 
             <div *ngIf="errorMessage" class="error-banner">
-                {{ errorMessage }}
+                <i class="fa-solid fa-triangle-exclamation"></i> {{ errorMessage }}
             </div>
 
-            <div class="submit-container">
-                <button type="submit" class="btn-submit">Update Appointment</button>
+            <div class="submit-area">
+                <button type="submit" class="btn-primary">Update Appointment</button>
             </div>
         </form>
     </div>
