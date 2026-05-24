@@ -96,49 +96,49 @@ class AiController extends Controller
 
         try {
             // 2. Fetch all available properties from your database
-            // (We only send the necessary text to the LLM to save tokens/money)
-            $properties = Property::where('status', 'available') // Remove ->where(...) entirely if you don't have a status column!
-                ->get(['id', 'title', 'price', 'address', 'features', 'description']);
+            $properties = Property::get(['id', 'title', 'price', 'address', 'description']);
 
             if ($properties->isEmpty()) {
                 return response()->json(['matches' => []]);
             }
 
-            // 3. Construct the System Prompt for the LLM
-            $systemPrompt = "You are an expert real estate AI matchmaker. You will be given a user's rental preferences and a list of available properties. " .
+            // 3. Construct the Prompt for Gemini
+            $prompt = "You are an expert real estate AI matchmaker. You will be given a user's rental preferences and a list of available properties. " .
                 "Analyze the semantic meaning of the descriptions, features, and locations. " .
                 "Return a strict JSON object with a single key 'matches'. This key must contain an array of objects representing the top matches. " .
-                "Each object must have exactly three keys: 'id' (the integer ID of the property), 'match_score' (an integer from 0-100), and 'match_reasons' (an array of 3 short, personalized string sentences explaining exactly why this property fits their specific lifestyle/prompt).";
+                "Each object must have exactly three keys: 'id' (the integer ID of the property), 'match_score' (an integer from 0-100), and 'match_reasons' (an array of 3 short, personalized string sentences explaining exactly why this property fits their specific lifestyle/prompt).\n\n" .
+                "Data to analyze:\n" .
+                json_encode([
+                    'user_preferences' => $request->all(),
+                    'available_properties' => $properties->toArray()
+                ]);
 
-            // 4. Construct the User Prompt with the actual JSON data
-            $userPrompt = json_encode([
-                'user_preferences' => $request->all(),
-                'available_properties' => $properties->toArray()
-            ]);
+            // 4. Use your existing Gemini API Key
+            $apiKey = "AIzaSyBL5tigg7bcV80ly60fBrNr-M-KWgOn1bE"; 
 
-            // 5. Call the OpenAI API
-            $response = Http::withToken(env('OPENAI_API_KEY'))
-                ->timeout(15) // Prevent hanging
-                ->post('https://api.openai.com/v1/chat/completions', [
-                    'model' => 'gpt-4o-mini',
-                    'response_format' => ['type' => 'json_object'], // 🌟 Forces valid JSON output
-                    'messages' => [
-                        ['role' => 'system', 'content' => $systemPrompt],
-                        ['role' => 'user', 'content' => $userPrompt]
-                    ]
+            // 5. Call the Google Gemini API (with SSL verification bypassed for local testing)
+            $response = Http::withoutVerifying()
+                ->timeout(60)
+                ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
+                    "contents" => [["parts" => [["text" => $prompt]]]],
+                    "generationConfig" => ["responseMimeType" => "application/json"]
                 ]);
 
             if ($response->failed()) {
-                Log::error('OpenAI API Error: ' . $response->body());
-                throw new \Exception('Failed to communicate with AI provider.');
+                throw new \Exception('Gemini API Error: ' . $response->body());
             }
 
-            // 6. Decode the AI's response
-            $aiResult = json_decode($response->json('choices.0.message.content'), true);
+            // 6. Decode Gemini's response
+            $result = $response->json();
+            $aiText = $result['candidates'][0]['content']['parts'][0]['text'];
+            
+            // Clean up Markdown (just in case Gemini includes ```json)
+            $aiText = str_replace(['```json', '```'], '', $aiText); 
+            $aiResult = json_decode(trim($aiText), true);
+            
             $aiMatches = $aiResult['matches'] ?? [];
 
             // 7. Map the AI's suggested IDs back to your FULL database records
-            // This ensures we get the real images, landlord details, etc.
             $finalMatches = [];
             foreach ($aiMatches as $aiMatch) {
                 // Find the real property in our database
@@ -158,6 +158,84 @@ class AiController extends Controller
             });
 
             // 8. Return exactly what Angular is expecting!
+            return response()->json(['matches' => array_slice($finalMatches, 0, 10)]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'AI Matching Engine is temporarily unavailable. Error: ' . $e->getMessage() . ' on line ' . $e->getLine()
+            ], 500);
+        }
+    }
+
+    public function matchTenants(Request $request)
+    {
+        // 1. Validate the Landlord's property details
+        $request->validate([
+            'price' => 'required|numeric',
+            'location' => 'required|string',
+        ]);
+
+        try {
+            // 2. Fetch all available Tenants from your database
+            // 🌟 NOTE: We only fetch 'id', 'name', and 'email' to prevent SQL crashes. 
+            // If your users table has columns for 'budget' or 'preferences', add them to this array!
+            $tenants = \App\Models\User::where('role', 'tenant')
+                ->get(['id', 'name', 'email']);
+
+            if ($tenants->isEmpty()) {
+                return response()->json(['matches' => []]);
+            }
+
+            // 3. Construct the Prompt for Gemini
+            $prompt = "You are an expert real estate AI matchmaker. You will be given a landlord's property details and a list of registered tenants. " .
+                "Analyze the compatibility between what the property offers and what a tenant might need. " .
+                "Return a strict JSON object with a single key 'matches'. This key must contain an array of objects representing the top matched tenants. " .
+                "Each object must have exactly three keys: 'id' (the integer ID of the tenant), 'match_score' (an integer from 0-100), and 'match_reasons' (an array of 3 short, personalized string sentences explaining exactly why this tenant is a great fit for this specific property).\n\n" .
+                "Data to analyze:\n" .
+                json_encode([
+                    'landlord_property' => $request->all(),
+                    'available_tenants' => $tenants->toArray()
+                ]);
+
+            $apiKey = "AIzaSyBL5tigg7bcV80ly60fBrNr-M-KWgOn1bE"; 
+
+            // 4. Call the Google Gemini API
+            $response = Http::withoutVerifying()
+                ->timeout(60)
+                ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
+                    "contents" => [["parts" => [["text" => $prompt]]]],
+                    "generationConfig" => ["responseMimeType" => "application/json"]
+                ]);
+
+            if ($response->failed()) {
+                throw new \Exception('Gemini API Error: ' . $response->body());
+            }
+
+            // 5. Decode Gemini's response
+            $result = $response->json();
+            $aiText = $result['candidates'][0]['content']['parts'][0]['text'];
+            $aiText = str_replace(['```json', '```'], '', $aiText); 
+            $aiResult = json_decode(trim($aiText), true);
+            
+            $aiMatches = $aiResult['matches'] ?? [];
+
+            // 6. Map the AI's suggested IDs back to your FULL User database records
+            $finalMatches = [];
+            foreach ($aiMatches as $aiMatch) {
+                $realTenant = \App\Models\User::find($aiMatch['id']);
+                
+                if ($realTenant) {
+                    $realTenant->match_score = $aiMatch['match_score'];
+                    $realTenant->match_reasons = $aiMatch['match_reasons'];
+                    $finalMatches[] = $realTenant;
+                }
+            }
+
+            // Sort them by highest score
+            usort($finalMatches, function ($a, $b) {
+                return $b->match_score <=> $a->match_score;
+            });
+
             return response()->json(['matches' => array_slice($finalMatches, 0, 10)]);
 
         } catch (\Exception $e) {

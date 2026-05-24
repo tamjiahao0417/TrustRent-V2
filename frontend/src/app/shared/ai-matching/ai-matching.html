@@ -1,7 +1,8 @@
 <div class="page-container">
     <div class="header-section">
         <h1 class="page-title"><i class="fa-solid fa-wand-magic-sparkles text-blue"></i> AI Rental Matchmaker</h1>
-        <p class="page-subtitle">Find your perfect rental partner based on preferences, budget, and lifestyle.</p>
+        <p class="page-subtitle" *ngIf="userRole === 'tenant'">Find your perfect rental property based on your lifestyle.</p>
+        <p class="page-subtitle" *ngIf="userRole === 'landlord'">Find the perfect, reliable tenant for your available property.</p>
     </div>
 
     <div class="alert alert-danger" *ngIf="errorMessage">
@@ -9,30 +10,41 @@
     </div>
 
     <div class="form-card" *ngIf="!hasSearched">
-        <h2 class="section-title">Your Rental Preferences</h2>
+        <h2 class="section-title">{{ userRole === 'tenant' ? 'Your Rental Preferences' : 'Property Details' }}</h2>
         
-        <div class="form-row">
+        <div class="form-row" *ngIf="userRole === 'tenant'">
             <div class="form-group">
                 <label>Preferred Location <span class="required">*</span></label>
-                <input type="text" [(ngModel)]="preferences.location" class="form-control" placeholder="e.g. Kuala Lumpur, Johor Bahru">
+                <input type="text" [(ngModel)]="preferences.location" class="form-control" placeholder="e.g. Kuala Lumpur">
             </div>
-            
             <div class="form-group">
                 <label>Min Budget (RM) <span class="required">*</span></label>
                 <input type="number" [(ngModel)]="preferences.budget_min" class="form-control">
             </div>
-            
             <div class="form-group">
                 <label>Max Budget (RM) <span class="required">*</span></label>
                 <input type="number" [(ngModel)]="preferences.budget_max" class="form-control">
             </div>
         </div>
 
+        <div class="form-row" *ngIf="userRole === 'landlord'">
+            <div class="form-group">
+                <label>Property Location <span class="required">*</span></label>
+                <input type="text" [(ngModel)]="propertyDetails.location" class="form-control" placeholder="e.g. Kuala Lumpur">
+            </div>
+            <div class="form-group">
+                <label>Monthly Rent (RM) <span class="required">*</span></label>
+                <input type="number" [(ngModel)]="propertyDetails.price" class="form-control">
+            </div>
+        </div>
+
         <div class="form-group" style="margin-top: 20px;">
-            <label>Must-Have Features</label>
+            <label>{{ userRole === 'tenant' ? 'Must-Have Features' : 'Included Amenities' }}</label>
             <div class="features-grid">
                 <label class="feature-checkbox" *ngFor="let feature of availableFeatures">
-                    <input type="checkbox" [checked]="preferences.features.includes(feature)" (change)="toggleFeature(feature)">
+                    <input type="checkbox" 
+                           [checked]="(userRole === 'tenant' ? preferences.features : propertyDetails.features).includes(feature)" 
+                           (change)="toggleFeature(feature)">
                     <span>{{ feature }}</span>
                 </label>
             </div>
@@ -41,38 +53,46 @@
         <div class="submit-area">
             <button class="btn-primary" (click)="findMatches()" [disabled]="isLoading">
                 <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isLoading" style="margin-right: 8px;"></i>
-                {{ isLoading ? 'AI is Analyzing Listings...' : 'Find My Perfect Match' }}
+                {{ isLoading ? 'AI is Analyzing...' : 'Find My Perfect Match' }}
             </button>
         </div>
     </div>
 
     <div class="results-view" *ngIf="hasSearched && !isLoading">
         <div class="results-header">
-            <h2>Top Matches Found</h2>
+            <h2>Top {{ userRole === 'tenant' ? 'Properties' : 'Tenants' }} Found</h2>
             <button class="btn-light" (click)="resetSearch()"><i class="fa-solid fa-sliders"></i> Adjust Filters</button>
         </div>
 
         <div class="empty-state" *ngIf="matches.length === 0">
             <i class="fa-solid fa-face-frown-open text-muted" style="font-size: 40px; margin-bottom: 15px;"></i>
             <h3>No strong matches found.</h3>
-            <p>Try adjusting your criteria to improve recommendations (e.g., increase budget, widen location range).</p>
-            <button class="btn-primary" (click)="resetSearch()" style="margin-top: 15px;">Refine Preferences</button>
+            <p>Try adjusting your criteria to improve recommendations.</p>
+            <button class="btn-primary" (click)="resetSearch()" style="margin-top: 15px;">Refine Details</button>
         </div>
 
         <div class="match-grid">
             <div class="match-card" *ngFor="let match of matches">
+                
                 <div class="match-image">
-                    <img [src]="match.images ? 'http://localhost:8000/storage/' + match.images[0] : 'assets/placeholder-house.png'" alt="Property">
+                    <img *ngIf="userRole === 'tenant'" [src]="match.images ? 'http://localhost:8000/storage/' + match.images[0] : 'assets/placeholder-house.png'" alt="Property">
                     
+                    <div *ngIf="userRole === 'landlord'" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #e5e7eb; font-size: 60px; color: #9ca3af;">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+
                     <div class="score-badge" [ngClass]="{'high-match': match.match_score >= 80, 'med-match': match.match_score < 80}">
                         {{ match.match_score }}% Match
                     </div>
                 </div>
                 
                 <div class="match-info">
-                    <h3>{{ match.title || 'Beautiful Rental Unit' }}</h3>
-                    <p class="location"><i class="fa-solid fa-location-dot"></i> {{ match.address || match.city }}</p>
-                    <p class="price">RM {{ match.price }} <span class="text-muted">/ month</span></p>
+                    <h3>{{ userRole === 'tenant' ? match.title : match.name }}</h3>
+                    
+                    <p class="location" *ngIf="userRole === 'tenant'"><i class="fa-solid fa-location-dot"></i> {{ match.address }}</p>
+                    <p class="location" *ngIf="userRole === 'landlord'"><i class="fa-solid fa-envelope"></i> {{ match.email }}</p>
+                    
+                    <p class="price" *ngIf="userRole === 'tenant'">RM {{ match.price }} <span class="text-muted">/ month</span></p>
                     
                     <div class="match-reasons">
                         <p class="reason-title">Why it's a match:</p>
@@ -83,7 +103,8 @@
                         </ul>
                     </div>
 
-                    <button class="btn-primary w-100 mt-3" [routerLink]="['/properties', match.id]">View Details</button>
+                    <button class="btn-primary w-100 mt-3" *ngIf="userRole === 'tenant'" [routerLink]="['/properties', match.id]">View Details</button>
+                    <button class="btn-primary w-100 mt-3" *ngIf="userRole === 'landlord'">Contact Tenant</button> 
                 </div>
             </div>
         </div>

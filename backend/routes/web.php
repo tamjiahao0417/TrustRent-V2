@@ -120,8 +120,10 @@ Route::middleware(['auth:sanctum', \App\Http\Middleware\CheckIfSuspended::class]
 
     // 🌟 ALSO UPDATE THIS LINE to include /api/ so your delete button works properly!
     Route::delete('/api/reports/{id}', [ReportController::class, 'destroy']);
-    
+
     Route::post('/api/ai/match', [AiController::class, 'match']);
+
+    Route::post('/api/ai/match-tenants', [AiController::class, 'matchTenants']);
 });
 
 // =========================================================
