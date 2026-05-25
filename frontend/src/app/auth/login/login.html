@@ -1,47 +1,58 @@
 <div class="auth-wrapper">
-    <main class="auth-main">
-        <div class="auth-card">
-            
-            <div class="brand-header">
-                <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
-                <div class="brand-name">TrustRent</div>
-            </div>
-
-            <h1>Welcome back</h1>
-            <p class="subtitle">Enter your details to access your account.</p>
-            
-            <form (submit)="onSubmit($event)">
-                <div *ngIf="errorMessage" class="error-banner">
-                    <i class="fa-solid fa-circle-exclamation"></i> {{ errorMessage }}
+    <div class="auth-form-side">
+        <main class="auth-main">
+            <div class="auth-card">
+                
+                <div class="brand-header">
+                    <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                    <div class="brand-name">TrustRent</div>
                 </div>
 
-                <div class="input-group">
-                    <i class="fa-regular fa-envelope input-icon-left"></i>
-                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email address" required [disabled]="isLoading">
-                </div>
-
-                <div class="input-group password-group">
-                    <div class="password-wrapper">
-                        <i class="fa-solid fa-lock input-icon-left"></i>
-                        <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required [disabled]="isLoading">
-                        <i class="fa-regular password-toggle" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()"></i>
+                <h1>Welcome back</h1>
+                <p class="subtitle">Enter your details to access your account.</p>
+                
+                <form (submit)="onSubmit($event)">
+                    <div *ngIf="errorMessage" class="error-banner">
+                        <i class="fa-solid fa-circle-exclamation"></i> {{ errorMessage }}
                     </div>
+
+                    <div class="input-group">
+                        <i class="fa-regular fa-envelope input-icon-left"></i>
+                        <input type="email" name="email" [(ngModel)]="email" placeholder="Email address" required [disabled]="isLoading">
+                    </div>
+
+                    <div class="input-group password-group">
+                        <div class="password-wrapper">
+                            <i class="fa-solid fa-lock input-icon-left"></i>
+                            <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required [disabled]="isLoading">
+                            <i class="fa-regular password-toggle" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()"></i>
+                        </div>
+                    </div>
+
+                    <div class="forgot-password">
+                        <a href="#">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary" [disabled]="isLoading">
+                        <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isLoading" style="margin-right: 8px;"></i>
+                        {{ isLoading ? 'Signing in...' : 'Log in' }}
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Don't have an account? <a routerLink="/register">Sign up</a>
                 </div>
-
-                <div class="forgot-password">
-                    <a href="#">Forgot password?</a>
-                </div>
-
-                <button type="submit" class="btn-primary" [disabled]="isLoading">
-                    <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isLoading" style="margin-right: 8px;"></i>
-                    {{ isLoading ? 'Signing in...' : 'Log in' }}
-                </button>
-            </form>
-
-            <div class="auth-footer">
-                Don't have an account? <a href="/register">Sign up</a>
+                
             </div>
-            
+        </main>
+    </div>
+
+    <div class="auth-image-side">
+        <div class="branding-overlay">
+            <div class="overlay-content">
+                <h2>Manage properties with confidence.</h2>
+                <p>Join TrustRent for seamless AI matching, automated contracts, and transparent communication between landlords and tenants.</p>
+            </div>
         </div>
-    </main>
+    </div>
 </div>

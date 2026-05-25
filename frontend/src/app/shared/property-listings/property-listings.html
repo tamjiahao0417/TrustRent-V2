@@ -35,6 +35,11 @@
 
     <div class="property-list" *ngIf="!isLoading && filteredProperties.length > 0">
         <div class="listing-card" *ngFor="let prop of filteredProperties" [routerLink]="['/properties/view', prop.id]">
+            
+            <div class="listing-image">
+                <img [src]="'http://localhost:8000/uploads/' + prop.thumbnail" alt="Property Image">
+            </div>
+
             <div class="listing-info">
                 <span class="location"><i class="fa-solid fa-location-dot"></i> {{ prop.location }}</span>
                 <h3>{{ prop.title }}</h3>
@@ -42,9 +47,6 @@
                 <div class="price-badge">RM {{ prop.price | number:'1.2-2' }}/month</div>
             </div>
             
-            <div class="listing-image">
-                <img [src]="'http://localhost:8000/uploads/' + prop.thumbnail" alt="Property Image">
-            </div>
         </div>
     </div>
 </div>

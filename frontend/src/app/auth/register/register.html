@@ -1,60 +1,71 @@
 <div class="auth-wrapper">
-    <main class="auth-main">
-        <div class="auth-card">
-            
-            <div class="brand-header">
-                <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
-                <div class="brand-name">TrustRent</div>
+    <div class="auth-form-side">
+        <main class="auth-main">
+            <div class="auth-card">
+                
+                <div class="brand-header">
+                    <div class="logo-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                    <div class="brand-name">TrustRent</div>
+                </div>
+
+                <h1>Create an account</h1>
+                <p class="subtitle">Join us to start renting or listing properties.</p>
+                
+                <form (submit)="onSubmit($event)">
+                    <div *ngIf="errorMessage" class="error-banner">
+                        <i class="fa-solid fa-circle-exclamation"></i> {{ errorMessage }}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-user-tag input-icon-left"></i>
+                        <select name="role" [(ngModel)]="role" required class="premium-select" [disabled]="isLoading">
+                            <option value="" disabled selected hidden>I want to sign up as a...</option>
+                            <option value="tenant">Tenant (Looking to rent)</option>
+                            <option value="landlord">Landlord (Listing properties)</option>
+                            <option value="admin">Admin (System Management)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fa-regular fa-envelope input-icon-left"></i>
+                        <input type="email" name="email" [(ngModel)]="email" placeholder="Email address" required [disabled]="isLoading">
+                    </div>
+
+                    <div class="input-group">
+                        <div class="password-wrapper">
+                            <i class="fa-solid fa-lock input-icon-left"></i>
+                            <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required [disabled]="isLoading">
+                            <i class="fa-regular password-toggle" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()"></i>
+                        </div>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 32px;">
+                        <div class="password-wrapper">
+                            <i class="fa-solid fa-shield-check input-icon-left"></i>
+                            <input [type]="showConfirmPassword ? 'text' : 'password'" name="confirm_password" [(ngModel)]="confirmPassword" placeholder="Confirm password" required [disabled]="isLoading">
+                            <i class="fa-regular password-toggle" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword" (click)="toggleConfirmPassword()"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" [disabled]="isLoading">
+                        <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isLoading" style="margin-right: 8px;"></i>
+                        {{ isLoading ? 'Creating account...' : 'Create account' }}
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    Already have an account? <a routerLink="/login">Log in</a>
+                </div>
             </div>
+        </main>
+    </div>
 
-            <h1>Create an account</h1>
-            <p class="subtitle">Join us to start renting or listing properties.</p>
-            
-            <form (submit)="onSubmit($event)">
-                <div *ngIf="errorMessage" class="error-banner">
-                    <i class="fa-solid fa-circle-exclamation"></i> {{ errorMessage }}
-                </div>
-
-                <div class="input-group">
-                    <i class="fa-solid fa-user-tag input-icon-left"></i>
-                    <select name="role" [(ngModel)]="role" required class="premium-select" [disabled]="isLoading">
-                        <option value="" disabled selected hidden>I want to sign up as a...</option>
-                        <option value="tenant">Tenant (Looking to rent)</option>
-                        <option value="landlord">Landlord (Listing properties)</option>
-                        <option value="admin">Admin (System Management)</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <i class="fa-regular fa-envelope input-icon-left"></i>
-                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email address" required [disabled]="isLoading">
-                </div>
-
-                <div class="input-group">
-                    <div class="password-wrapper">
-                        <i class="fa-solid fa-lock input-icon-left"></i>
-                        <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Password" required [disabled]="isLoading">
-                        <i class="fa-regular password-toggle" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword" (click)="togglePassword()"></i>
-                    </div>
-                </div>
-
-                <div class="input-group" style="margin-bottom: 32px;">
-                    <div class="password-wrapper">
-                        <i class="fa-solid fa-shield-check input-icon-left"></i>
-                        <input [type]="showConfirmPassword ? 'text' : 'password'" name="confirm_password" [(ngModel)]="confirmPassword" placeholder="Confirm password" required [disabled]="isLoading">
-                        <i class="fa-regular password-toggle" [class.fa-eye]="!showConfirmPassword" [class.fa-eye-slash]="showConfirmPassword" (click)="toggleConfirmPassword()"></i>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-primary" [disabled]="isLoading">
-                    <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isLoading" style="margin-right: 8px;"></i>
-                    {{ isLoading ? 'Creating account...' : 'Create account' }}
-                </button>
-            </form>
-
-            <div class="auth-footer">
-                Already have an account? <a href="/login">Log in</a>
+    <div class="auth-image-side">
+        <div class="branding-overlay">
+            <div class="overlay-content">
+                <h2>Your journey starts here.</h2>
+                <p>Sign up to discover the most seamless way to rent, manage, and scale your property portfolio with smart contracts and AI matching.</p>
             </div>
         </div>
-    </main>
+    </div>
 </div>

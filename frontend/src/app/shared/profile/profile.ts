@@ -109,13 +109,33 @@ export class Profile implements OnInit {
     this.user.ic = val;
   }
 
-  // Replaces JS formatPhone
+  // 🌟 ADD THIS: Completely blocks typing letters on the keyboard
+  allowNumbersOnly(event: KeyboardEvent) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    // Allow only numbers (ASCII codes 48 to 57)
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
+  // 🌟 UPDATE THIS: Formats into 019-2229393
   formatPhone() {
     if (!this.user.phone_number) return;
+    
+    // 1. Strip out everything except raw numbers (just in case they paste text)
     let val = this.user.phone_number.replace(/\D/g, '');
+    
+    // 2. Limit to max 11 digits (Malaysian numbers are usually 10 or 11 digits)
     if (val.length > 11) val = val.slice(0, 11);
     
-    if (val.length > 3) val = val.slice(0, 3) + '-' + val.slice(3);
+    // 3. Insert the dash after the first 3 digits (e.g. 019)
+    if (val.length > 3) {
+      val = val.slice(0, 3) + '-' + val.slice(3);
+    }
+    
+    // 4. Update the input box
     this.user.phone_number = val;
   }
 }

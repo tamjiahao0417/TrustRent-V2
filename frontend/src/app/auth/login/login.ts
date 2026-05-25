@@ -2,12 +2,12 @@ import { Component, ChangeDetectorRef } from '@angular/core'; // 🌟 1. Added C
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule], 
+  imports: [FormsModule, CommonModule, RouterModule], 
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
