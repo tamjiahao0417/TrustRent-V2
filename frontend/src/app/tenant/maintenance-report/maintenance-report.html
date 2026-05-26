@@ -1,5 +1,5 @@
 <div class="page-container">
-    <a (click)="goBack()" class="btn-back">
+    <a (click)="goBack()" class="back-link">
         <i class="fa-solid fa-arrow-left"></i> Back to Issues
     </a>
     
@@ -51,7 +51,7 @@
             <div class="form-group">
                 <label>Upload Images or Video (Optional)</label>
                 <input type="file" (change)="onFileSelected($event)" class="form-control file-input" multiple accept="image/*,video/*">
-                                <small class="help-text">You can upload multiple images and media to help us understand the issue better. Max size: 5MB per file.</small>
+                <small class="help-text">You can upload multiple images and media to help us understand the issue better. Max size: 5MB per file.</small>
                 
                 <div class="preview-container" *ngIf="previewMedia.length > 0">
                     <div class="preview-wrapper" *ngFor="let media of previewMedia; let i = index">

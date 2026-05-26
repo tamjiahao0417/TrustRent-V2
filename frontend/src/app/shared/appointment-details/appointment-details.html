@@ -4,59 +4,73 @@
     </a>
 
     <div class="details-card">
-        <h1 class="page-title">Appointment Details</h1>
-
-        <div class="info-group">
-            <label>Property Address</label>
-            <p>{{ appointment.property?.address }}</p>
-        </div>
-
-        <div class="info-group">
-            <label>Date and Time</label>
-            <p>
-                {{ appointment.appointment_date | date:'EEEE, MMMM d, y' }}, 
-                {{ appointment.appointment_time.substring(0,5) }} - {{ endTime }}
-            </p>
-        </div>
-
-        <div class="info-group">
-            <label>Appointment Type</label>
-            <p>{{ appointment.appointment_type }}</p>
-        </div>
-
-        <div class="info-group" *ngIf="appointment.status === 'Approved'">
-            <label>Virtual Meeting Link</label>
-            <a [href]="meetLink" target="_blank" class="btn-meet">
-                <i class="fa-solid fa-video"></i> Join Google Meet
-            </a>
-        </div>
-
-        <div class="info-group">
-            <label>{{ userRole === 'tenant' ? 'Landlord Contact' : 'Tenant Contact' }}</label>
-            <p class="contact-name">{{ userRole === 'tenant' ? appointment.landlord?.name : appointment.tenant?.name }}</p>
-            <p>{{ userRole === 'tenant' ? appointment.landlord?.email : appointment.tenant?.email }}</p>
-            <p>{{ (userRole === 'tenant' ? appointment.landlord?.phone_number : appointment.tenant?.phone_number) || 'No phone provided' }}</p>
-        </div>
-
-        <div class="info-group">
-            <label>Status</label>
-            <p class="status-text" [ngClass]="appointment.status.toLowerCase()">
+        
+        <div class="card-header-row">
+            <h1 class="page-title">Appointment Details</h1>
+            <span class="status-badge" [ngClass]="appointment.status.toLowerCase()">
                 {{ appointment.status }}
-            </p>
+            </span>
         </div>
 
-        <div class="action-buttons" *ngIf="appointment.status === 'Pending'">
+        <div class="details-grid">
             
+            <div class="detail-block">
+                <div class="block-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                <div class="block-content">
+                    <label>Date and Time</label>
+                    <p class="highlight-text">
+                        {{ appointment.appointment_date | date:'EEEE, MMMM d, y' }}
+                    </p>
+                    <p class="sub-text">
+                        <i class="fa-regular fa-clock"></i> 
+                        {{ appointment.appointment_time.substring(0,5) }} - {{ endTime }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="detail-block">
+                <div class="block-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="block-content">
+                    <label>Meeting Location ({{ appointment.appointment_type }})</label>
+                    <p class="highlight-text">{{ appointment.property?.address }}</p>
+                </div>
+            </div>
+
+            <div class="detail-block contact-block">
+                <div class="avatar-circle">
+                    {{ (userRole === 'tenant' ? appointment.landlord?.name : appointment.tenant?.name)?.[0] | uppercase }}
+                </div>
+                <div class="block-content">
+                    <label>{{ userRole === 'tenant' ? 'Landlord Contact' : 'Tenant Contact' }}</label>
+                    <p class="highlight-text">{{ userRole === 'tenant' ? appointment.landlord?.name : appointment.tenant?.name }}</p>
+                    <div class="contact-methods">
+                        <span><i class="fa-solid fa-envelope"></i> {{ userRole === 'tenant' ? appointment.landlord?.email : appointment.tenant?.email }}</span>
+                        <span><i class="fa-solid fa-phone"></i> {{ (userRole === 'tenant' ? appointment.landlord?.phone_number : appointment.tenant?.phone_number) || 'No phone provided' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-block virtual-block" *ngIf="appointment.status === 'Approved' && appointment.appointment_type === 'Virtual'">
+                <div class="block-icon meet-icon"><i class="fa-solid fa-video"></i></div>
+                <div class="block-content">
+                    <label>Virtual Meeting Link</label>
+                    <a [href]="meetLink" target="_blank" class="btn-meet">
+                        Join Google Meet
+                    </a>
+                </div>
+            </div>
+
+        </div> <div class="action-footer" *ngIf="appointment.status === 'Pending'">
             <ng-container *ngIf="userRole === 'tenant'">
-                <button class="btn-edit" [routerLink]="['/appointments/edit', appointment.id]">Edit</button>
-                <button class="btn-delete" (click)="deleteAppointment()">Cancel</button>
+                <button class="btn-update" [routerLink]="['/appointments/edit', appointment.id]">Edit</button>
+                <button class="btn-danger" (click)="deleteAppointment()">Delete</button>
             </ng-container>
 
             <ng-container *ngIf="userRole === 'landlord'">
-                <button class="btn-approve" (click)="updateStatus('Approved')">Approve</button>
-                <button class="btn-reject" (click)="updateStatus('Rejected')">Reject</button>
+                <button class="btn-success" (click)="updateStatus('Approved')">Approve</button>
+                <button class="btn-danger" (click)="updateStatus('Rejected')">Reject</button>
             </ng-container>
-
         </div>
+
     </div>
 </div>

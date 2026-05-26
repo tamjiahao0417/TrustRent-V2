@@ -11,7 +11,7 @@ class Report extends Model
 
     protected $fillable = [
         'reference_id', 'reporter_id', 'issue_type', 
-        'description', 'related_user_id', 'attachment_path', 'status'
+        'description', 'related_user_id', 'attachment_path', 'status', 'admin_comment'
     ];
 
     // Optional: Add relationships so Admin can see names later

@@ -205,36 +205,7 @@
 }
 
 /* --- Links and Buttons --- */
-.btn-primary {
-    width: 100%;
-    padding: 16px;
-    background-color: #000000;
-    color: #ffffff;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.btn-primary:hover:not(:disabled) {
-    background-color: #333333;
-    transform: translateY(-1px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.btn-primary:active:not(:disabled) {
-    transform: scale(0.98);
-}
-
-.btn-primary:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
 
 /* --- Footer --- */
 .auth-footer {

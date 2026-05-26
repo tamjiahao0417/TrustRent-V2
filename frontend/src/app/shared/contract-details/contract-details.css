@@ -1,83 +1,91 @@
-/* 🌟 Layout inherited from global .page-container! */
-
-/* --- STATUS BANNER --- */
-.status-banner { 
-    padding: 15px 20px; 
-    border-radius: var(--radius-sm); 
-    margin-bottom: 20px; 
-    font-weight: 700; 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    font-size: 15px; 
-}
-
-.status-draft { background-color: #fef08a; color: #854d0e; border: 1px solid #fde047; }
-.status-waiting { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
-.status-needs-seal { background-color: #fef08a; color: #854d0e; border: 1px solid #fde047; }
-.status-active { background-color: #dcfce7; color: var(--success-green); border: 1px solid #bbf7d0; }
-
-/* --- BUTTONS --- */
-.action-buttons { 
-    display: flex; 
-    justify-content: center; 
-    flex-wrap: wrap; 
-    gap: 15px; 
-    margin: 20px 0 40px 0; 
-}
-
-.btn-primary { 
-    background-color: var(--text-dark); 
-    color: var(--white); 
-    border: none; 
-    padding: 12px 30px; 
-    border-radius: var(--radius-sm); 
-    font-weight: 700; 
-    font-size: 15px; 
-    cursor: pointer; 
-    transition: 0.2s; 
-    text-decoration: none; 
-    display: inline-flex; 
-    align-items: center; 
+/* 🌟 CORE TYPOGRAPHY & INHERITANCE */
+.back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
     gap: 8px;
+    transition: color 0.2s;
+    font-weight: 600;
+    cursor: pointer;
+}
+.back-link:hover { color: var(--text-dark); }
+
+.page-title { font-size: 32px; font-weight: 800; color: var(--text-dark); margin: 0; line-height: 1.2; }
+.text-muted { font-size: 15px; color: var(--text-muted); margin: 0; }
+
+/* --- DETAILS CARD (Wrapper) --- */
+.details-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.btn-primary:hover { filter: brightness(0.85); }
-.btn-verify { background-color: #8b5cf6; } /* Kept purple for Web3 actions */
-.btn-warning { background-color: #eab308; color: var(--white); }
-.btn-blue { background-color: var(--primary-blue); color: var(--white); }
+.contract-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+}
 
-.btn-back { 
-    padding: 12px 30px; 
-    border: 1px solid var(--border-color); 
-    border-radius: var(--radius-sm); 
-    color: var(--text-dark); 
+/* --- STATUS BANNERS --- */
+.status-banner { 
+    padding: 10px 20px; 
+    border-radius: 30px; 
     font-weight: 700; 
-    cursor: pointer; 
-    background: var(--white); 
-    transition: 0.2s; 
     display: inline-flex; 
     align-items: center; 
-    justify-content: center;
+    gap: 8px; 
+    font-size: 14px; 
+    white-space: nowrap;
+    margin: 0; 
+    flex-shrink: 0; 
 }
-.btn-back:hover { background-color: var(--bg-main); }
+
+.status-draft { background-color: #fefce8; color: #b45309; border: 1px solid #fef08a; }
+.status-waiting { background-color: #eff6ff; color: var(--primary-blue); border: 1px solid #bfdbfe; }
+.status-needs-seal { background-color: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+.status-active { background-color: #f0fdf4; color: var(--success-green); border: 1px solid #bbf7d0; }
+
+/* --- ACTION BUTTONS --- */
+.action-footer { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 24px; align-items: center;}
+
+
+.btn-blockchain { background-color: #8b5cf6; color: var(--white); border: 2px solid #8b5cf6; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px; }
+.btn-blockchain:hover { background-color: #7c3aed; border-color: #7c3aed; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); }
+
+.btn-verify { background-color: var(--success-green); color: var(--white); border: 2px solid var(--success-green); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px; }
+.btn-verify:hover { background-color: #059669; border-color: #059669; transform: translateY(-1px); }
 
 
 /* ==============================================
    A4 LEGAL DOCUMENT STYLING
-   No UI variables used here to protect Print Mode! 
    ============================================== */
+.document-wrapper {
+    background: #f3f4f6;
+    padding: 40px 20px;
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
 .a4-document { 
     background: white; 
     max-width: 210mm; 
     margin: 0 auto; 
     padding: 40mm 25mm; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
     font-family: "Times New Roman", Times, serif; 
     color: #000; 
     line-height: 1.6; 
     text-align: justify; 
 }
+
 .a4-document h1 { text-align: center; font-size: 22px; margin-bottom: 40px; font-weight: bold; }
 .a4-document h2 { font-size: 16px; margin-top: 30px; margin-bottom: 15px; font-weight: bold; text-decoration: underline; color: #000;}
 .a4-document p { margin-bottom: 15px; font-size: 14px; color: #000;}
@@ -109,44 +117,17 @@
 .legal-list li { margin-bottom: 15px; font-size: 14px; padding-left: 10px; color: #000;}
 
 /* ==============================================
-   WEB UI: SIGN & ACCEPT PANEL (Fluid & Responsive)
+   WEB UI: SIGN & ACCEPT PANEL 
    ============================================== */
-.signature-panel {
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-color);
-    padding: 40px;
-    text-align: center;
-    margin: 40px auto 0 auto;
-    width: 100%;
-    max-width: 800px;
-    box-sizing: border-box;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.signature-panel h2 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--text-dark);
-    text-decoration: none;
-}
-
-.text-muted {
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-bottom: 25px;
-}
-
 .canvas-container {
     border: 1px dashed var(--border-color);
     border-radius: var(--radius-md);
     padding: 20px;
     background: var(--bg-main);
     display: inline-block;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     width: 100%;
+    max-width: 550px;
     box-sizing: border-box;
 }
 
@@ -155,8 +136,13 @@
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
     width: 100%;
-    max-width: 500px; /* Limits drawing area visually */
     cursor: crosshair;
+}
+
+.signature-actions-row {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
 }
 
 .btn-clear-sig {
@@ -165,60 +151,19 @@
     color: var(--danger-red);
     font-weight: 700;
     font-size: 14px;
-    margin-top: 15px;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    transition: 0.2s;
+    gap: 6px;
+    transition: opacity 0.2s;
 }
-
-.btn-clear-sig:hover { filter: brightness(0.85); }
-
-.signature-actions {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.btn-agree {
-    background-color: var(--primary-blue);
-    color: var(--white);
-    border: none;
-    padding: 12px 30px;
-    border-radius: var(--radius-sm);
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-agree:hover { filter: brightness(0.9); }
-
-.btn-request-edit {
-    background-color: var(--danger-red);
-    color: var(--white);
-    border: none;
-    padding: 12px 30px;
-    border-radius: var(--radius-sm);
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.2s;
-}
-
-.btn-request-edit:hover { filter: brightness(0.9); }
+.btn-clear-sig:hover { opacity: 0.8; text-decoration: underline;}
 
 /* --- RESPONSIVE SCALING --- */
 @media (max-width: 768px) {
+    .contract-header-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .document-wrapper { padding: 20px 10px; }
     .a4-document { padding: 20mm 15mm; }
-    .signature-panel { padding: 20px; }
-    .action-buttons { flex-direction: column; }
-    .btn-primary, .btn-back { width: 100%; justify-content: center; }
+    .action-footer { flex-direction: column; align-items: stretch; }
+    .action-footer button, .action-footer a { width: 100%; justify-content: center;}
 }

@@ -68,7 +68,7 @@ export class ContractDetails implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userRole = localStorage.getItem('user_role');
+    this.userRole = localStorage.getItem('user_role')?.toLowerCase() || null;
     const id = this.route.snapshot.paramMap.get('id');
 
     this.http.get(`http://localhost:8000/api/contracts/${id}`).subscribe({

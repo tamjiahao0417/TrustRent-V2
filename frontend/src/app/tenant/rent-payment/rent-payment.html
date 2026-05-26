@@ -1,46 +1,114 @@
 <div class="page-container">
-    <h1 class="page-title" style="margin-bottom: 30px;">Payments</h1>
-    <h2 style="font-size: 20px; margin-bottom: 20px;">Current Balance</h2>
     
-    <div class="balance-card" *ngIf="bill">
-        <div class="card-header">
+    <div class="header-titles" style="margin-bottom: 30px;">
+        <h1 class="page-title">Payments & Billing</h1>
+        <p class="text-muted">Manage your rent and deposit payments securely via Web3 Smart Contracts.</p>
+    </div>
+    
+    <div class="details-card" *ngIf="bill">
+        
+        <div class="contract-header-row" style="margin-bottom: 30px; border-bottom: 1px solid var(--border-color); padding-bottom: 24px;">
             <div>
-                <div class="pill-tag">{{ bill.is_first ? 'Move-In Payment Required' : 'Regular Monthly Billing' }}</div>
-                <div class="coverage-text">Coverage: <span>{{ bill.period }}</span></div>
+                <h2 style="margin: 0 0 8px 0; font-size: 22px; color: var(--text-dark);">Current Balance</h2>
+                <p class="text-muted" style="margin: 0;">Coverage Period: <strong>{{ bill.period }}</strong></p>
+            </div>
+            <div class="status-banner status-needs-seal">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>{{ bill.is_first ? 'Move-In Payment Required' : 'Monthly Rent Due' }}</span>
             </div>
         </div>
         
-        <ng-container *ngIf="bill.is_first">
-            <div class="balance-row"><div><div class="amount">RM {{ bill.rent | number:'1.2-2' }}</div><div class="label">Advance Rental</div></div><div class="due">Due Before Move-in</div></div>
-            <div class="balance-row"><div><div class="amount">RM {{ bill.sec_dep | number:'1.2-2' }}</div><div class="label">Security Deposit</div></div><div class="due">Due Before Move-in</div></div>
-            <div class="balance-row"><div><div class="amount">RM {{ bill.util_dep | number:'1.2-2' }}</div><div class="label">Utility Deposit</div></div><div class="due">Due Before Move-in</div></div>
-        </ng-container>
+        <div class="details-grid">
+            <ng-container *ngIf="bill.is_first">
+                <div class="detail-block">
+                    <div class="block-icon"><i class="fa-solid fa-house-user"></i></div>
+                    <div class="block-content">
+                        <label>Advance Rental</label>
+                        <p class="highlight-text">RM {{ bill.rent | number:'1.2-2' }}</p>
+                    </div>
+                </div>
+                <div class="detail-block">
+                    <div class="block-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="block-content">
+                        <label>Security Deposit</label>
+                        <p class="highlight-text">RM {{ bill.sec_dep | number:'1.2-2' }}</p>
+                    </div>
+                </div>
+                <div class="detail-block">
+                    <div class="block-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                    <div class="block-content">
+                        <label>Utility Deposit</label>
+                        <p class="highlight-text">RM {{ bill.util_dep | number:'1.2-2' }}</p>
+                    </div>
+                </div>
+            </ng-container>
 
-        <ng-container *ngIf="!bill.is_first">
-            <div class="balance-row"><div><div class="amount">RM {{ bill.rent | number:'1.2-2' }}</div><div class="label">Rent</div></div><div class="due">Due on 1st</div></div>
-            <div class="balance-row"><div><div class="amount">RM {{ bill.util | number:'1.2-2' }}</div><div class="label">Utilities</div></div><div class="due">Due on 1st</div></div>
-        </ng-container>
+            <ng-container *ngIf="!bill.is_first">
+                <div class="detail-block">
+                    <div class="block-icon"><i class="fa-solid fa-house-user"></i></div>
+                    <div class="block-content">
+                        <label>Monthly Rent</label>
+                        <p class="highlight-text">RM {{ bill.rent | number:'1.2-2' }}</p>
+                    </div>
+                </div>
+                <div class="detail-block">
+                    <div class="block-icon"><i class="fa-solid fa-plug"></i></div>
+                    <div class="block-content">
+                        <label>Utilities</label>
+                        <p class="highlight-text">RM {{ bill.util | number:'1.2-2' }}</p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
 
-        <div class="balance-row total-row">
-            <div><div class="amount total">RM {{ bill.total | number:'1.2-2' }}</div><div class="label">Total</div></div>
-            <div class="due">{{ bill.is_first ? 'Due Before Move-in' : 'Due on 1st' }}</div>
+        <div class="total-summary-box">
+            <div class="total-info">
+                <span class="total-label">Total Amount Due</span>
+                <span class="total-due-date"><i class="fa-regular fa-calendar-xmark"></i> {{ bill.is_first ? 'Due Before Move-in' : 'Due on 1st of the Month' }}</span>
+            </div>
+            <div class="total-amount">
+                <span class="currency">RM</span> {{ bill.total | number:'1.2-2' }}
+            </div>
         </div>
         
-        <button class="btn-primary pay-btn" (click)="payWithWeb3()">Pay Now (Web3)</button>
+        <div class="action-footer" style="justify-content: flex-end;">
+            <button class="btn-blockchain" (click)="payWithWeb3()">
+                <i class="fa-brands fa-ethereum"></i> Pay Now with MetaMask
+            </button>
+        </div>
     </div>
-    <div *ngIf="!bill" class="empty-state">You have no active contracts or pending balances.</div>
 
-    <h2 style="font-size: 20px; margin-top: 40px; margin-bottom: 20px;">Payment History</h2>
-    <div class="table-card">
-        <table>
-            <thead><tr><th>Coverage Period</th><th>Amount</th><th>Status</th></tr></thead>
+    <div *ngIf="!bill" class="empty-state">
+        <i class="fa-solid fa-check-circle" style="font-size: 40px; color: var(--success-green); margin-bottom: 16px;"></i>
+        <p>You have no active contracts or pending balances to pay.</p>
+    </div>
+
+    <div class="header-titles" style="margin-top: 50px; margin-bottom: 20px;">
+        <h2 style="font-size: 22px; color: var(--text-dark); margin: 0;">Payment History</h2>
+    </div>
+
+    <div class="details-card table-card">
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>Coverage Period</th>
+                    <th>Amount Paid</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
             <tbody>
                 <tr *ngFor="let tx of history">
-                    <td style="color:#6b7280;">{{ tx.billing_period }}</td>
-                    <td style="font-weight:bold;">RM {{ tx.amount | number:'1.2-2' }}</td>
-                    <td><span class="status-badge">{{ tx.status }}</span></td>
+                    <td class="text-muted font-medium">{{ tx.billing_period }}</td>
+                    <td class="bold-text">RM {{ tx.amount | number:'1.2-2' }}</td>
+                    <td>
+                        <span class="status-banner status-active" style="padding: 6px 12px; font-size: 12px;">
+                            <i class="fa-solid fa-check"></i> {{ tx.status }}
+                        </span>
+                    </td>
                 </tr>
-                <tr *ngIf="history.length === 0"><td colspan="3" style="text-align:center;">No payments made yet.</td></tr>
+                <tr *ngIf="history.length === 0">
+                    <td colspan="3" class="text-center text-muted" style="padding: 30px;">No payments have been made yet.</td>
+                </tr>
             </tbody>
         </table>
     </div>

@@ -1,156 +1,162 @@
-
-.back-link { color: var(--text-muted); text-decoration: none; font-weight: 500; margin-bottom: 24px; display: inline-block; transition: 0.2s;}
+/* 🌟 Global Inheritances */
+.back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    font-weight: 600;
+}
 .back-link:hover { color: var(--text-dark); }
 
-.header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.header-row h1 { margin: 0; font-size: 28px; font-weight: 800; color: var(--text-dark); }
-
-/* Rented Badge - using a light blue mix to keep it distinct */
-.rented-badge { background: #dbeafe; color: var(--primary-blue); padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 14px; }
-
-/* Photo Gallery Grid */
-.photo-grid { display: flex; gap: 16px; margin-bottom: 40px; height: 400px; }
-.main-photo { flex: 2; height: 100%; }
-.main-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); }
-.side-photos { flex: 1; display: flex; flex-direction: column; gap: 16px; }
-.side-photos img { width: 100%; height: calc(50% - 8px); object-fit: cover; border-radius: var(--radius-lg); }
-
-/* Details Card */
-.details-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; }
-.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;}
-.card-top h2 { margin: 0; font-size: 24px; font-weight: 800; color: var(--text-dark); }
-.price { font-size: 24px; font-weight: 700; color: var(--success-green); text-align: right; }
-.price span { display: block; font-size: 14px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
-.address { color: var(--text-muted); margin-bottom: 40px; }
-
-.section { margin-bottom: 40px; }
-.section h3 { font-size: 18px; margin-bottom: 12px; color: var(--text-dark); }
-.section p { color: var(--text-muted); line-height: 1.6; }
-
-/* 2x2 Info Grid */
-.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 32px 0; margin-bottom: 32px;}
-.info-box label { color: var(--text-muted); font-size: 13px; display: block; margin-bottom: 8px; }
-.info-box p { font-weight: 700; margin: 0; font-size: 16px; color: var(--text-dark); }
-
-/* Buttons */
-.actions { display: flex; gap: 16px; align-items: center; }
-.btn-edit { background: var(--primary-blue); color: var(--white); padding: 12px 24px; border-radius: var(--radius-sm); border: none; font-weight: 700; cursor: pointer; text-decoration: none; transition: 0.2s; }
-.btn-edit:hover { filter: brightness(0.9); }
-.btn-delete { background: var(--white); color: var(--danger-red); border: 1px solid var(--danger-red); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; transition: 0.2s;}
-.btn-delete:hover { background: #fef2f2; }
-.lock-text { color: var(--danger-red); font-weight: 700; font-size: 14px; }   
-
-/* Additional Photos Gallery */
-.extra-photos-section { margin-bottom: 40px; }
-.extra-photos-section h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-dark); }
-.extra-gallery-grid { display: flex; flex-wrap: wrap; gap: 16px; }
-
-.gallery-item {
-    width: calc(25% - 12px);
-    height: 160px;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid var(--border-color);
+/* --- HEADER --- */
+.property-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+.header-titles h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    color: var(--text-dark);
+}
+.address-text {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-.gallery-item img:hover { transform: scale(1.05); }
+/* --- BADGES --- */
+.status-badge {
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.status-badge.available { background: #d1fae5; color: var(--success-green); border: 1px solid #a7f3d0; }
+.status-badge.rented { background: #fee2e2; color: var(--danger-red); border: 1px solid #fecaca; }
 
-/* Make images look clickable */
+/* --- PHOTO GALLERY --- */
+.photo-grid { display: flex; gap: 16px; margin-bottom: 40px; height: 450px; }
+.main-photo { flex: 2; height: 100%; }
+.main-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+.side-photos { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+.side-photos img { width: 100%; height: calc(50% - 8px); object-fit: cover; }
+.side-photos img:first-child { border-radius: 0 var(--radius-lg) 0 0; }
+.side-photos img:last-child { border-radius: 0 0 var(--radius-lg) 0; }
+
 .clickable-image { cursor: pointer; transition: filter 0.2s ease; }
 .clickable-image:hover { filter: brightness(0.85); }
 
-/* The Dark Background Overlay */
-.image-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(17, 24, 39, 0.9); /* Replaced with text-dark rgb */
-    z-index: 9999; 
+/* --- TWO COLUMN LAYOUT --- */
+.property-layout-split {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 2/3 left, 1/3 right */
+    gap: 40px;
+    align-items: start;
+}
+
+/* LEFT COLUMN */
+.content-section {
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 40px;
+}
+.content-section h2 { font-size: 22px; font-weight: 800; margin: 0 0 16px 0; }
+.description-text { font-size: 16px; line-height: 1.7; color: var(--text-dark); margin: 0; }
+
+/* Details Grid */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+.detail-block {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer; 
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+.block-icon {
+    width: 44px; height: 44px;
+    background-color: var(--white);
+    color: var(--primary-blue);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 18px; flex-shrink: 0;
+}
+.block-content label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
+.highlight-text { font-size: 16px; font-weight: 700; color: var(--text-dark); margin: 0; }
+
+/* Extra Photos Gallery */
+.extra-photos-section h2 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+.extra-gallery-grid { display: flex; flex-wrap: wrap; gap: 16px; }
+.gallery-item { width: calc(25% - 12px); height: 140px; border-radius: var(--radius-md); overflow: hidden; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+/* RIGHT COLUMN (STICKY ACTION CARD) */
+.sidebar-content {
+    position: sticky;
+    top: 30px; /* Sticks to the top of the screen as you scroll */
+}
+.action-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+.price-display { display: flex; align-items: baseline; gap: 6px; }
+.price-display .currency { font-size: 20px; font-weight: 700; color: var(--text-dark); }
+.price-display .amount { font-size: 36px; font-weight: 800; color: var(--text-dark); letter-spacing: -1px; }
+.price-display .period { font-size: 16px; color: var(--text-muted); font-weight: 500; }
+
+.card-divider { border-top: 1px solid var(--border-color); margin: 24px 0; }
+
+.action-buttons-vertical { display: flex; flex-direction: column; gap: 16px; }
+
+/* Make buttons fill the card width */
+.action-buttons-vertical .btn-primary,
+.action-buttons-vertical .btn-secondary,
+.action-buttons-vertical .btn-edit,
+.action-buttons-vertical .btn-danger {
+    width: 100%;
 }
 
-/* The Full Size Image */
-.image-modal img {
-    max-width: 90%;
-    max-height: 90vh;
-    border-radius: var(--radius-sm);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
-    cursor: default;
+/* Banners */
+.alert-banner {
+    padding: 16px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; line-height: 1.5;
+    display: flex; gap: 10px; align-items: flex-start;
 }
+.alert-banner i { margin-top: 2px; }
+.error-banner { background-color: #fef2f2; color: var(--danger-red); border: 1px solid #fecaca; }
+.warning-banner { background-color: #fefce8; color: #b45309; border: 1px solid #fef08a; }
 
-/* The Close Button */
-.close-modal {
-    position: absolute;
-    top: 24px;
-    right: 40px;
-    color: var(--white);
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
+/* --- LIGHTBOX MODAL --- */
+.image-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(17, 24, 39, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.image-modal img { max-width: 90%; max-height: 90vh; border-radius: var(--radius-sm); box-shadow: 0 10px 40px rgba(0,0,0,0.5); cursor: default; }
+.close-modal { position: absolute; top: 24px; right: 40px; color: var(--white); font-size: 40px; font-weight: bold; cursor: pointer; transition: color 0.2s; }
 .close-modal:hover { color: var(--danger-red); }
 
-/* --- Tenant Action Buttons --- */
-.tenant-actions {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
-    border-top: 1px solid var(--border-color);
-    padding-top: 30px;
-}
-
-.btn-outline {
-    flex: 1;
-    padding: 16px;
-    background-color: var(--white);
-    color: var(--text-dark);
-    border: 2px solid var(--text-dark);
-    border-radius: var(--radius-sm);
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-outline:hover { background-color: var(--bg-main); }
-
-.btn-solid {
-    flex: 1;
-    padding: 16px;
-    background-color: var(--text-dark);
-    color: var(--white);
-    border: 2px solid var(--text-dark);
-    border-radius: var(--radius-sm);
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-solid:hover { opacity: 0.9; }
-
-/* 🌟 The new CSS for the rented warning banner */
-.rented-warning-banner {
-    width: 100%;
-    text-align: center;
-    padding: 16px;
-    background-color: var(--bg-main);
-    border-radius: var(--radius-sm);
-    color: var(--text-muted);
-    font-weight: 600;
-    border: 1px solid var(--border-color);
-    box-sizing: border-box;
-}
-
-.rented-warning-banner i {
-    color: var(--danger-red);
-    margin-right: 8px;
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 900px) {
+    .property-layout-split { grid-template-columns: 1fr; } /* Stacks the Action Card under the Details */
+    .sidebar-content { position: static; }
+    .photo-grid { height: 300px; }
 }

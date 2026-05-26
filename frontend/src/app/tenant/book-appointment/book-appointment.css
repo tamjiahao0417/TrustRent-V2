@@ -123,21 +123,7 @@
     border-top: 1px solid var(--border-color);
 }
 
-.btn-primary {
-    background-color: var(--text-dark);
-    color: var(--white);
-    border: none;
-    padding: 14px 32px;
-    border-radius: var(--radius-sm);
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-}
 
-.btn-primary:hover {
-    opacity: 0.85;
-}
 
 /* --- ALERTS --- */
 .error-banner {

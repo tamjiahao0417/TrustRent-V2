@@ -4,93 +4,98 @@
     </a>
 
     <div class="details-card">
-        <h1 class="page-title">Rental Request Details</h1>
+        
+        <div class="card-header-row">
+            <h1 class="page-title">Rental Request Details</h1>
+            <span class="status-badge" [ngClass]="request.status.toLowerCase()">
+                {{ request.status }}
+            </span>
+        </div>
 
-        <div class="section-header">Property & Applicant Information</div>
-        <div class="info-grid">
-            <div class="info-item">
-                <label>Property Name</label>
-                <div>{{ request.property?.title }}</div>
+        <div class="details-grid">
+            
+            <div class="detail-block">
+                <div class="block-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                <div class="block-content">
+                    <label>Property Requested</label>
+                    <p class="highlight-text">{{ request.property?.title }}</p>
+                    <p class="sub-text">
+                        <i class="fa-solid fa-tag"></i> 
+                        RM {{ request.property?.price | number:'1.2-2' }} / month
+                    </p>
+                </div>
+            </div>
+
+            <div class="detail-block">
+                <div class="block-icon"><i class="fa-regular fa-calendar-check"></i></div>
+                <div class="block-content">
+                    <label>Proposed Lease Period</label>
+                    <p class="highlight-text">
+                        {{ request.start_date | date:'MMM d, yyyy' }} - {{ request.end_date | date:'MMM d, yyyy' }}
+                    </p>
+                    <p class="sub-text">
+                        <i class="fa-solid fa-truck-fast"></i> 
+                        Move-in: {{ request.move_in_date | date:'MMM d, yyyy' }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="detail-block contact-block">
+                <div class="avatar-circle">
+                    {{ (userRole === 'tenant' ? request.landlord?.name : request.tenant?.name)?.[0] | uppercase }}
+                </div>
+                <div class="block-content">
+                    <label>{{ userRole === 'tenant' ? 'Landlord Contact' : 'Tenant Applicant' }}</label>
+                    <p class="highlight-text">{{ userRole === 'tenant' ? request.landlord?.name : request.tenant?.name }}</p>
+                    
+                    <div class="contact-methods">
+                        <span>
+                            <i class="fa-solid fa-envelope"></i> 
+                            {{ userRole === 'tenant' ? request.landlord?.email : request.tenant?.email }}
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-phone"></i> 
+                            {{ (userRole === 'tenant' ? request.landlord?.phone_number : request.tenant?.phone_number) || 'No phone provided' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div> <div class="notes-container">
+            <div class="note-box" *ngIf="request.property?.description">
+                <label>Landlord's Property Description</label>
+                <p>{{ request.property?.description }}</p>
             </div>
             
-            <div class="info-item">
-                <label>{{ userRole === 'tenant' ? 'Landlord Name' : 'Tenant Name' }}</label>
-                <div>{{ userRole === 'tenant' ? request.landlord?.name : request.tenant?.name }}</div>
-            </div>
-
-            <ng-container *ngIf="userRole === 'landlord'">
-                 <div class="info-item">
-                    <label>Applicant Email</label>
-                    <div>{{ request.tenant?.email }}</div>
-                </div>
-                 <div class="info-item">
-                    <label>Applicant Phone</label>
-                    <div>{{ request.tenant?.phone_number || 'No phone provided' }}</div>
-                </div>
-            </ng-container>
-
-            <div class="info-item">
-                <label>Status</label>
-                <div class="status-text" [ngClass]="request.status.toLowerCase()">
-                    {{ request.status }}
-                </div>
+            <div class="note-box highlight-note">
+                <label>Tenant's Application Notes</label>
+                <p>{{ request.notes || 'No additional notes provided by the tenant.' }}</p>
             </div>
         </div>
 
-        <div class="section-header">Lease Details</div>
-        <div class="info-grid">
-            <div class="info-item">
-                <label>Lease Start Date</label>
-                <div>{{ request.start_date | date:'MMMM d, y' }}</div>
-            </div>
-            <div class="info-item">
-                <label>Lease End Date</label>
-                <div>{{ request.end_date | date:'MMMM d, y' }}</div>
-            </div>
-            <div class="info-item">
-                <label>Move-in Date</label>
-                <div>{{ request.move_in_date | date:'MMMM d, y' }}</div>
-            </div>
-            <div class="info-item">
-                <label>Monthly Rent</label>
-                <div>RM {{ request.property?.price | number:'1.2-2' }}</div>
-            </div>
-        </div>
-
-        <div class="section-header">Landlord Description</div>
-        <div class="text-block">
-            {{ request.property?.description }}
-        </div>
-
-        <div class="section-header">Tenant Notes</div>
-        <div class="text-block last-block">
-            {{ request.notes || 'No additional notes provided.' }}
-        </div>
-
-        <div class="action-buttons" *ngIf="request.status === 'Pending'">
-            
+        <div class="action-footer" *ngIf="request.status === 'Pending'">
             <ng-container *ngIf="userRole === 'tenant'">
-                <button class="btn-edit" [routerLink]="['/rental-requests/edit', request.id]">Edit</button>
-                <button class="btn-delete" (click)="deleteRequest()">Delete</button>
+                <button class="btn-update" [routerLink]="['/rental-requests/edit', request.id]">Edit</button>
+                <button class="btn-danger" (click)="deleteRequest()">Delete</button>
             </ng-container>
 
             <ng-container *ngIf="userRole === 'landlord'">
-                <button class="btn-approve" (click)="updateStatus('Approved')">Approve Lease</button>
-                <button class="btn-reject" (click)="updateStatus('Rejected')">Reject</button>
+                <button class="btn-success" (click)="updateStatus('Approved')">Approve Lease</button>
+                <button class="btn-danger" (click)="updateStatus('Rejected')">Reject</button>
             </ng-container>
         </div>
 
-        <div class="action-buttons" *ngIf="request.status === 'Approved' && userRole === 'landlord'">
+        <div class="action-footer" *ngIf="request.status === 'Approved' && userRole === 'landlord'">
             
             <button *ngIf="request.property?.is_rented == 0 || !request.property?.is_rented" 
                     class="btn-primary" 
                     (click)="goToCreateContract()">
-                Create Contract
+                <i class="fa-solid fa-file-signature"></i> Create Contract
             </button>
 
             <div *ngIf="request.property?.is_rented == 1" class="contract-exists-banner">
-                <i class="fa-solid fa-file-signature"></i> 
-                A contract has already been created for this property.
+                <i class="fa-solid fa-circle-check"></i> 
+                A contract has already been successfully created for this property.
             </div>
 
         </div>

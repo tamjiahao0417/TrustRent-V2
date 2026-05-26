@@ -1,71 +1,143 @@
 <div class="page-container" *ngIf="issue">
-    <a (click)="goBack()" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Issues</a>
-    <h1 class="page-title">Issue Details</h1>
+    
+    <a (click)="goBack()" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to Issues
+    </a>
 
-    <div class="layout-grid">
-        <div class="detail-card">
-            <h3 class="section-title">Issue Information</h3>
-            <div class="grid-info">
-                <div><div class="info-label">Issue ID</div><div class="info-val">#{{ issue.id }}</div></div>
-                <div><div class="info-label">Property</div><div class="info-val">{{ issue.property_address }}</div></div>
-                <div><div class="info-label">Reported By</div><div class="info-val">{{ issue.tenant_name }}</div></div>
-                <div><div class="info-label">Category</div><div class="info-val">{{ issue.category }}</div></div>
-                <div><div class="info-label">Urgency</div><div class="info-val">{{ issue.urgency }}</div></div>
-                <div><div class="info-label">Status</div><div class="info-val text-bold">{{ issue.status }}</div></div>
-            </div>
+    <div class="contract-header-row" style="margin-bottom: 30px;">
+        <div class="header-titles">
+            <h1 class="page-title">Issue Ticket #{{ issue.id }}</h1>
+            <p class="text-muted" style="margin-top: 6px;">
+                <i class="fa-solid fa-location-dot"></i> {{ issue.property_address }}
+            </p>
+        </div>
+        
+        <div class="status-banner" [ngClass]="{
+            'status-needs-seal': issue.status === 'Open',
+            'status-waiting': issue.status === 'In Progress',
+            'status-active': issue.status === 'Resolved',
+            'status-closed': issue.status === 'Closed'
+        }">
+            <i class="fa-solid" [ngClass]="{
+                'fa-circle-exclamation': issue.status === 'Open',
+                'fa-screwdriver-wrench': issue.status === 'In Progress',
+                'fa-circle-check': issue.status === 'Resolved',
+                'fa-lock': issue.status === 'Closed'
+            }"></i>
+            <span>{{ issue.status }}</span>
+        </div>
+    </div>
 
-            <h3 class="section-title" style="margin-top: 30px;">Description</h3>
-            <p class="description-text">{{ issue.description }}</p>
+    <div class="property-layout-split">
+        
+        <div class="main-content">
+            <div class="details-card">
+                
+                <div class="section-title" style="margin-top: 0;">Report Information</div>
+                
+                <div class="details-grid">
+                    <div class="detail-block">
+                        <div class="block-icon"><i class="fa-solid fa-user-tag"></i></div>
+                        <div class="block-content">
+                            <label>Reported By</label>
+                            <p class="highlight-text">{{ issue.tenant_name }}</p>
+                        </div>
+                    </div>
 
-            <div *ngIf="issue.latest_update" class="latest-update-box">
-                <h3 class="latest-update-title">Latest Update</h3>
-                <p class="latest-update-text">
-                    {{ issue.latest_update }}
-                </p>
-            </div>
+                    <div class="detail-block">
+                        <div class="block-icon"><i class="fa-solid fa-layer-group"></i></div>
+                        <div class="block-content">
+                            <label>Category</label>
+                            <p class="highlight-text">{{ issue.category }}</p>
+                        </div>
+                    </div>
 
-            <div *ngIf="parsedMedia.length > 0" style="margin-top: 30px;">
-                <h3 class="section-title">Media Attached</h3>
-                <div class="media-grid">
-                    <div *ngFor="let url of parsedMedia" class="media-wrapper">
-                        <img *ngIf="!isVideo(url)" [src]="url" class="media-item" alt="Issue Media" (click)="openImage(url)">
-                        <video *ngIf="isVideo(url)" [src]="url" class="media-item video-item" controls></video>
+                    <div class="detail-block">
+                        <div class="block-icon" [ngStyle]="{'color': issue.urgency === 'High' ? '#ef4444' : (issue.urgency === 'Medium' ? '#f59e0b' : '#3b82f6')}">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div class="block-content">
+                            <label>Urgency</label>
+                            <p class="highlight-text">{{ issue.urgency }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="action-btns" *ngIf="userRole === 'tenant' && issue.status === 'Open'">
-                <button class="btn-light" (click)="editIssue()">Edit Issue</button> 
-                <button class="btn-danger" (click)="deleteIssue()">Delete Issue</button>
+                <div class="section-title" style="margin-top: 40px;">Description</div>
+                <div class="text-block">
+                    {{ issue.description }}
+                </div>
+
+                <div *ngIf="issue.latest_update" class="latest-update-box highlight-note">
+                    <div class="update-header">
+                        <i class="fa-solid fa-bullhorn"></i> Latest Update from Landlord
+                    </div>
+                    <p>{{ issue.latest_update }}</p>
+                </div>
+
+                <div *ngIf="parsedMedia.length > 0" style="margin-top: 40px;">
+                    <div class="section-title">Attached Media</div>
+                    <div class="media-grid">
+                        <div *ngFor="let url of parsedMedia" class="media-wrapper">
+                            <img *ngIf="!isVideo(url)" [src]="url" class="media-item" alt="Issue Media" (click)="openImage(url)">
+                            <video *ngIf="isVideo(url)" [src]="url" class="media-item video-item" controls></video>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-footer" *ngIf="userRole === 'tenant' && issue.status === 'Open'">
+                    <button class="btn-update" (click)="editIssue()">
+                        <i class="fa-solid fa-pen"></i> Edit Report
+                    </button> 
+                    <button class="btn-danger" (click)="deleteIssue()">
+                        <i class="fa-solid fa-trash"></i> Delete Report
+                    </button>
+                </div>
+
             </div>
         </div>
 
-        <div class="side-column" *ngIf="userRole === 'landlord'">
-            <div class="tool-card">
-                <h3 class="section-title">Update Status</h3>
+        <div class="sidebar-content" *ngIf="userRole === 'landlord'">
+            <div class="action-card">
+                
+                <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 800; color: var(--text-dark);">
+                    <i class="fa-solid fa-clipboard-check text-muted"></i> Manage Status
+                </h3>
+                <p class="text-muted" style="margin-bottom: 24px; font-size: 14px;">Update the ticket status and notify the tenant.</p>
+
+                <div class="card-divider"></div>
                 
                 <ng-container *ngIf="issue.status !== 'Closed'">
-                    <p class="info-label" style="margin-bottom: 15px;">Change the current status and notify the tenant.</p>
                     
-                    <select [(ngModel)]="updateData.status" class="form-control mb-3">
-                        <option value="Open">Open</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Resolved">Resolved</option>
-                        <option value="Closed">Closed</option>
-                    </select>
+                    <div class="form-group">
+                        <label>Current Status</label>
+                        <select [(ngModel)]="updateData.status" class="form-control premium-select">
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
 
-                    <input type="text" [(ngModel)]="updateData.latest_update" class="form-control mb-3" placeholder="e.g. Plumber scheduled for tomorrow">
+                    <div class="form-group">
+                        <label>Update Message to Tenant</label>
+                        <textarea [(ngModel)]="updateData.latest_update" class="form-control" rows="3" placeholder="e.g. Plumber scheduled for tomorrow morning at 10 AM..."></textarea>
+                    </div>
                     
-                    <button class="btn-primary w-100" (click)="updateStatus()">Update Status</button>
+                    <button class="btn-primary w-100" style="margin-top: 10px;" (click)="updateStatus()">
+                        <i class="fa-solid fa-paper-plane"></i> Save & Notify
+                    </button>
+
                 </ng-container>
 
                 <div *ngIf="issue.status === 'Closed'" class="closed-warning-box">
                     <i class="fa-solid fa-lock"></i>
-                    <p>This issue has been closed and cannot be updated further.</p>
+                    <p>This ticket has been permanently closed and cannot be updated.</p>
                 </div>
 
             </div>
         </div>
+
     </div>
 
     <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">

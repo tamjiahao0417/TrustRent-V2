@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { LoadingSpinnerComponent } from '../../loading-spinner.component'; // 🌟 Import Spinner
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -23,7 +24,7 @@ export class Chat implements OnInit {
   isLoadingContacts: boolean = true;
   isLoadingMessages: boolean = false;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef,  private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.userRole = localStorage.getItem('user_role');
@@ -38,6 +39,16 @@ export class Chat implements OnInit {
         next: (data: any) => {
           this.contacts = data;
           this.isLoadingContacts = false;
+
+          this.route.queryParams.subscribe(params => {
+            if (params['contact_id']) {
+                const targetContact = this.contacts.find(c => c.id == params['contact_id']);
+                if (targetContact) {
+                    this.selectContact(targetContact);
+                }
+            }
+          });
+
           this.cdr.detectChanges();
         },
         error: (err) => {

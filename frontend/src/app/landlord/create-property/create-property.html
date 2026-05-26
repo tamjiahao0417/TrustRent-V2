@@ -1,4 +1,9 @@
 <div class="page-container">
+    
+    <a routerLink="/my-properties" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Cancel Create
+    </a>
+
     <div class="header-flex">
         <h1>Create New Property Listing</h1>
     </div>
@@ -38,7 +43,12 @@
 
             <div class="form-group">
                 <label>Contact Phone Number</label>
-                <input type="tel" name="phone_number" [(ngModel)]="property.phone_number" required placeholder="+60...">
+                <input type="tel" name="phone_number" 
+                       [(ngModel)]="property.phone_number" 
+                       (keypress)="allowNumbersOnly($event)"
+                       (input)="formatPhone()"
+                       required 
+                       placeholder="01X-XXXXXXX">
             </div>
 
             <div class="form-group">
@@ -61,10 +71,10 @@
             </div>
             
             <div class="action-buttons">
-                <button type="submit" class="btn-black" [disabled]="!propertyForm.valid || isSubmitting">
+                <button type="submit" class="btn-primary" [disabled]="!propertyForm.valid || isSubmitting">
                     {{ isSubmitting ? 'Listing...' : 'List Property' }}
                 </button>
-                <a routerLink="/my-properties" class="btn-cancel">Cancel</a>
+                <a routerLink="/my-properties" class="btn-secondary">Cancel</a>
             </div>
             
         </form>

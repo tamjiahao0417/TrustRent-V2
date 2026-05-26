@@ -1,5 +1,4 @@
-/* 🌟 Layout inherited from global .page-container! */
-
+/* 🌟 Global Inheritances */
 .back-link {
     color: var(--text-muted);
     text-decoration: none;
@@ -10,163 +9,199 @@
     gap: 8px;
     transition: color 0.2s;
     cursor: pointer;
+    font-weight: 600;
 }
 
 .back-link:hover {
     color: var(--text-dark);
 }
 
-/* 🌟 The New Card Wrapper */
 .details-card {
     background: var(--white);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 40px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); 
     width: 100%;
-    max-width: 100%; 
     box-sizing: border-box; 
+}
+
+/* --- HEADER ROW --- */
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 24px;
+    margin-bottom: 30px;
 }
 
 .page-title {
     font-size: 28px;
     font-weight: 800;
-    margin-top: 0;
-    margin-bottom: 30px;
+    margin: 0;
     color: var(--text-dark);
 }
 
-.section-header {
-    font-size: 18px;
-    font-weight: 800;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    color: var(--text-dark);
-}
-
-/* 🌟 Responsive Grid to neatly stack info on small windows */
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px 40px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.info-item label {
-    display: block;
+/* --- STATUS BADGES --- */
+.status-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 30px;
     font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+.status-badge.pending { background-color: #f3f4f6; color: var(--text-muted); }
+.status-badge.approved { background-color: #d1fae5; color: var(--success-green); border: 1px solid #a7f3d0; }
+.status-badge.rejected { background-color: #fee2e2; color: var(--danger-red); border: 1px solid #fecaca; }
+
+/* --- GRID LAYOUT FOR DETAILS --- */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+/* --- DETAIL BLOCKS --- */
+.detail-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s;
+}
+.detail-block:hover {
+    background-color: #f1f5f9;
+}
+
+/* Icons */
+.block-icon {
+    width: 48px;
+    height: 48px;
+    background-color: #e0e7ff; 
+    color: var(--primary-blue);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+/* Text Content */
+.block-content { flex-grow: 1; }
+.block-content label {
+    display: block;
     font-size: 13px;
+    font-weight: 700;
     color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     margin-bottom: 6px;
 }
-
-.info-item div {
+.highlight-text {
+    font-size: 16px;
+    font-weight: 700;
     color: var(--text-dark);
-    font-size: 15px;
-    font-weight: 500;
+    margin: 0 0 6px 0;
+    line-height: 1.4;
 }
-
-.text-block {
-    color: var(--text-dark);
-    font-size: 15px;
-    line-height: 1.6;
-    padding-bottom: 30px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.last-block {
-    border-bottom: none;
-    padding-bottom: 10px;
-}
-
-/* --- STATUS COLORS --- */
-.status-text { font-weight: 700; }
-.pending { color: var(--text-muted); }
-.approved { color: var(--success-green); }
-.rejected { color: var(--danger-red); }
-
-/* --- ACTION BUTTONS --- */
-.action-buttons {
+.sub-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
     display: flex;
-    gap: 15px;
+    align-items: center;
+    gap: 6px;
+}
+
+/* --- CONTACT BLOCK SPECIFICS --- */
+.contact-block { background-color: #ffffff; border: 2px solid var(--border-color); }
+.avatar-circle {
+    width: 48px;
+    height: 48px;
+    background-color: var(--text-dark);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.contact-methods { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.contact-methods span {
+    font-size: 14px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- NOTES & DESCRIPTIONS --- */
+.notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.note-box {
+    padding: 24px;
+    border-left: 4px solid var(--border-color);
+    background-color: var(--bg-main);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.highlight-note {
+    border-left-color: var(--primary-blue);
+    background-color: #eff6ff; /* Soft blue background for tenant notes */
+}
+.note-box label {
+    display: block;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+.note-box p {
+    margin: 0;
+    color: var(--text-dark);
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+/* --- ACTION FOOTER & BANNERS --- */
+.action-footer {
+    display: flex;
+    gap: 16px;
     margin-top: 40px;
     padding-top: 30px;
     border-top: 1px solid var(--border-color);
     align-items: center;
 }
 
-.btn-edit, .btn-delete {
-    padding: 12px 30px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-color);
-    font-weight: 600;
-    cursor: pointer;
-    background-color: var(--white);
-    color: var(--text-dark);
-    transition: 0.2s;
-}
-
-.btn-edit:hover { background-color: var(--bg-main); }
-
-.btn-delete { color: var(--danger-red); border-color: var(--danger-red); }
-.btn-delete:hover { background-color: #fef2f2; }
-
-.btn-approve {
-    padding: 12px 30px;
-    border-radius: var(--radius-sm);
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: var(--success-green);
-    color: var(--white);
-    transition: 0.2s;
-}
-.btn-approve:hover { filter: brightness(0.9); }
-
-.btn-reject {
-    padding: 12px 30px;
-    border-radius: var(--radius-sm);
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: var(--danger-red);
-    color: var(--white);
-    transition: 0.2s;
-}
-.btn-reject:hover { filter: brightness(0.9); }
-
-.btn-primary {
-    background-color: var(--primary-blue);
-    color: var(--white);
-    padding: 12px 30px;
-    border-radius: var(--radius-sm);
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.btn-primary:hover { filter: brightness(0.9); }
-
-/* --- BANNERS --- */
 .contract-exists-banner {
     width: 100%;
-    text-align: center;
-    padding: 16px;
-    background-color: var(--bg-main);
+    padding: 16px 20px;
+    background-color: #f0fdf4; /* Soft success green */
+    color: var(--success-green);
     border-radius: var(--radius-sm);
-    color: var(--text-muted);
     font-weight: 600;
-    border: 1px solid var(--border-color);
-    box-sizing: border-box;
-}
-
-.contract-exists-banner i {
-    color: var(--primary-blue);
-    margin-right: 8px;
+    border: 1px solid #bbf7d0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* Mobile scaling */
 @media (max-width: 768px) {
-    .details-card { padding: 20px; }
+    .details-card { padding: 24px; }
+    .card-header-row { flex-direction: column; gap: 16px; }
+    .details-grid { grid-template-columns: 1fr; } 
+    .action-footer { flex-direction: column; align-items: stretch; }
 }

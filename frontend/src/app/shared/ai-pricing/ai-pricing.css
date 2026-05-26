@@ -1,151 +1,85 @@
-/* 🌟 Layout inherited from global .page-container! */
+/* 🌟 CORE TYPOGRAPHY & INHERITANCE */
+.page-title { font-size: 32px; font-weight: 800; color: var(--text-dark); margin: 0; }
+.text-muted { color: var(--text-muted); margin: 0; font-size: 15px; line-height: 1.5; }
+.section-title { font-size: 18px; font-weight: 800; color: var(--text-dark); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
 
-/* Update this in ai-pricing.css */
-.assistant-container { 
+/* --- CARD WRAPPERS --- */
+.details-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     width: 100%;
-
-    /* 🌟 Change this from 800px to 100% to force it to stretch! */
-    max-width: 100%; 
-    
-    margin: 0 auto; 
-    background: var(--white); 
-    border-radius: var(--radius-lg); 
-    padding: 40px; 
-    border: 1px solid var(--border-color); 
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
     box-sizing: border-box;
 }
 
-.page-title { font-size: 28px; color: var(--text-dark); margin-bottom: 5px; font-weight: 800; margin-top: 0;}
-.page-subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 25px; margin-top: 0;}
-.intro-text { font-size: 15px; color: var(--text-dark); line-height: 1.6; margin-bottom: 30px; }
+.contract-header-row { display: flex; justify-content: space-between; align-items: center; }
 
-/* 🌟 Responsive Grid for inputs */
-.form-row { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-    gap: 24px; 
-    margin-bottom: 24px; 
-}
-
+/* --- FORM ELEMENTS --- */
+.form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
 .form-group { margin-bottom: 24px; }
+.form-group label { display: block; font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
 
 .form-control { 
-    width: 100%; 
-    padding: 14px 16px; 
-    border: 1px solid var(--border-color); 
-    border-radius: var(--radius-sm); 
-    font-size: 15px; 
-    outline: none; 
-    background: var(--white); 
-    color: var(--text-dark);
-    box-sizing: border-box;
-    transition: 0.2s ease;
-    font-family: inherit;
+    width: 100%; padding: 14px 16px; border: 1px solid var(--border-color); 
+    border-radius: var(--radius-sm); font-size: 15px; background: var(--white); 
+    color: var(--text-dark); box-sizing: border-box; transition: 0.2s ease; font-family: inherit; 
+}
+.form-control::placeholder { color: var(--text-muted); opacity: 0.7; }
+.form-control:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
+/* Custom Dropdown Arrow */
+.premium-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat; background-position: right 16px center; background-size: 16px;
 }
 
-.form-control::placeholder {
-    color: var(--text-muted);
-    opacity: 0.8;
-}
+/* --- BUTTONS & FOOTER --- */
+.action-footer { display: flex; align-items: center; gap: 16px; border-top: 1px solid var(--border-color); }
 
-.form-control:focus { 
-    border-color: var(--primary-blue); 
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); 
+/* 🌟 UPDATED: Blue AI Button */
+.btn-ai {
+    background-color: #3b82f6; color: var(--white); border: 2px solid #3b82f6;
+    padding: 14px 28px; border-radius: var(--radius-sm); font-weight: 700; font-size: 15px; 
+    cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 10px;
 }
+.btn-ai:hover:not(:disabled) { background-color: #2563eb; border-color: #2563eb; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+.btn-ai:disabled { background-color: #93c5fd; border-color: #93c5fd; cursor: not-allowed; }
 
-.submit-area { 
-    display: flex; 
-    justify-content: flex-end; 
-    align-items: center; 
-    margin-top: 30px; 
-}
-
-/* Updated Button using Global variables */
-.btn-ai { 
-    background-color: var(--text-dark); 
-    color: var(--white); 
-    border: none; 
-    padding: 14px 28px; 
-    border-radius: var(--radius-sm); 
-    font-weight: 700; 
-    font-size: 15px; 
-    cursor: pointer; 
-    transition: 0.2s; 
-}
-
-.btn-ai:hover:not(:disabled) { opacity: 0.85; }
-.btn-ai:disabled { background-color: var(--text-muted); cursor: not-allowed; opacity: 0.6;}
-
-/* The Spinner */
-.loader { 
-    border: 3px solid var(--border-color); 
-    border-top: 3px solid var(--primary-blue); 
-    border-radius: 50%; 
-    width: 20px; 
-    height: 20px; 
-    animation: spin 1s linear infinite; 
-    margin-right: 15px; 
-}
+/* 🌟 UPDATED: Blue Loader */
+.loader { border: 3px solid var(--border-color); border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* --- AI RESULTS SECTION --- */
-.results-section { 
-    margin-top: 40px; 
-    border-top: 1px solid var(--border-color); 
-    padding-top: 30px; 
+/* --- TOTAL SUMMARY BOX (AI PRICE) --- */
+.total-summary-box {
+    border-radius: var(--radius-md); padding: 30px; display: flex; justify-content: space-between; align-items: center; color: var(--white);
 }
+.total-label { display: block; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;}
+.total-due-date { display: block; font-size: 14px; font-weight: 500;}
+.total-amount { font-size: 32px; font-weight: 800; letter-spacing: -1px; text-align: right;}
 
-.result-heading { 
-    font-size: 20px; 
-    font-weight: 800; 
-    color: var(--text-dark); 
-    margin-bottom: 15px; 
-    margin-top: 0;
-}
+/* --- DETAIL BLOCKS (GRID) --- */
+.details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+.detail-block { display: flex; align-items: flex-start; gap: 16px; padding: 20px; background-color: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); }
 
-.result-heading.push-down { margin-top: 40px; }
+/* 🌟 UPDATED: Blue Block Icons */
+.block-icon { width: 44px; height: 44px; background-color: var(--white); color: #3b82f6; border: 1px solid var(--border-color); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 18px; flex-shrink: 0; }
 
-.result-desc { 
-    font-size: 15px; 
-    color: var(--text-muted); 
-    line-height: 1.6; 
-    margin-bottom: 15px; 
-}
+.block-content { flex: 1; }
+.block-content label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
 
-.price-text { 
-    font-size: 32px; 
-    font-weight: 800; 
-    color: var(--success-green); 
-    margin: 25px 0; 
-}
+/* Specifically for long AI text so it wraps beautifully */
+.factor-text { font-size: 15px; font-weight: 500; color: var(--text-dark); margin: 0; line-height: 1.6; }
 
-.factors-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-    gap: 30px; 
-    margin-top: 20px; 
-    border-top: 1px solid var(--border-color); 
-    padding-top: 30px; 
-}
+/* --- STATUS BANNERS --- */
+.status-banner { padding: 8px 16px; border-radius: 30px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
 
-.factor-item h4 { 
-    font-size: 14px; 
-    color: var(--text-muted); 
-    font-weight: 700; 
-    margin-bottom: 8px; 
-    margin-top: 0; 
-}
-
-.factor-item p { 
-    font-size: 15px; 
-    color: var(--text-dark); 
-    line-height: 1.6; 
-    margin: 0; 
-    font-weight: 500; 
-}
-
-/* Shrink form padding on small mobile screens */
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
-    .assistant-container { padding: 20px; }
+    .details-card { padding: 24px; }
+    .contract-header-row, .total-summary-box { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .total-amount { text-align: left; }
+    .btn-ai { width: 100%; justify-content: center; }
 }

@@ -30,7 +30,7 @@ class AiController extends Controller
 
             // NOTE: If this is still "gen-lang-client...", Google will reject it! 
             // Real API keys almost always start with "AIza..."
-            $apiKey = "AIzaSyBL5tigg7bcV80ly60fBrNr-M-KWgOn1bE"; 
+            $apiKey = "AIzaSyAQrHK4_VuE8Oc8HpBPKVXz4KV4mAP6CRY"; 
 
             $prompt = "You are an expert real estate appraiser in Malaysia. Analyze the following property and estimate a fair monthly rental price in RM (Malaysian Ringgit). 
             Property Details:
@@ -114,7 +114,7 @@ class AiController extends Controller
                 ]);
 
             // 4. Use your existing Gemini API Key
-            $apiKey = "AIzaSyBL5tigg7bcV80ly60fBrNr-M-KWgOn1bE"; 
+            $apiKey = "AIzaSyAQrHK4_VuE8Oc8HpBPKVXz4KV4mAP6CRY"; 
 
             // 5. Call the Google Gemini API (with SSL verification bypassed for local testing)
             $response = Http::withoutVerifying()
@@ -197,7 +197,7 @@ class AiController extends Controller
                     'available_tenants' => $tenants->toArray()
                 ]);
 
-            $apiKey = "AIzaSyBL5tigg7bcV80ly60fBrNr-M-KWgOn1bE"; 
+            $apiKey = "AIzaSyAQrHK4_VuE8Oc8HpBPKVXz4KV4mAP6CRY"; 
 
             // 4. Call the Google Gemini API
             $response = Http::withoutVerifying()

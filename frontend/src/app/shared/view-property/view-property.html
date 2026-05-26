@@ -1,11 +1,20 @@
 <div class="page-container" *ngIf="property">
-    <a routerLink="/my-properties" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    
+    <a routerLink="/my-properties" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to Properties
+    </a>
 
-    <div class="header-row">
-        <h1>Property Details</h1>
-        <span class="rented-badge" *ngIf="property.is_rented">
-            <i class="fa-solid fa-lock"></i> Currently Rented
-        </span>
+    <div class="property-header">
+        <div class="header-titles">
+            <h1>{{ property.title }}</h1>
+            <p class="address-text"><i class="fa-solid fa-location-dot"></i> {{ property.address }}</p>
+        </div>
+        <div class="status-container">
+            <span class="status-badge" [ngClass]="property.is_rented ? 'rented' : 'available'">
+                <i class="fa-solid" [ngClass]="property.is_rented ? 'fa-lock' : 'fa-circle-check'"></i> 
+                {{ property.is_rented ? 'Currently Rented' : 'Available Now' }}
+            </span>
+        </div>
     </div>
 
     <div class="photo-grid">
@@ -26,85 +35,110 @@
         </div>
     </div>
 
-    <div class="extra-photos-section" *ngIf="property.images.length > 3">
-        <h3>Additional Photos</h3>
-        <div class="extra-gallery-grid">
-            <div class="gallery-item" *ngFor="let img of property.images.slice(3)">
-                <img [src]="'http://localhost:8000/uploads/' + img" 
-                     alt="Property Image" 
-                     (click)="openImage('http://localhost:8000/uploads/' + img)" 
-                     class="clickable-image">
+    <div class="property-layout-split">
+        
+        <div class="main-content">
+            
+            <div class="content-section">
+                <h2>About this property</h2>
+                <p class="description-text">{{ property.description }}</p>
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-block">
+                    <div class="block-icon"><i class="fa-solid fa-city"></i></div>
+                    <div class="block-content">
+                        <label>Location / City</label>
+                        <p class="highlight-text">{{ property.location }}</p>
+                    </div>
+                </div>
+
+                <div class="detail-block">
+                    <div class="block-icon"><i class="fa-solid fa-door-open"></i></div>
+                    <div class="block-content">
+                        <label>Total Rooms</label>
+                        <p class="highlight-text">{{ property.rooms }} Rooms</p>
+                    </div>
+                </div>
+
+                <div class="detail-block">
+                    <div class="block-icon"><i class="fa-solid fa-phone"></i></div>
+                    <div class="block-content">
+                        <label>Contact Phone</label>
+                        <p class="highlight-text">{{ property.phone_number }}</p>
+                    </div>
+                </div>
+
+                <div class="detail-block" *ngIf="property.created_at">
+                    <div class="block-icon"><i class="fa-regular fa-calendar-plus"></i></div>
+                    <div class="block-content">
+                        <label>Date Listed</label>
+                        <p class="highlight-text">{{ property.created_at | date:'MMM dd, yyyy' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="extra-photos-section" *ngIf="property.images.length > 3">
+                <h2>Additional Photos</h2>
+                <div class="extra-gallery-grid">
+                    <div class="gallery-item" *ngFor="let img of property.images.slice(3)">
+                        <img [src]="'http://localhost:8000/uploads/' + img" 
+                             alt="Property Image" 
+                             (click)="openImage('http://localhost:8000/uploads/' + img)" 
+                             class="clickable-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="action-card">
+                
+                <div class="price-display">
+                    <span class="currency">RM</span>
+                    <span class="amount">{{ property.price | number:'1.2-2' }}</span>
+                    <span class="period">/ month</span>
+                </div>
+
+                <div class="card-divider"></div>
+
+                <div class="action-buttons-vertical" *ngIf="isOwner">
+                    <button class="btn-update" [routerLink]="['/properties/edit', property.id]">
+                        <i class="fa-solid fa-pen"></i> Edit Property
+                    </button>
+                    
+                    <button *ngIf="!property.is_rented" class="btn-danger" (click)="deleteProperty()">
+                        <i class="fa-solid fa-trash"></i> Delete Listing
+                    </button>
+                    
+                    <div class="alert-banner error-banner" *ngIf="property.is_rented">
+                        <i class="fa-solid fa-lock"></i> Cannot delete while property is actively rented.
+                    </div>
+                </div>
+
+                <div class="action-buttons-vertical" *ngIf="userRole === 'tenant' && !isOwner">
+                    
+                    <ng-container *ngIf="!property.is_rented">
+                        <button class="btn-primary" [routerLink]="['/apply-property', property.id]">
+                            <i class="fa-solid fa-file-signature"></i> Apply to Rent
+                        </button>
+                        <button class="btn-primary" (click)="goToBooking()">
+                            <i class="fa-regular fa-calendar"></i> Book Appointment
+                        </button>
+                    </ng-container>
+
+                    <div *ngIf="property.is_rented" class="alert-banner warning-banner">
+                        <i class="fa-solid fa-lock"></i> 
+                        This property is currently rented and is no longer accepting applications.
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+</div> 
 
-    <div class="details-card">
-        <div class="card-top">
-            <h2>{{ property.title }}</h2>
-            <div class="price">RM {{ property.price | number:'1.2-2' }} <span>per month</span></div>
-        </div>
-        <p class="address"><i class="fa-solid fa-location-dot"></i> {{ property.address }}</p>
-
-        <div class="section">
-            <h3>Description</h3>
-            <p>{{ property.description }}</p>
-        </div>
-
-        <div class="info-grid">
-            <div class="info-box">
-                <label>Location/City</label>
-                <p>{{ property.location }}</p>
-            </div>
-            <div class="info-box">
-                <label>Total Rooms</label>
-                <p>{{ property.rooms }} Rooms</p>
-            </div>
-            <div class="info-box">
-                <label>Contact Phone</label>
-                <p>{{ property.phone_number }}</p>
-            </div>
-            <div class="info-box" *ngIf="property.created_at">
-                <label>Date Listed</label>
-                <p>{{ property.created_at | date:'MMM dd, yyyy' }}</p>
-            </div>
-        </div>
-
-        <div class="actions" *ngIf="isOwner">
-            <button class="btn-edit" [routerLink]="['/properties/edit', property.id]">
-                <i class="fa-solid fa-pen"></i> Edit Property
-            </button>
-            
-            <button *ngIf="!property.is_rented" class="btn-delete" (click)="deleteProperty()">
-                <i class="fa-solid fa-trash"></i> Delete Listing
-            </button>
-            
-            <span class="lock-text" *ngIf="property.is_rented">
-                <i class="fa-solid fa-lock"></i> Cannot delete while property is actively rented
-            </span>
-        </div>
-
-        <div class="actions" *ngIf="isOwner">
-        </div>
-
-        <div class="tenant-actions" *ngIf="userRole === 'tenant' && !isOwner">
-            
-            <ng-container *ngIf="!property.is_rented">
-                <button class="btn-outline" (click)="goToBooking()">
-                    Book Appointment
-                </button>
-                <button class="btn-solid" [routerLink]="['/apply-property', property.id]">
-                    Apply Now
-                </button>
-            </ng-container>
-
-            <div *ngIf="property.is_rented" class="rented-warning-banner">
-                <i class="fa-solid fa-lock"></i> 
-                This property is currently rented and is no longer accepting applications or appointments.
-            </div>
-
-        </div>
-
-    </div> </div> <div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">
+<div class="image-modal" *ngIf="fullScreenImage" (click)="closeImage()">
     <span class="close-modal">&times;</span>
     <img [src]="fullScreenImage" alt="Full Screen" (click)="$event.stopPropagation()">
 </div>

@@ -1,8 +1,8 @@
-import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-ai-matching',
@@ -12,14 +12,10 @@ import { RouterModule } from '@angular/router';
   styleUrl: './ai-matching.css'
 })
 export class AiMatchingComponent implements OnInit {
-  userRole: string = 'tenant'; // Default
+  userRole: string = 'tenant';
 
-  // For Tenants
   preferences = { budget_min: 500, budget_max: 2000, location: '', features: [] as string[] };
-  
-  // For Landlords
   propertyDetails = { price: 1200, location: '', features: [] as string[] };
-
   availableFeatures = ['Furnished', 'Pet-friendly', 'Parking', 'Gym', 'Pool', 'Balcony'];
   
   matches: any[] = [];
@@ -27,10 +23,20 @@ export class AiMatchingComponent implements OnInit {
   hasSearched = false;
   errorMessage = '';
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private http: HttpClient, 
+    private cdr: ChangeDetectorRef, 
+    private router: Router, // Ensure Router is here
+    private zone: NgZone
+) {}
+
+  // Inside ai-matching.ts
+  viewDetails(propertyId: number | string) {
+    // 🌟 MUST match the path in app.routes.ts ('properties/view/:id')
+    this.router.navigate(['/properties/view', propertyId]);
+  }
 
   ngOnInit() {
-    // 🌟 Detect role on page load
     this.userRole = localStorage.getItem('user_role') || 'tenant';
   }
 
@@ -49,14 +55,12 @@ export class AiMatchingComponent implements OnInit {
     this.isLoading = true;
     this.hasSearched = false;
 
-    // 🌟 DYNAMIC LOGIC: Choose endpoint based on role
     const endpoint = this.userRole === 'tenant' 
         ? 'http://localhost:8000/api/ai/match' 
         : 'http://localhost:8000/api/ai/match-tenants';
 
     const payload = this.userRole === 'tenant' ? this.preferences : this.propertyDetails;
 
-    // Basic Validation
     if (!payload.location) {
       this.errorMessage = 'Please provide a location to get accurate matches.';
       this.isLoading = false;
@@ -65,15 +69,39 @@ export class AiMatchingComponent implements OnInit {
 
     this.http.post(endpoint, payload).subscribe({
       next: (response: any) => {
-        this.matches = response.matches || [];
-        this.isLoading = false;
-        this.hasSearched = true;
-        this.cdr.detectChanges();
+        // 🌟 Wrap the response in zone.run() to instantly refresh the page
+        this.zone.run(() => {
+            let fetchedMatches = response.matches || [];
+            
+            // 🌟 FIX 2: Check for 'image_path' from DB and parse it properly!
+            fetchedMatches.forEach((match: any) => {
+                let imgData = match.image_path || match.images; 
+                
+                if (typeof imgData === 'string') {
+                    try { 
+                        match.images = JSON.parse(imgData); 
+                    } catch(e) { 
+                        match.images = []; 
+                    }
+                } else if (Array.isArray(imgData)) {
+                    match.images = imgData;
+                } else {
+                    match.images = [];
+                }
+            });
+
+            this.matches = fetchedMatches;
+            this.isLoading = false;
+            this.hasSearched = true;
+            this.cdr.detectChanges();
+        });
       },
       error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err.error?.message || 'Matching feature is currently unavailable. Please try again later.';
-        this.cdr.detectChanges();
+        this.zone.run(() => {
+            this.isLoading = false;
+            this.errorMessage = err.error?.message || 'Matching feature is currently unavailable. Please try again later.';
+            this.cdr.detectChanges();
+        });
       }
     });
   }

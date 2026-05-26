@@ -79,18 +79,24 @@ class ReportController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        $user = $request->user('sanctum');
-        if ($user->role !== 'admin') return response()->json(['message' => 'Unauthorized.'], 403);
-
-        $validated = $request->validate(['status' => 'required|string']);
-
         $report = Report::find($id);
-        if (!$report) return response()->json(['message' => 'Report not found'], 404);
 
-        $report->status = $validated['status'];
+        if (!$report) {
+            return response()->json(['message' => 'Report not found'], 404);
+        }
+
+        // 🌟 Validate the incoming data
+        $request->validate([
+            'status' => 'required|string',
+            'admin_comment' => 'nullable|string'
+        ]);
+
+        // 🌟 Update the model
+        $report->admin_comment = $request->admin_comment;
+        $report->status = $request->status;
         $report->save();
 
-        return response()->json(['message' => 'Report status updated successfully!', 'report' => $report]);
+        return response()->json(['message' => 'Report updated successfully']);
     }
 
     public function update(Request $request, $id)

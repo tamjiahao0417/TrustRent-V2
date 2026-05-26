@@ -37,7 +37,12 @@
                 </div>
                 <div class="form-group">
                     <label>Contact Phone</label>
-                    <input type="tel" name="phone_number" [(ngModel)]="property.phone_number" required>
+                    <input type="tel" name="phone_number" 
+                           [(ngModel)]="property.phone_number" 
+                           (keypress)="allowNumbersOnly($event)"
+                           (input)="formatPhone()"
+                           required 
+                           placeholder="01X-XXXXXXX">
                 </div>
             </div>
 
@@ -70,7 +75,7 @@
             </div>
             
             <div class="action-buttons">
-                <button type="submit" class="btn-black">Save Changes</button>
+                <button type="submit" class="btn-primary">Save Changes</button>
             </div>
         </form>
     </div>

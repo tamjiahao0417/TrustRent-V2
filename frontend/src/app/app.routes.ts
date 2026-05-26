@@ -34,7 +34,7 @@ import { UserManagementComponent } from './admin/user-management/user-management
 import { ReportIssueComponent } from './shared/report-issue/report-issue';
 import { ReportsListComponent } from './shared/reports-list/reports-list';
 import { ReportDetailsComponent } from './shared/report-details/report-details';
-import { EditReportComponent } from './shared/edit-report/edit-report';
+import { EditReportComponent } from './edit-report/edit-report';
 import { AiMatchingComponent } from './shared/ai-matching/ai-matching';
 
 export const routes: Routes = [ 

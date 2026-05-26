@@ -1,5 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,8 +12,9 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './report-issue.css'
 })
 export class ReportIssueComponent {
-  issueData = { issue_type: '', description: '', related_user_id: '' };
+  issueData = { issue_type: '', description: '', related_user_id: ''};
   
+  location: string = '';
   // 🌟 Upgraded to Arrays
   selectedFiles: File[] = [];
   previewMedia: { url: string, type: string }[] = []; 
@@ -25,7 +26,7 @@ export class ReportIssueComponent {
 
   issueTypes = ['Plumbing', 'Payment Error', 'Inappropriate content', 'Harassment', 'Spam', 'Bug', 'Other'];
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router, private locationService: Location) {}
 
   onFileSelected(event: any) {
     if (event.target.files.length > 0) {
@@ -104,4 +105,6 @@ export class ReportIssueComponent {
       }
     });
   }
+
+  goBack() {this.locationService.back();}
 }

@@ -1,7 +1,7 @@
 <div class="page-container">
     <div class="page-header">
         <h1 class="page-title">{{ userRole === 'landlord' ? 'Tenant Maintenance Requests' : 'Maintenance Issues' }}</h1>
-        <a *ngIf="userRole === 'tenant'" routerLink="/maintenance/report" class="btn-report">Report Issue</a>
+        <a *ngIf="userRole === 'tenant'" routerLink="/maintenance/report" class="btn-primary">Report Issue</a>
     </div>
 
     <div class="controls-container">

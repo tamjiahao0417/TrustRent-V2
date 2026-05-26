@@ -1,34 +1,100 @@
-.page-container { padding: 40px; background-color: #ffffff; min-height: 100vh; font-family: sans-serif; }
+/* 🌟 CORE TYPOGRAPHY & INHERITANCE */
+.page-title { font-size: 32px; font-weight: 800; color: var(--text-dark); margin: 0; line-height: 1.2; }
+.text-muted { color: var(--text-muted); font-size: 15px; margin-top: 8px; margin-bottom: 0; }
+.bold-text { font-weight: 600; color: var(--text-dark); }
+.font-medium { font-weight: 500; }
+.text-center { text-align: center; }
 
-/* Table Styles */
-.table-container { border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
-.user-table { width: 100%; border-collapse: collapse; text-align: left; }
-.user-table th { padding: 16px 24px; background-color: #ffffff; border-bottom: 1px solid #e5e7eb; color: #4b5563; font-weight: 600; font-size: 14px; }
-.user-table td { padding: 16px 24px; border-bottom: 1px solid #e5e7eb; color: #111827; font-size: 14px; vertical-align: middle; }
-.username-cell { color: #6b7280; } /* Matches gray text in mockup */
+/* --- TABLE CONTAINER (Matched to Rental Requests) --- */
+.table-container {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
 
-/* Badges */
-.role-badge, .status-badge { padding: 6px 16px; border-radius: 20px; background-color: #f3f4f6; color: #374151; font-weight: 500; font-size: 13px; display: inline-block; }
-.status-badge.active { background-color: #f3f4f6; } /* Mockup shows gray for active too */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
 
-/* Action Buttons */
-.btn-suspend { background: none; border: none; color: #6b7280; font-weight: 700; cursor: pointer; font-size: 14px; }
-.btn-suspend:hover { color: #111827; text-decoration: underline; }
-.text-suspended { color: #9ca3af; font-weight: 700; font-size: 14px; }
+th {
+    padding: 16px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+}
 
-/* Modal Styles */
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.4); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-.modal-content { background-color: #ffffff; padding: 40px; border-radius: 16px; width: 400px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-.modal-content h2 { margin-top: 0; font-size: 24px; font-weight: 800; color: #111827; margin-bottom: 15px; }
-.modal-content p { color: #4b5563; margin-bottom: 30px; font-size: 15px; }
+td {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border-color);
+    vertical-align: middle;
+    font-size: 14px;
+    white-space: nowrap;
+}
 
-/* Modal Actions */
-.modal-actions { display: flex; gap: 15px; justify-content: center; }
-.btn-cancel, .btn-confirm { padding: 12px 30px; border-radius: 30px; font-weight: 600; font-size: 14px; cursor: pointer; border: none; flex: 1; transition: 0.2s; }
-.btn-cancel { background-color: #f3f4f6; color: #111827; }
-.btn-cancel:hover { background-color: #e5e7eb; }
-.btn-confirm { background-color: #dbeafe; color: #1e40af; } /* Matches the light blue in mockup */
-.btn-confirm:hover { background-color: #bfdbfe; }
-/* New Activate/Resume Button Styles */
-.btn-activate { background: none; border: none; color: #10b981; font-weight: 700; cursor: pointer; font-size: 14px; }
-.btn-activate:hover { color: #047857; text-decoration: underline; }
+/* 🌟 Premium hover effect for table rows */
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: var(--bg-main);
+}
+
+/* --- ROLE & STATUS BADGES --- */
+.role-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.status-banner { 
+    padding: 6px 14px; 
+    border-radius: 30px; 
+    font-weight: 700; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 6px; 
+    font-size: 13px; 
+}
+.status-active { background-color: #f0fdf4; color: var(--success-green); border: 1px solid #bbf7d0; }
+.status-suspended { background-color: #fef2f2; color: var(--danger-red); border: 1px solid #fecaca; }
+
+/* --- INLINE ACTION BUTTONS --- */
+.btn-action {
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid transparent;
+}
+
+.btn-suspend { background-color: #fef2f2; color: var(--danger-red); border-color: #fecaca; }
+.btn-suspend:hover { background-color: #fee2e2; border-color: #fca5a5; transform: translateY(-1px); }
+
+.btn-activate { background-color: #f0fdf4; color: var(--success-green); border-color: #bbf7d0; }
+.btn-activate:hover { background-color: #dcfce7; border-color: #86efac; transform: translateY(-1px); }
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    th, td { padding: 12px 16px; font-size: 14px; }
+    .btn-action span { display: none; } /* Hide button text, show only icon on small screens */
+}

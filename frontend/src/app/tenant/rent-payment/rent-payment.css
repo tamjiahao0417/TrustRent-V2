@@ -1,20 +1,140 @@
-.page-container { padding: 30px; background-color: #f9fafb; min-height: 100vh; }
-.page-title { font-size: 32px; font-weight: 800; color: #111; }
-.balance-card { background: white; border-radius: 12px; padding: 30px; border: 1px solid #e5e7eb; }
-.card-header { border-bottom: 1px solid #e5e7eb; padding-bottom: 15px; margin-bottom: 25px; }
-.pill-tag { background: #dbeafe; color: #1e40af; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
-.coverage-text { font-size: 15px; font-weight: bold; margin-top: 8px; color: #111; }
-.coverage-text span { color: #3b82f6; }
-.balance-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.amount { font-size: 20px; font-weight: bold; color: #111; }
-.amount.total { font-size: 26px; }
-.label { font-size: 14px; color: #6b7280; margin-top: 4px; }
-.due { font-size: 14px; font-weight: 500; }
-.total-row { border-top: 1px solid #e5e7eb; padding-top: 20px; margin-top: 10px; }
-.pay-btn { margin-top: 20px; background-color: #111; color: white; border: none; padding: 12px 30px; border-radius: 30px; font-weight: bold; cursor: pointer; }
-.table-card { background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; }
-table { width: 100%; border-collapse: collapse; text-align: left; }
-th { padding: 16px 20px; font-size: 14px; font-weight: 700; border-bottom: 1px solid #e5e7eb; }
-td { padding: 16px 20px; border-bottom: 1px solid #f3f4f6; font-size: 14px; }
-.status-badge { background: #f3f4f6; color: #111; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-.empty-state { padding: 40px; text-align: center; color: #6b7280; font-style: italic; background: white; border-radius: 12px; border: 1px solid #e5e7eb; }
+/* 🌟 CORE TYPOGRAPHY & INHERITANCE */
+.page-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0;
+}
+.text-muted { color: var(--text-muted); }
+.bold-text { font-weight: 700; color: var(--text-dark); }
+.font-medium { font-weight: 500; }
+.text-center { text-align: center; }
+
+/* --- CARD WRAPPERS --- */
+.details-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+.table-card { padding: 0; overflow: hidden; } /* Removes padding so table fills the card */
+
+.contract-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- DETAIL BLOCKS (GRID) --- */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+}
+.detail-block {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+.block-icon {
+    width: 44px; height: 44px;
+    background-color: var(--white);
+    color: var(--primary-blue);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 18px; flex-shrink: 0;
+}
+.block-content label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
+.highlight-text { font-size: 18px; font-weight: 800; color: var(--text-dark); margin: 0; }
+
+/* --- TOTAL SUMMARY BOX --- */
+.total-summary-box {
+    background-color: var(--text-dark);
+    border-radius: var(--radius-md);
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--white);
+    margin-bottom: 10px;
+}
+.total-label { display: block; font-size: 15px; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;}
+.total-due-date { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #9ca3af; font-weight: 500;}
+.total-amount { font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+.total-amount .currency { font-size: 20px; font-weight: 600; opacity: 0.8; margin-right: 4px;}
+
+/* --- ACTION BUTTONS --- */
+.action-footer {
+    display: flex;
+    gap: 16px;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-blockchain {
+    background-color: #8b5cf6;
+    color: var(--white);
+    border: 2px solid #8b5cf6;
+    padding: 14px 28px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.btn-blockchain:hover { background-color: #7c3aed; border-color: #7c3aed; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); }
+
+/* --- STATUS BANNERS --- */
+.status-banner { 
+    padding: 8px 16px; 
+    border-radius: 30px; 
+    font-weight: 700; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    font-size: 14px; 
+}
+.status-needs-seal { background-color: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+.status-active { background-color: #f0fdf4; color: var(--success-green); border: 1px solid #bbf7d0; }
+
+/* --- PREMIUM TABLE --- */
+.premium-table { width: 100%; border-collapse: collapse; text-align: left; }
+.premium-table th { padding: 18px 24px; font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border-color); background-color: var(--bg-main); }
+.premium-table td { padding: 18px 24px; font-size: 15px; border-bottom: 1px solid var(--border-color); vertical-align: middle;}
+.premium-table tbody tr:last-child td { border-bottom: none; }
+
+/* --- EMPTY STATE --- */
+.empty-state {
+    padding: 60px 40px;
+    text-align: center;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px dashed var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.empty-state p { margin: 0; font-size: 16px; color: var(--text-dark); font-weight: 600;}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .details-card { padding: 24px; }
+    .contract-header-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .total-summary-box { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px;}
+    .action-footer button { width: 100%; }
+}

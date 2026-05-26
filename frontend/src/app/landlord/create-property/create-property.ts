@@ -74,6 +74,31 @@ export class CreateProperty {
     this.cdr.detectChanges(); // Instantly remove it from the screen
   }
 
+  // Blocks typing letters on the keyboard
+  allowNumbersOnly(event: KeyboardEvent) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+      return false;
+    }
+    return true;
+  }
+
+  // Formats into 019-2229393
+  formatPhone() {
+    if (!this.property.phone_number) return;
+    
+    let val = this.property.phone_number.replace(/\D/g, '');
+    
+    if (val.length > 11) val = val.slice(0, 11);
+    
+    if (val.length > 3) {
+      val = val.slice(0, 3) + '-' + val.slice(3);
+    }
+    
+    this.property.phone_number = val;
+  }
+  
   onSubmit() {
     this.isSubmitting = true;
     const formData = new FormData();

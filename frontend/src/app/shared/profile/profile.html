@@ -16,7 +16,12 @@
 
             <div class="form-group">
                 <label>NRIC Number</label>
-                <input type="text" name="ic" [(ngModel)]="user.ic" (input)="formatIC()" [readonly]="!isEditing">
+                <input type="text" name="ic" 
+                       [(ngModel)]="user.ic" 
+                       (keypress)="allowNumbersOnly($event)"
+                       (input)="formatIC()" 
+                       [readonly]="!isEditing"
+                       placeholder="XXXXXX-XX-XXXX">
             </div>
 
             <div class="form-group">

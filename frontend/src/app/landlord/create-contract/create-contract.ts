@@ -59,8 +59,12 @@ export class CreateContract implements OnInit {
   }
 
   // --- HTML5 Canvas Signature Logic ---
+  // --- HTML5 Canvas Signature Logic ---
   initSignaturePad() {
     setTimeout(() => {
+      // Safety check in case the canvas hasn't rendered yet
+      if (!this.signatureCanvas) return; 
+      
       const canvas = this.signatureCanvas.nativeElement;
       this.ctx = canvas.getContext('2d')!;
       this.ctx.strokeStyle = '#111';
@@ -68,20 +72,49 @@ export class CreateContract implements OnInit {
       this.ctx.lineJoin = 'round';
       this.ctx.lineCap = 'round';
 
-      const getPos = (e: MouseEvent | TouchEvent) => {
+      // Safely gets coordinates for both Mouse and Touch
+      const getPos = (e: any) => {
         const rect = canvas.getBoundingClientRect();
-        const clientX = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
-        const clientY = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
         return {
           x: (clientX - rect.left) * (canvas.width / rect.width),
           y: (clientY - rect.top) * (canvas.height / rect.height)
         };
       };
 
-      canvas.addEventListener('mousedown', (e) => { this.isDrawing = true; const p = getPos(e); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y); });
-      canvas.addEventListener('mousemove', (e) => { if (this.isDrawing) { const p = getPos(e); this.ctx.lineTo(p.x, p.y); this.ctx.stroke(); }});
-      canvas.addEventListener('mouseup', () => this.isDrawing = false);
-      canvas.addEventListener('mouseout', () => this.isDrawing = false);
+      const startDrawing = (e: any) => {
+        e.preventDefault(); // Prevents page scrolling on touch devices
+        this.isDrawing = true;
+        const p = getPos(e);
+        this.ctx.beginPath();
+        this.ctx.moveTo(p.x, p.y);
+      };
+
+      const draw = (e: any) => {
+        e.preventDefault(); // Prevents page scrolling on touch devices
+        if (!this.isDrawing) return;
+        const p = getPos(e);
+        this.ctx.lineTo(p.x, p.y);
+        this.ctx.stroke();
+      };
+
+      const stopDrawing = () => {
+        this.isDrawing = false;
+      };
+
+      // 1. Mouse Events (For Desktop)
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseout', stopDrawing);
+
+      // 2. Touch Events (For Mobile/Tablets)
+      canvas.addEventListener('touchstart', startDrawing, { passive: false });
+      canvas.addEventListener('touchmove', draw, { passive: false });
+      canvas.addEventListener('touchend', stopDrawing);
+      canvas.addEventListener('touchcancel', stopDrawing);
+      
     }, 100);
   }
 

@@ -220,21 +220,6 @@
 .empty-state-card p { color: var(--text-muted); margin: 0; }
 
 /* --- BUTTONS --- */
-.btn-primary { 
-    background: var(--text-dark); 
-    color: var(--white); 
-    text-decoration: none; 
-    padding: 12px 24px; 
-    border-radius: var(--radius-sm); 
-    font-weight: 700; 
-    font-size: 15px;
-    cursor: pointer; 
-    border: none; 
-    transition: 0.2s;
-    display: inline-block;
-}
-
-.btn-primary:hover { opacity: 0.85; }
 .mt-15 { margin-top: 15px; }
 
 /* 🌟 Modern View All Button */

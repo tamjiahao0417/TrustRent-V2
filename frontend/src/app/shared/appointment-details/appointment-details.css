@@ -1,5 +1,4 @@
-/* 🌟 Layout inherited from global .page-container! */
-
+/* 🌟 Global Inheritances */
 .back-link {
     color: var(--text-muted);
     text-decoration: none;
@@ -10,135 +9,196 @@
     gap: 8px;
     transition: color 0.2s;
     cursor: pointer;
+    font-weight: 600;
 }
 
 .back-link:hover {
     color: var(--text-dark);
 }
 
-/* 🌟 The New Card Wrapper */
-/* Update this in appointment-details.css */
 .details-card {
     background: var(--white);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 40px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    
-    /* 🌟 Force the card to stretch fully to the window edges */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Softer, premium shadow */
     width: 100%;
-    max-width: 100%; 
     box-sizing: border-box; 
+}
+
+/* --- HEADER ROW --- */
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 24px;
+    margin-bottom: 30px;
 }
 
 .page-title {
     font-size: 28px;
     font-weight: 800;
-    margin-top: 0;
-    margin-bottom: 30px;
+    margin: 0;
     color: var(--text-dark);
 }
 
-/* --- INFORMATION DISPLAY --- */
-.info-group {
-    margin-bottom: 25px;
-}
-
-.info-group label {
-    display: block;
+/* --- STATUS BADGES --- */
+.status-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 30px;
     font-weight: 700;
     font-size: 14px;
-    color: var(--text-dark);
-    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+.status-badge.pending { background-color: #f3f4f6; color: var(--text-muted); }
+.status-badge.approved { background-color: #d1fae5; color: var(--success-green); border: 1px solid #a7f3d0; }
+.status-badge.rejected { background-color: #fee2e2; color: var(--danger-red); border: 1px solid #fecaca; }
+
+/* --- GRID LAYOUT FOR DETAILS --- */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
 }
 
-.info-group p {
-    color: var(--text-muted);
-    font-size: 16px;
-    margin: 0 0 4px 0;
-}
-
-.contact-name {
-    font-weight: 600;
-    color: var(--text-dark) !important;
-}
-
-/* --- STATUS COLORS --- */
-.status-text { font-weight: 700; }
-.pending { color: var(--text-muted); }
-.approved { color: var(--success-green); }
-.rejected { color: var(--danger-red); }
-
-/* --- ACTION BUTTONS --- */
-.action-buttons {
+/* --- DETAIL BLOCKS --- */
+.detail-block {
     display: flex;
-    gap: 15px;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s;
+}
+.detail-block:hover {
+    background-color: #f1f5f9; /* Slight darkening on hover */
+}
+
+/* Icons */
+.block-icon {
+    width: 48px;
+    height: 48px;
+    background-color: #e0e7ff; /* Soft primary blue */
+    color: var(--primary-blue);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.meet-icon {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+
+/* Text Content */
+.block-content {
+    flex-grow: 1;
+}
+
+.block-content label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.highlight-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 6px 0;
+    line-height: 1.4;
+}
+
+.sub-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* --- CONTACT BLOCK SPECIFICS --- */
+.contact-block {
+    background-color: #ffffff; /* Keep white to stand out */
+    border: 2px solid var(--border-color);
+}
+
+.avatar-circle {
+    width: 48px;
+    height: 48px;
+    background-color: var(--text-dark);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.contact-methods span {
+    font-size: 14px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- GOOGLE MEET BUTTON --- */
+.virtual-block {
+    border-color: #bfdbfe; /* Light blue border */
+}
+
+.btn-meet {
+    display: inline-block;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 8px;
+    transition: opacity 0.2s;
+}
+
+.btn-meet:hover {
+    opacity: 0.9;
+}
+
+/* --- ACTION FOOTER --- */
+.action-footer {
+    display: flex;
+    gap: 16px;
     margin-top: 40px;
     padding-top: 30px;
     border-top: 1px solid var(--border-color);
 }
 
-.btn-edit, .btn-delete {
-    padding: 12px 30px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-color);
-    font-weight: 600;
-    cursor: pointer;
-    background-color: var(--white);
-    color: var(--text-dark);
-    transition: 0.2s;
-}
-
-.btn-edit:hover { background-color: var(--bg-main); }
-
-.btn-delete { color: var(--danger-red); border-color: var(--danger-red); }
-.btn-delete:hover { background-color: #fef2f2; }
-
-.btn-approve {
-    padding: 12px 30px;
-    border-radius: var(--radius-sm);
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: var(--success-green);
-    color: var(--white);
-    transition: 0.2s;
-}
-.btn-approve:hover { filter: brightness(0.9); }
-
-.btn-reject {
-    padding: 12px 30px;
-    border-radius: var(--radius-sm);
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: var(--danger-red);
-    color: var(--white);
-    transition: 0.2s;
-}
-.btn-reject:hover { filter: brightness(0.9); }    
-
-/* --- GOOGLE MEET BUTTON --- */
-.btn-meet {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #eff6ff; /* Soft blue */
-    color: var(--primary-blue);
-    padding: 12px 20px;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 15px;
-    margin-top: 8px;
-    transition: background-color 0.2s;
-}
-
-.btn-meet:hover {
-    background-color: #dbeafe; /* Slightly darker soft blue on hover */
-}
-
 /* Shrink padding on small mobile screens */
 @media (max-width: 768px) {
-    .details-card { padding: 20px; }
+    .details-card { padding: 24px; }
+    .card-header-row { flex-direction: column; gap: 16px; }
+    .details-grid { grid-template-columns: 1fr; } /* Stack on mobile */
 }

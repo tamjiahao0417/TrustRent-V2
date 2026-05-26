@@ -14,21 +14,6 @@
     margin: 0; 
 }
 
-.btn-primary { 
-    padding: 10px 24px; 
-    border-radius: var(--radius-sm); 
-    border: none; 
-    background: var(--text-dark); 
-    cursor: pointer; 
-    font-weight: 700; 
-    color: var(--white); 
-    transition: 0.2s ease; 
-    text-decoration: none;
-}
-
-.btn-primary:hover { 
-    opacity: 0.85; 
-}
 
 /* --- SEARCH BOX --- */
 .controls-container {

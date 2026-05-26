@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; 
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; // 🌟 Add HttpHeaders here
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-management',
@@ -11,71 +11,67 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'; // 🌟 Add Http
 })
 export class UserManagementComponent implements OnInit {
   users: any[] = [];
-  showModal: boolean = false;
-  modalAction: 'suspend' | 'activate' = 'suspend';
-  selectedUser: any = null;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private http: HttpClient, 
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone // 🌟 FIX 1: Inject NgZone for guaranteed screen updates
+  ) {}
 
   ngOnInit() {
     this.fetchUsers();
   }
 
-  // 🌟 Helper method to get headers
-  // 🌟 Update this method in your user-management.ts file
   private getHeaders() {
     const token = localStorage.getItem('token'); 
-    console.log("My Auth Token is:", token);
-    
-    // 🌟 Using .set() guarantees Angular attaches these to the network request
     return new HttpHeaders()
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json');
   }
+
   fetchUsers() {
-    // 🌟 The Cache Buster: Forces the browser to ignore the saved HTML
     const bypassCache = new Date().getTime();
     
     this.http.get(`http://localhost:8000/api/admin/users?t=${bypassCache}`).subscribe({
       next: (data: any) => {
-        this.users = data.map((user: any) => {
-            if (!user.status) user.status = 'Active';
-            return user;
+        this.zone.run(() => {
+            this.users = data.map((user: any) => {
+                // 🌟 FIX 2: Standardize the case so 'suspended' matches 'Suspended' in HTML!
+                if (!user.status || user.status.toLowerCase() === 'active') {
+                    user.status = 'Active';
+                } else if (user.status.toLowerCase() === 'suspended') {
+                    user.status = 'Suspended';
+                }
+                return user;
+            });
+            this.cdr.detectChanges(); 
         });
-        this.cdr.detectChanges(); 
       },
       error: (err: any) => console.error("Error loading users:", err)
     });
   }
 
-  openConfirmModal(user: any, action: 'suspend' | 'activate') {
-    this.selectedUser = user;
-    this.modalAction = action;
-    this.showModal = true; 
-  }
+  toggleUserStatus(user: any) {
+    const action = user.status === 'Suspended' ? 'activate' : 'suspend';
+    const newStatus = action === 'suspend' ? 'Suspended' : 'Active';
 
-  closeModal() {
-    this.showModal = false;
-    this.selectedUser = null; 
-  }
+    if (!confirm(`Are you sure you want to ${action} this user account?`)) return;
 
-  confirmAction() {
-    if (!this.selectedUser) return;
-
-    const endpoint = this.modalAction === 'suspend' ? 'suspend' : 'activate';
-    const newStatus = this.modalAction === 'suspend' ? 'Suspended' : 'Active';
-
-    // 🌟 Pass the headers into the PATCH request too!
-    this.http.patch(`http://localhost:8000/api/admin/users/${this.selectedUser.id}/${endpoint}`, {}, { headers: this.getHeaders() }).subscribe({
+    this.http.patch(`http://localhost:8000/api/admin/users/${user.id}/${action}`, {}, { headers: this.getHeaders() }).subscribe({
       next: () => {
-        alert(`User ${this.modalAction}ed successfully.`);
-        this.selectedUser.status = newStatus;
-        this.closeModal();
-        this.cdr.detectChanges(); 
+        this.zone.run(() => {
+            // 1. Update the item
+            user.status = newStatus;
+            
+            // 🌟 FIX 3: Recreate the array reference so Angular's *ngFor notices the change instantly!
+            this.users = [...this.users]; 
+            
+            this.cdr.detectChanges();
+        });
       },
-      error: () => {
-        alert(`Failed to ${this.modalAction} account.`);
-        this.closeModal();
+      error: (err: any) => {
+        alert(`Failed to ${action} user. Check console for details.`);
+        console.error(err);
       }
     });
   }

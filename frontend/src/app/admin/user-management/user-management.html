@@ -1,56 +1,55 @@
 <div class="page-container">
-    <h1 style="margin-bottom: 24px;">User Management</h1>
-
-    <div class="table-container">
-        <table class="user-table">
-            <thead>
-                <tr>
-                    <th>User ID</th>
-                    <th>Username</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of users">
-                    <td>#{{ user.id }}</td>
-                    <td class="username-cell">{{ user.name }}</td>
-                    
-                    <td><span class="role-badge">{{ user.role | titlecase }}</span></td>
-                    
-                    <td>
-                        <span class="status-badge" [ngClass]="{'active': user.status === 'Active'}">
-                            {{ user.status | titlecase }}
-                        </span>
-                    </td>
-                    
-                    <!-- 🌟 Updated Action Column -->
-                    <td>
-                        <button *ngIf="user.status !== 'Suspended'" class="btn-suspend" (click)="openConfirmModal(user, 'suspend')">
-                            Suspend
-                        </button>
-                        <button *ngIf="user.status === 'Suspended'" class="btn-activate" (click)="openConfirmModal(user, 'activate')">
-                            Resume
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="header-titles" style="margin-bottom: 30px;">
+        <h1 class="page-title">User Management</h1>
+        <p class="text-muted">Manage all registered landlords and tenants across the platform.</p>
     </div>
 
-    <!-- 🌟 Dynamic Confirmation Modal Overlay -->
-    <div class="modal-overlay" *ngIf="showModal">
-        <div class="modal-content">
-            <!-- Changes title based on action -->
-            <h2>Confirm {{ modalAction === 'suspend' ? 'Suspension' : 'Activation' }}</h2>
-            
-            <p>Are you sure you want to {{ modalAction }} this account?</p>
-            
-            <div class="modal-actions">
-                <button class="btn-cancel" (click)="closeModal()">Cancel</button>
-                <button class="btn-confirm" (click)="confirmAction()">Yes</button>
-            </div>
+    <div class="table-container">
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users">
+                        <td class="font-medium text-muted">#{{ user.id }}</td>
+                        <td class="bold-text">{{ user.name }}</td>
+                        
+                        <td>
+                            <span class="role-badge">
+                                <i class="fa-solid" [ngClass]="user.role === 'landlord' ? 'fa-user-tie' : 'fa-user'"></i>
+                                {{ user.role | titlecase }}
+                            </span>
+                        </td>
+                        
+                        <td>
+                            <span class="status-banner" [ngClass]="user.status === 'Active' ? 'status-active' : 'status-suspended'">
+                                <i class="fa-solid" [ngClass]="user.status === 'Active' ? 'fa-circle-check' : 'fa-ban'"></i>
+                                {{ user.status | titlecase }}
+                            </span>
+                        </td>
+                        
+                        <td style="text-align: right;">
+                            <button *ngIf="user.status !== 'Suspended'" class="btn-action btn-suspend" (click)="toggleUserStatus(user)">
+                                <i class="fa-solid fa-lock"></i> Suspend
+                            </button>
+                            <button *ngIf="user.status === 'Suspended'" class="btn-action btn-activate" (click)="toggleUserStatus(user)">
+                                <i class="fa-solid fa-unlock"></i> Resume
+                            </button>
+                        </td>
+                    </tr>
+                    
+                    <tr *ngIf="users.length === 0">
+                        <td colspan="5" class="text-center text-muted" style="padding: 40px;">No users found in the system.</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

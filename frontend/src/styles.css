@@ -109,3 +109,180 @@ h1, h2, h3, p, span, div {
         break-inside: avoid !important; 
     }
 }
+
+/* ==========================================================================
+   UNIFIED SYSTEM BUTTONS (Global Design System)
+   ========================================================================== */
+
+/* 1. Primary Button (The main action: Submit, Save, Create) */
+.btn-primary {
+    background-color: var(--text-dark); /* Stark black */
+    color: var(--white);
+    border: 2px solid var(--text-dark);
+    padding: 12px 24px;
+    border-radius: var(--radius-sm); /* Or use 20px if you prefer pill-shaped */
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #333333; /* Slightly lighter on hover */
+    border-color: #333333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.btn-primary:disabled {
+    background-color: var(--text-muted);
+    border-color: var(--text-muted);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* 2. Secondary Button (Alternative actions: Cancel, Back, Outlined) */
+.btn-secondary {
+    background-color: var(--white);
+    color: var(--text-dark);
+    border: 2px solid var(--border-color);
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    border-color: var(--text-dark);
+    color: var(--text-dark);
+    background-color: var(--bg-main);
+}
+
+/* 3. Edit Button (Blue) */
+.btn-update {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: 2px solid var(--primary-blue);
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.btn-update:hover:not(:disabled) {
+    background-color: #1d4ed8; /* Darker blue */
+    border-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.btn-update:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+/* 4. Delete/Danger Button (Red) */
+.btn-danger {
+    background-color: var(--danger-red);
+    color: var(--white);
+    border: 2px solid var(--danger-red);
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background-color: #dc2626; /* Darker red */
+    border-color: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-danger:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+/* 5. Utility Class: Small Button Size */
+/* Add this class to make any button smaller (Great for Edit/Delete in tables) */
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 6px;
+}
+
+/* 6. Success Button (Green for Approvals) */
+.btn-success {
+    background-color: var(--success-green);
+    color: var(--white);
+    border: 2px solid var(--success-green);
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.btn-success:hover:not(:disabled) {
+    background-color: #059669; /* Darker green */
+    border-color: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.btn-success:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+.back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    font-weight: 600;
+    cursor: pointer;
+}
+.back-link:hover { color: var(--text-dark); }
