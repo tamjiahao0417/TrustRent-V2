@@ -1,145 +1,171 @@
 <div class="page-container">
-    <header class="welcome-section">
-        <h1>Welcome Back, {{ userName | titlecase }}!</h1>
-        <p *ngIf="userRole === 'landlord'">Here is an overview of your property portfolio.</p>
-        <p *ngIf="userRole === 'tenant'">Here is an overview of your current rental status.</p>
-    </header>
-
-    <div *ngIf="isLoading" class="status-message">
-        <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
-        <p>Loading your dashboard...</p>
+    
+    <div class="contract-header-row" style="margin-bottom: 30px;">
+        <div class="header-titles">
+            <h1 class="page-title">Welcome Back, {{ userName | titlecase }}!</h1>
+            <p class="text-muted" *ngIf="userRole === 'landlord'">Here is an overview of your property portfolio.</p>
+            <p class="text-muted" *ngIf="userRole === 'tenant'">Here is an overview of your current rental status.</p>
+            <p class="text-muted" *ngIf="userRole === 'admin'">Here is your system administration overview.</p>
+        </div>
     </div>
 
-    <div *ngIf="!isLoading && !dbData" class="status-message error">
-        <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
-        <p>Failed to load dashboard data. Please check your console.</p>
+    <div class="empty-state-card" *ngIf="isLoading" style="margin-top: 40px;">
+        <i class="fa-solid fa-circle-notch fa-spin fa-3x" style="color: var(--primary-blue); margin-bottom: 16px;"></i>
+        <h3>Synchronizing Data</h3>
+        <p>Loading your dashboard metrics...</p>
+    </div>
+
+    <div class="alert-banner error-banner" *ngIf="!isLoading && !dbData" style="margin-bottom: 24px;">
+        <i class="fa-solid fa-triangle-exclamation"></i> Failed to load dashboard data. Please refresh the page.
     </div>
 
     <div *ngIf="!isLoading && dbData">
         
         <ng-container *ngIf="userRole === 'tenant'">
             
-            <div class="alert-banner" *ngIf="dbData.pendingPayment">
-                <div class="alert-content">
-                    <i class="fa-solid fa-circle-exclamation alert-icon"></i>
+            <div class="alert-banner warning-banner" *ngIf="dbData.pendingPayment" style="margin-bottom: 30px;">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                    <i class="fa-solid fa-circle-exclamation fa-2x"></i>
                     <div>
-                        <h3 class="alert-title">Next Rent Payment Due</h3>
-                        <p class="alert-desc">
-                            You owe <strong>RM {{ dbData.pendingPayment.amount }}</strong> 
-                            by <strong>{{ dbData.pendingPayment.due_date | date }}</strong>.
-                        </p>
+                        <h3 style="margin: 0 0 4px 0; font-size: 16px; color: #9a3412;">Rent Payment Due</h3>
+                        <p style="margin: 0; color: #c2410c; font-size: 14px;">You owe <strong>RM {{ dbData.pendingPayment.amount }}</strong> by {{ dbData.pendingPayment.due_date | date }}</p>
                     </div>
                 </div>
-                <a routerLink="/rent-payment" class="btn-primary">Pay Now</a>
+                <a routerLink="/rent-payment" class="btn-primary" style="background-color: #ea580c;">Pay Now</a>
             </div>
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <label>Open Maintenance Issues</label>
-                    <div class="value">
-                        {{ dbData.openIssuesCount }}
-                        <span class="badge-warning" *ngIf="dbData.openIssuesCount > 0">Needs Attention</span>
+                    <div class="stat-icon"><i class="fa-solid fa-key"></i></div>
+                    <div class="stat-info">
+                        <label>Active Leases</label>
+                        <h3>{{ dbData.activeContracts?.length || 0 }}</h3>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <label>Active Contracts</label>
-                    <div class="value">{{ dbData.activeContracts?.length || 0 }}</div>
-                </div>
-                <div class="stat-card">
-                    <label>Next Lease Expiry (Days)</label>
-                    <div class="value">{{ dbData.daysLeft }}</div>
-                </div>
-            </div>
-
-            <div class="section-header"><h2>Quick Actions</h2></div>
-            <div class="action-grid">
-                <a routerLink="/maintenance/report" class="action-card"><i class="fa-solid fa-wrench"></i><span>Report Issue</span></a>
-                <a routerLink="/transactions" class="action-card"><i class="fa-solid fa-receipt"></i><span>Payment History</span></a>
-                <a routerLink="/contracts" class="action-card"><i class="fa-solid fa-file-signature"></i><span>View Lease</span></a>
-                <a routerLink="/ai-matching" class="action-card"><i class="fa-solid fa-house-user"></i><span>Find New Home</span></a>
-            </div>
-
-            <div class="section-header mt-40"><h2>My Rented Properties</h2></div>
-            
-            <div class="property-wide-card" *ngFor="let contract of dbData.activeContracts">
-                <div class="property-img-placeholder">
-                    <img *ngIf="contract.property_image" 
-                        [src]="'http://localhost:8000/uploads/' + contract.property_image" 
-                        class="property-cover-img" alt="Property Image">
-                    
-                    <i *ngIf="!contract.property_image" class="fa-solid fa-house empty-icon"></i>
-                </div>
-                <div class="property-details">
-                    <div class="property-title-row">
-                        <h3>{{ contract.property_title }}</h3>
-                        <span class="badge-success">Active Lease</span>
-                    </div>
-                    <p class="location"><i class="fa-solid fa-location-dot"></i> {{ contract.property_address }}</p>
-                    
-                    <div class="property-info-row">
-                        <div class="info-item"><label>LANDLORD</label><p>{{ contract.landlord_name }}</p></div>
-                        <div class="info-item"><label>MONTHLY RENT</label><p>RM {{ contract.rent_amount }}</p></div>
-                        <div class="info-item"><label>CONTRACT ENDS</label><p>{{ contract.end_date | date:'longDate' }}</p></div>
+                    <div class="stat-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <div class="stat-info">
+                        <label>Pending Payments</label>
+                        <h3>{{ dbData.pendingPayment ? 1 : 0 }}</h3>
                     </div>
                 </div>
             </div>
             
-            <div class="property-wide-card empty-state-card" *ngIf="dbData.activeContracts?.length === 0">
-                <h3>No Active Lease</h3>
-                <p>You are not currently renting any properties through TrustRent.</p>
-                <a routerLink="/property-listings" class="btn-primary mt-15">Browse Listings</a>
+            <div class="details-card">
+                <div class="header-flex">
+                    <h2 class="section-title" style="margin: 0; border: none; padding: 0;">My Current Rental</h2>
+                </div>
+                <div class="card-divider"></div>
+                
+                <div class="empty-state-card" *ngIf="!dbData.activeContracts || dbData.activeContracts.length === 0" style="padding: 20px;">
+                    <i class="fa-solid fa-house-user fa-3x" style="color: var(--text-muted); margin-bottom: 16px;"></i>
+                    <h3>All set!</h3>
+                    <p>Your rental details will appear here once your contract is active.</p>
+                </div>
             </div>
         </ng-container>
+
 
         <ng-container *ngIf="userRole === 'landlord'">
             
             <div class="stats-grid">
-                <div class="stat-card"><label>Total Properties</label><div class="value">{{ dbData.totalProperties }}</div></div>
-                <div class="stat-card"><label>Active Tenants</label><div class="value">{{ dbData.activeTenants }}</div></div>
-                <div class="stat-card"><label>Monthly Revenue</label><div class="value revenue">RM {{ dbData.monthlyRevenue }}</div></div>
-            </div>
-
-            <div class="section-header"><h2>Quick Actions</h2></div>
-            <div class="action-grid">
-                <a routerLink="/properties/create" class="action-card"><i class="fa-solid fa-plus"></i><span>Add Property</span></a>
-                <a routerLink="/rental-requests" class="action-card"><i class="fa-solid fa-bell"></i><span>Rental Requests</span></a>
-                <a routerLink="/maintenance" class="action-card"><i class="fa-solid fa-wrench"></i><span>Maintenance</span></a>
-                <a routerLink="/transactions" class="action-card"><i class="fa-solid fa-chart-line"></i><span>Financials</span></a>
-            </div>
-
-            <div class="section-header mt-40">
-                <h2>My Rented Properties Overview</h2>
-                <a routerLink="/my-properties" class="btn-view-all">
-                    View All Properties <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <div class="property-wide-card" *ngFor="let prop of dbData.rentedProperties">
-                <div class="property-img-placeholder">
-                    <img *ngIf="prop.property_image" 
-                        [src]="'http://localhost:8000/uploads/' + prop.property_image" 
-                        class="property-cover-img" alt="Property Image">
-                    
-                    <i *ngIf="!prop.property_image" class="fa-solid fa-building empty-icon"></i>
-                </div>
-                <div class="property-details">
-                    <div class="property-title-row">
-                        <h3>{{ prop.title }}</h3>
-                        <span class="badge-success">Rented</span>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-building"></i></div>
+                    <div class="stat-info">
+                        <label>Active Properties</label>
+                        <h3>{{ dbData.rentedProperties?.length || 0 }}</h3>
                     </div>
-                    <p class="location"><i class="fa-solid fa-location-dot"></i> {{ prop.address }}</p>
-                    
-                    <div class="property-info-row">
-                        <div class="info-item"><label>CURRENT TENANT</label><p>{{ prop.tenant_email }}</p></div>
-                        <div class="info-item"><label>MONTHLY RENT</label><p>RM {{ prop.rent_amount }}</p></div>
-                        <div class="info-item"><label>STATUS</label><p class="status-success">Active</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <div class="stat-info">
+                        <label>Total Revenue</label>
+                        <h3><span style="font-size: 16px; color: var(--text-muted);">RM</span> {{ dbData.monthlyRevenue || 0 }}</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-info">
+                        <label>Active Tenants</label>
+                        <h3>{{ dbData.activeTenants || 0 }}</h3>
                     </div>
                 </div>
             </div>
+
+            <div class="details-card">
+                <div class="header-flex">
+                    <h2 class="section-title" style="margin: 0; border: none; padding: 0;">Rented Properties</h2>
+                    <a routerLink="/my-properties" class="btn-secondary">View All <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="card-divider"></div>
+
+                <div class="property-list" *ngFor="let prop of dbData.rentedProperties">
+                    <div class="property-wide-card">
+                        <div class="property-image-wrapper">
+                            <img *ngIf="prop.property_image" [src]="'http://localhost:8000/uploads/' + prop.property_image" alt="Property">
+                            <i *ngIf="!prop.property_image" class="fa-solid fa-image" style="color: #9ca3af; font-size: 24px;"></i>
+                        </div>
+                        <div class="property-details">
+                            <h3>{{ prop.title }}</h3>
+                            <p class="location"><i class="fa-solid fa-location-dot"></i> {{ prop.address }}</p>
+                            <div class="property-info-row">
+                                <div class="info-item"><label>TENANT</label><p>{{ prop.tenant_email }}</p></div>
+                                <div class="info-item"><label>RENT</label><p>RM {{ prop.rent_amount }}</p></div>
+                                <div class="info-item"><label>STATUS</label><span class="status-banner status-active" style="padding: 4px 10px; font-size: 12px;">Active</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-state-card" *ngIf="!dbData.rentedProperties || dbData.rentedProperties.length === 0">
+                    <i class="fa-solid fa-house-circle-xmark fa-3x" style="color: var(--text-muted); margin-bottom: 16px;"></i>
+                    <h3>No Rented Properties Yet</h3>
+                    <p>You don't have any active rental contracts right now.</p>
+                </div>
+            </div>
+        </ng-container>
+
+
+        <ng-container *ngIf="userRole === 'admin'">
             
-            <div class="property-wide-card empty-state-card" *ngIf="dbData.rentedProperties?.length === 0">
-                <h3>No Rented Properties Yet</h3>
-                <p>You don't have any active rental contracts right now.</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #059669; background: #d1fae5;"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-info">
+                        <label>Total Users</label>
+                        <h3>{{ dbData.totalUsers || 0 }}</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #dc2626; background: #fee2e2;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-info">
+                        <label>Open Reports</label>
+                        <h3>{{ dbData.openReports || 0 }}</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #2563eb; background: #dbeafe;"><i class="fa-solid fa-house-chimney"></i></div>
+                    <div class="stat-info">
+                        <label>Listed Properties</label>
+                        <h3>{{ dbData.totalProperties || 0 }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-layout-split" style="gap: 24px;">
+
+                <div class="details-card" style="grid-column: span 2;">
+                    <div class="header-flex">
+                        <h2 class="section-title" style="margin: 0; border: none; padding: 0;">System Status</h2>
+                    </div>
+                    <div class="card-divider"></div>
+                    <div class="empty-state-card" style="padding: 20px;">
+                        <i class="fa-solid fa-server fa-3x" style="color: var(--success-green); margin-bottom: 16px;"></i>
+                        <h3>All Systems Operational</h3>
+                        <p>Platform services are running normally with no reported downtime.</p>
+                    </div>
+                </div>
             </div>
         </ng-container>
 

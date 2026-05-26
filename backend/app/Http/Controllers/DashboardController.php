@@ -18,7 +18,26 @@ class DashboardController extends Controller
         }
 
         /* ================================================= */
-        /* 🏠 TENANT LOGIC                                   */
+        /* 🛡️ ADMIN LOGIC                                    */
+        /* ================================================= */
+        if ($role === 'admin') {
+            try {
+                $totalUsers = DB::table('users')->count();
+                $openReports = DB::table('reports')->where('status', 'Open')->count();
+                $totalProperties = DB::table('properties')->count();
+
+                return response()->json([
+                    'totalUsers' => $totalUsers,
+                    'openReports' => $openReports,
+                    'totalProperties' => $totalProperties
+                ]);
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+        }
+
+        /* ================================================= */
+        /* 🧑‍💻 TENANT LOGIC                                   */
         /* ================================================= */
         if ($role === 'tenant') {
             $activeContracts = DB::table('contracts')
@@ -31,7 +50,7 @@ class DashboardController extends Controller
                     'contracts.rent_amount',
                     'properties.title as property_title', 
                     'properties.address as property_address', 
-                    'properties.image_path as property_image', // 🌟 FIXED COLUMN NAME
+                    'properties.image_path as property_image', 
                     'landlords.name as landlord_name'
                 )
                 ->orderBy('contracts.created_at', 'desc')
@@ -39,7 +58,6 @@ class DashboardController extends Controller
 
             $nearestExpiry = null;
             foreach ($activeContracts as $contract) {
-                // 🌟 EXTRACT FIRST IMAGE FROM JSON ARRAY
                 $images = json_decode($contract->property_image, true);
                 $contract->property_image = (is_array($images) && count($images) > 0) ? $images[0] : null;
 
@@ -71,7 +89,7 @@ class DashboardController extends Controller
         }
 
         /* ================================================= */
-        /* 🏢 LANDLORD LOGIC                                 */
+        /* 👔 LANDLORD LOGIC                                 */
         /* ================================================= */
         if ($role === 'landlord') {
             $totalProperties = DB::table('properties')
@@ -94,14 +112,13 @@ class DashboardController extends Controller
                 ->select(
                     'properties.title', 
                     'properties.address', 
-                    'properties.image_path as property_image', // 🌟 FIXED COLUMN NAME
+                    'properties.image_path as property_image', 
                     'tenants.email as tenant_email', 
                     'contracts.rent_amount'
                 )
                 ->orderBy('contracts.created_at', 'desc')
                 ->get();
 
-            // 🌟 EXTRACT FIRST IMAGE FROM JSON ARRAY FOR LANDLORDS
             foreach ($rentedProperties as $prop) {
                 $images = json_decode($prop->property_image, true);
                 $prop->property_image = (is_array($images) && count($images) > 0) ? $images[0] : null;
