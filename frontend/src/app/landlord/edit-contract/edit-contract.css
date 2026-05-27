@@ -1,143 +1,165 @@
-/* Paste your book-appointment.css code here, then add: */
-.page-container {
-    max-width: 800px;
-    margin: 40px 20px;
-    padding: 0 20px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-}
-
+/* 🌟 Global Inheritances */
 .back-link {
-    color: #6b7280;
+    color: var(--text-muted);
     text-decoration: none;
-    font-weight: 500;
-    margin-bottom: 20px;
-    display: inline-block;
+    font-size: 14px;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+    font-weight: 600;
+    cursor: pointer;
 }
-
-.back-link:hover {
-    color: #111827;
-}
+.back-link:hover { color: var(--text-dark); }
 
 .page-title {
     font-size: 32px;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 30px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0;
+}
+.page-subtitle {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-top: 8px;
+    margin-bottom: 0;
 }
 
-.form-group {
-    margin-bottom: 24px;
+/* --- THE WHITE FORM CARD --- */
+.form-card {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    box-sizing: border-box;
 }
 
+.section-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0 0 24px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* --- FORM CONTROLS --- */
+.form-group { margin-bottom: 24px; }
 .form-group label {
     display: block;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-dark);
     margin-bottom: 8px;
-    color: #111827;
 }
+
+.required { color: var(--danger-red); }
 
 .form-control {
     width: 100%;
-    padding: 14px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
     font-size: 15px;
+    background: var(--bg-main);
+    color: var(--text-dark);
     box-sizing: border-box;
-    outline: none;
-    transition: all 0.2s;
+    transition: 0.2s ease;
+    font-family: inherit;
 }
-
+.form-control::placeholder { color: var(--text-muted); opacity: 0.7; }
 .form-control:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+    background: var(--white);
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-.readonly-input {
-    background-color: #f3f4f6;
-    color: #6b7280;
-    cursor: not-allowed;
+/* --- UTILITIES --- */
+.mt-4 { margin-top: 24px; }
+.mt-5 { margin-top: 40px; }
+
+/* --- GRID LAYOUT --- */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
 }
 
-.date-time-row {
+/* --- SIGNATURE BOX --- */
+.signature-box {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+}
+.signature-box canvas {
+    background: var(--white);
+    border: 2px dashed #d1d5db;
+    border-radius: var(--radius-sm);
+    width: 100%;
+    max-width: 460px;
+    cursor: crosshair;
+    touch-action: none;
+    transition: border-color 0.2s;
+}
+.signature-box canvas:hover { border-color: var(--text-muted); }
+.signature-actions { margin-top: 16px; }
+
+/* --- BUTTONS & ACTIONS --- */
+.action-buttons {
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 30px;
 }
 
-.date-time-row .form-group {
-    flex: 1;
-}
-
-/* Custom Pill Radio Buttons matching your screenshot */
-.pill-group {
-    display: flex;
-    gap: 12px;
-}
-
-.pill-radio {
-    padding: 10px 24px;
-    border: 1px solid #d1d5db;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: 600;
-    color: #374151;
-    transition: all 0.2s;
-}
-
-.pill-radio.active {
-    background-color: #ffffff;
-    border-color: #111827;
-    color: #111827;
-    box-shadow: 0 0 0 1px #111827; /* Extra thickness like the screenshot */
-}
-
-.btn-submit {
-    padding: 14px 32px;
-    background-color: #3b82f6;
-    color: white;
+.btn-primary {
+    background-color: var(--primary-blue);
+    color: var(--white);
     border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    float: right;
-}
-
-.btn-submit:hover {
-    background-color: #2563eb;
-}
-
-.error-banner {
-    color: #ef4444; 
-    background: #fef2f2; 
-    padding: 10px; 
-    border-radius: 8px; 
-    margin-bottom: 20px; 
-    font-size: 14px; 
-    border: 1px solid #fee2e2;
-}
-
-/* Clearfix for the submit button */
-.submit-container::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-.page-subtitle {
-    color: #6b7280;
-    margin-bottom: 30px;
+    padding: 14px 28px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
     font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
 }
-.page-subtitle strong {
-    color: #111827;
+.btn-primary:hover:not(:disabled) {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
+.btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
 
-.form-card { background: white; padding: 40px; border-radius: 12px; border: 1px solid #e5e7eb; margin-bottom: 40px; }
-.section-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #e5e7eb; color: #111; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-.mt-4 { margin-top: 1.5rem; }
-.mt-5 { margin-top: 3rem; }
-.signature-box { padding: 20px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb; text-align: center; }
-.btn-clear { background: none; border: none; color: #ef4444; font-weight: 600; cursor: pointer; margin-top: 10px; }
-.btn-submit { background-color: #3b82f6; color: white; padding: 14px 40px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; float: left; }
+.btn-clear {
+    background: none;
+    border: none;
+    color: var(--danger-red);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px;
+}
+.btn-clear:hover { opacity: 0.7; }
+
+.alert-banner { padding: 16px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; display: flex; gap: 10px; align-items: center; margin-bottom: 24px; }
+.error-banner { background-color: #fef2f2; color: var(--danger-red); border: 1px solid #fecaca; }
+
+@media (max-width: 768px) {
+    .form-card { padding: 24px; }
+    .action-buttons { flex-direction: column-reverse; gap: 16px; }
+    .btn-primary, .btn-clear { width: 100%; justify-content: center; }
+}
