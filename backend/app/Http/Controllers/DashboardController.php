@@ -26,10 +26,17 @@ class DashboardController extends Controller
                 $openReports = DB::table('reports')->where('status', 'Open')->count();
                 $totalProperties = DB::table('properties')->count();
 
+                // 🌟 NEW: Fetch real recent reports for the admin dashboard
+                $recentReports = DB::table('reports')
+                    ->orderBy('created_at', 'desc')
+                    ->limit(5)
+                    ->get();
+
                 return response()->json([
                     'totalUsers' => $totalUsers,
                     'openReports' => $openReports,
-                    'totalProperties' => $totalProperties
+                    'totalProperties' => $totalProperties,
+                    'recentReports' => $recentReports
                 ]);
             } catch (\Exception $e) {
                 return response()->json(['error' => $e->getMessage()], 500);

@@ -139,3 +139,8 @@
     .property-info-row { gap: 20px; flex-wrap: wrap; }
     .alert-banner { flex-direction: column; align-items: flex-start; gap: 16px; }
 }
+
+/* --- STATUS BANNERS --- */
+.status-banner { display: inline-block; font-weight: 700; border-radius: 20px; }
+.status-active { background-color: #f0fdf4; color: var(--success-green); border: 1px solid #bbf7d0; }
+.status-warning { background-color: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; } /* 🌟 ADD THIS LINE */

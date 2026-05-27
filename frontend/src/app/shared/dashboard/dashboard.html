@@ -39,7 +39,8 @@
                     <div class="stat-icon"><i class="fa-solid fa-key"></i></div>
                     <div class="stat-info">
                         <label>Active Leases</label>
-                        <h3>{{ dbData.activeContracts?.length || 0 }}</h3>
+                        <!-- 🌟 FIX: Safe array length check -->
+                        <h3>{{ dbData.activeContracts ? dbData.activeContracts.length : 0 }}</h3>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -57,6 +58,37 @@
                 </div>
                 <div class="card-divider"></div>
                 
+                <div class="property-list" *ngIf="dbData.activeContracts && dbData.activeContracts.length > 0">
+                    <div class="property-wide-card" *ngFor="let contract of dbData.activeContracts">
+                        <div class="property-image-wrapper">
+                            <img *ngIf="contract.property_image" [src]="'http://localhost:8000/uploads/' + contract.property_image" alt="Property">
+                            <i *ngIf="!contract.property_image" class="fa-solid fa-image" style="color: #9ca3af; font-size: 24px;"></i>
+                        </div>
+                        <div class="property-details">
+                            <h3>{{ contract.property_title }}</h3>
+                            <p class="location"><i class="fa-solid fa-location-dot"></i> {{ contract.property_address }}</p>
+                            <div class="property-info-row">
+                                <div class="info-item">
+                                    <label>LANDLORD</label>
+                                    <p>{{ contract.landlord_name }}</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>RENT</label>
+                                    <p>RM {{ contract.rent_amount }}</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>REMAINING</label>
+                                    <p style="color: var(--primary-blue);">{{ contract.days_left }} Days</p>
+                                </div>
+                                <div class="info-item">
+                                    <label>STATUS</label>
+                                    <span class="status-banner status-active" style="padding: 4px 10px; font-size: 12px;">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="empty-state-card" *ngIf="!dbData.activeContracts || dbData.activeContracts.length === 0" style="padding: 20px;">
                     <i class="fa-solid fa-house-user fa-3x" style="color: var(--text-muted); margin-bottom: 16px;"></i>
                     <h3>All set!</h3>
@@ -134,21 +166,22 @@
                     <div class="stat-icon" style="color: #059669; background: #d1fae5;"><i class="fa-solid fa-users"></i></div>
                     <div class="stat-info">
                         <label>Total Users</label>
-                        <h3>{{ dbData.totalUsers || 0 }}</h3>
+                        <!-- 🌟 FIX: Guarantee it prints '0' perfectly -->
+                        <h3>{{ dbData.totalUsers !== undefined ? dbData.totalUsers : 0 }}</h3>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="color: #dc2626; background: #fee2e2;"><i class="fa-solid fa-triangle-exclamation"></i></div>
                     <div class="stat-info">
                         <label>Open Reports</label>
-                        <h3>{{ dbData.openReports || 0 }}</h3>
+                        <h3>{{ dbData.openReports !== undefined ? dbData.openReports : 0 }}</h3>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon" style="color: #2563eb; background: #dbeafe;"><i class="fa-solid fa-house-chimney"></i></div>
                     <div class="stat-info">
                         <label>Listed Properties</label>
-                        <h3>{{ dbData.totalProperties || 0 }}</h3>
+                        <h3>{{ dbData.totalProperties !== undefined ? dbData.totalProperties : 0 }}</h3>
                     </div>
                 </div>
             </div>
@@ -157,14 +190,47 @@
 
                 <div class="details-card" style="grid-column: span 2;">
                     <div class="header-flex">
-                        <h2 class="section-title" style="margin: 0; border: none; padding: 0;">System Status</h2>
+                        <h2 class="section-title" style="margin: 0; border: none; padding: 0;">Recent Support Tickets</h2>
+                        <a routerLink="/reports" class="btn-secondary">View All</a>
                     </div>
                     <div class="card-divider"></div>
-                    <div class="empty-state-card" style="padding: 20px;">
-                        <i class="fa-solid fa-server fa-3x" style="color: var(--success-green); margin-bottom: 16px;"></i>
-                        <h3>All Systems Operational</h3>
-                        <p>Platform services are running normally with no reported downtime.</p>
+                    
+                    <!-- 🌟 NEW: Dynamic Tickets Table -->
+                    <div style="overflow-x: auto;" *ngIf="dbData.recentReports?.length > 0">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-muted); font-size: 13px;">
+                                    <th style="padding: 12px 8px;">ID</th>
+                                    <th style="padding: 12px 8px;">Issue Type</th>
+                                    <th style="padding: 12px 8px;">Status</th>
+                                    <th style="padding: 12px 8px; text-align: right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rep of dbData.recentReports" style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 16px 8px; font-weight: 600; color: var(--text-dark);">#{{ rep.id }}</td>
+                                    <td style="padding: 16px 8px; color: var(--text-dark);">{{ rep.issue_type }}</td>
+                                    <td style="padding: 16px 8px;">
+                                        <span class="status-banner" 
+                                              [ngClass]="rep.status === 'Resolved' ? 'status-active' : 'status-warning'" 
+                                              style="padding: 4px 10px; font-size: 12px;">
+                                            {{ rep.status }}
+                                        </span>
+                                    </td>
+                                    <td style="padding: 16px 8px; text-align: right;">
+                                        <a [routerLink]="['/reports/details', rep.id]" style="color: var(--primary-blue); text-decoration: none; font-weight: 600;">Review</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+
+                    <div class="empty-state-card" *ngIf="!dbData.recentReports || dbData.recentReports.length === 0" style="padding: 20px;">
+                        <i class="fa-solid fa-check-circle fa-3x" style="color: var(--success-green); margin-bottom: 16px;"></i>
+                        <h3>All Caught Up</h3>
+                        <p>There are no support tickets in the system right now.</p>
+                    </div>
+
                 </div>
             </div>
         </ng-container>
