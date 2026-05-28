@@ -1,7 +1,18 @@
-
-add admin role use case 
-update model
-change database
-unified ui
+The “Submit Request” button on the rent application form does not respond when clicked. No loading indicator appears, and the form is not submitted even after multiple attempts. This issue happens consistently on both Chrome and Edge browsers.
 
 
+
+--------------
+
+
+The issue was caused by a missing frontend event handler on the “Submit Request” button in the rent application form. The form submission function was not properly bound to the click event, which prevented any action from being triggered.
+
+This has been fixed by re-attaching the correct event listener and adding a loading state indicator during submission. The fix has been tested on both Chrome and Edge browsers, and the form now submits successfully without errors.
+
+The deployment has been updated and is now live.
+
+
+
+
+system ok, landlord have true landlord and tenant is friend outside utm.
+product future, update slide follow psm1 , only point form, too much word, 
