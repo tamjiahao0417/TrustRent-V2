@@ -1,30 +1,34 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'; // 🌟 1. Import FormsModule
+import { FormsModule } from '@angular/forms';
 import { LoadingSpinnerComponent } from '../../loading-spinner.component';
 
+// Import your newly created Model
+import { MyPropertiesModel } from '../../models/landlord/my-properties.model';
 
 @Component({
   selector: 'app-my-properties',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, LoadingSpinnerComponent], // 🌟 2. Add it here
-  templateUrl: './my-properties.html',
-  styleUrl: './my-properties.css'
+  imports: [CommonModule, RouterModule, FormsModule, LoadingSpinnerComponent],
+  // Pointing to the new views folder
+  templateUrl: '../../views/landlord/my-properties.html',
+  styleUrl: '../../views/landlord/my-properties.css'
 })
-export class MyProperties implements OnInit {
+export class MyPropertiesController implements OnInit {
   properties: any[] = [];
-  filteredProperties: any[] = []; // 🌟 3. Array for search results
+  filteredProperties: any[] = []; 
   isLoading: boolean = true;
 
-  // 🌟 4. State variables for inputs
   searchText: string = '';
   showFilters: boolean = false;
   maxPrice: number | null = null;
   minRooms: number | null = null;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private propertiesModel: MyPropertiesModel // INJECTING THE MODEL HERE
+  ) {}
 
   ngOnInit() {
     this.loadProperties();
@@ -33,22 +37,26 @@ export class MyProperties implements OnInit {
   loadProperties() {
     const userId = localStorage.getItem('user_id');
     
-    this.http.get(`http://localhost:8000/api/properties?user_id=${userId}`).subscribe({
-      next: (data: any) => {
-        this.properties = data;
-        this.filteredProperties = data; // 🌟 5. Show all properties initially
-        this.isLoading = false;
-        this.cdr.detectChanges(); 
-      },
-      error: (err) => {
-        console.error('Failed to load properties', err);
-        this.isLoading = false;
-        this.cdr.detectChanges(); 
-      }
-    });
+    if (userId) {
+      // Use the Model to fetch data
+      this.propertiesModel.getUserProperties(userId).subscribe({
+        next: (data: any) => {
+          this.properties = data;
+          this.filteredProperties = data; 
+          this.isLoading = false;
+          this.cdr.detectChanges(); 
+        },
+        error: (err: any) => {
+          console.error('Failed to load properties', err);
+          this.isLoading = false;
+          this.cdr.detectChanges(); 
+        }
+      });
+    } else {
+      this.isLoading = false;
+    }
   }
 
-  // 🌟 6. The function that filters the list instantly
   applyFilters() {
     this.filteredProperties = this.properties.filter(prop => {
       

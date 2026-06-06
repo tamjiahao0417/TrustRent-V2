@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // Import your newly created Model
-import { CreateContractModel, ContractPayload } from '../../models/create-contract.model';
+import { CreateContractModel, ContractPayload } from '../../models/landlord/create-contract.model';
 
 @Component({
   selector: 'app-create-contract',

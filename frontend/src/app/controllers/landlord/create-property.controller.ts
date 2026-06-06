@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
 // Import the new Model
-import { CreatePropertyModel } from '../../models/create-property.model';
+import { CreatePropertyModel } from '../../models/landlord/create-property.model';
 
 @Component({
   selector: 'app-create-property',

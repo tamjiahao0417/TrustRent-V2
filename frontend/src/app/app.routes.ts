@@ -4,10 +4,10 @@ import { Register } from './controllers/auth/register.controller';
 import { Layout } from './shared/layout/layout';
 import { Dashboard } from './shared/dashboard/dashboard'; // 1. Import your Dashboard component
 import { Profile } from './shared/profile/profile'; // Add this line!
-import { MyProperties } from './landlord/my-properties/my-properties';
+import { MyPropertiesController } from './controllers/landlord/my-properties.controller';
 import { CreatePropertyController } from './controllers/landlord/create-property.controller';
 import { ViewProperty } from './shared/view-property/view-property';
-import { EditProperty } from './landlord/edit-property/edit-property';
+import { EditPropertyController } from './controllers/landlord/edit-property.controller';
 import { PropertyListings } from './shared/property-listings/property-listings';
 import { BookAppointment } from './tenant/book-appointment/book-appointment'; // Make sure this path matches your folder structure!
 import { MyAppointments } from './shared/my-appointments/my-appointments'; // Make sure this path matches your folder structure!
@@ -47,10 +47,10 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: Dashboard }, // 2. Add this specific line
       { path: 'profile', component: Profile },
-      { path: 'my-properties', component: MyProperties },
+      { path: 'my-properties', component: MyPropertiesController },
       { path: 'properties/create', component: CreatePropertyController },
       { path: 'properties/view/:id', component: ViewProperty },
-      { path: 'properties/edit/:id', component: EditProperty },
+      { path: 'properties/edit/:id', component: EditPropertyController },
       { path: 'property-listings', component: PropertyListings },
       { path: 'book-appointment/:id', component: BookAppointment },
       { path: 'appointments', component: MyAppointments },

@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
-import { UserManagementService } from '../../models/user-management.model'; // 🌟 Import the Model
+import { UserManagementService } from '../../models/admin/user-management.model'; // 🌟 Import the Model
 
 @Component({
   selector: 'app-user-management',
