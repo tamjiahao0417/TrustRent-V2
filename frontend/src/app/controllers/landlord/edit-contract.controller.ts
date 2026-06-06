@@ -2,16 +2,19 @@ import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@an
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+
+// Import your newly created Model
+import { EditContractModel } from '../../models/edit-contract.model';
 
 @Component({
   selector: 'app-edit-contract',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './edit-contract.html',
-  styleUrl: './edit-contract.css'
+  // Navigate up two levels to 'app', then down into 'views/landlord'
+  templateUrl: '../../views/landlord/edit-contract.html',
+  styleUrl: '../../views/landlord/edit-contract.css'
 })
-export class EditContract implements OnInit {
+export class EditContractController implements OnInit {
   @ViewChild('signatureCanvas', { static: false }) signatureCanvas!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
   private isDrawing = false;
@@ -22,47 +25,50 @@ export class EditContract implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
     private router: Router,
     private location: Location,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private contractModel: EditContractModel // INJECTING THE MODEL HERE
   ) {}
 
   ngOnInit() {
     this.contractId = this.route.snapshot.paramMap.get('id');
 
-    this.http.get(`http://localhost:8000/api/contracts/${this.contractId}`).subscribe({
-      next: (data: any) => {
-        // Security: Only allow editing if it's a Draft!
-        if (data.status !== 'Draft') {
-          alert('This contract cannot be edited.');
-          this.router.navigate(['/contracts']);
-          return;
-        }
+    if (this.contractId) {
+      // Use the Model to fetch the contract
+      this.contractModel.getContract(this.contractId).subscribe({
+        next: (data: any) => {
+          // Security: Only allow editing if it's a Draft!
+          if (data.status !== 'Draft') {
+            alert('This contract cannot be edited.');
+            this.router.navigate(['/contracts']);
+            return; 
+          }
 
-        // Pre-fill the form with existing contract data
-        this.formData = {
-          landlord_ic: data.landlord_ic,
-          landlord_address: data.landlord_address,
-          tenant_ic: data.tenant_ic,
-          tenant_address: data.tenant_address,
-          start_date: data.start_date,
-          end_date: data.end_date,
-          rent_amount: data.rent_amount,
-          utilities_deposit: data.utilities_deposit,
-          security_deposit: data.security_deposit,
-          notice_period: data.notice_period,
-          additional_terms: data.additional_terms
-        };
-        
-        this.cdr.detectChanges();
-        this.initSignaturePad();
-      },
-      error: () => {
-        alert('Contract not found.');
-        this.router.navigate(['/contracts']);
-      }
-    });
+          // Pre-fill the form with existing contract data
+          this.formData = {
+            landlord_ic: data.landlord_ic,
+            landlord_address: data.landlord_address,
+            tenant_ic: data.tenant_ic,
+            tenant_address: data.tenant_address,
+            start_date: data.start_date,
+            end_date: data.end_date,
+            rent_amount: data.rent_amount,
+            utilities_deposit: data.utilities_deposit,
+            security_deposit: data.security_deposit,
+            notice_period: data.notice_period,
+            additional_terms: data.additional_terms
+          };
+          
+          this.cdr.detectChanges();
+          this.initSignaturePad();
+        },
+        error: () => {
+          alert('Contract not found.');
+          this.router.navigate(['/contracts']);
+        }
+      });
+    }
   }
 
   // --- HTML5 Canvas Signature Logic ---
@@ -112,22 +118,27 @@ export class EditContract implements OnInit {
       return;
     }
 
+    if (!this.contractId) return;
+
     const payload = {
       ...this.formData,
       landlord_signature: this.signatureCanvas.nativeElement.toDataURL('image/png')
     };
 
-    this.http.put(`http://localhost:8000/api/contracts/${this.contractId}/redraft`, payload).subscribe({
+    // Use the Model to submit the redrafted contract
+    this.contractModel.redraftContract(this.contractId, payload).subscribe({
       next: () => {
         alert('Contract edited, re-signed, and sent back to the tenant!');
         this.router.navigate(['/contracts/details', this.contractId]); 
       },
-      error: (err) => {
+      error: (err: any) => {
         this.errorMessage = err.error?.message || 'Failed to update contract.';
         this.cdr.detectChanges();
       }
     });
   }
 
-  goBack() { this.location.back(); }
+  goBack() { 
+    this.location.back(); 
+  }
 }

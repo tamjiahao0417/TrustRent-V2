@@ -20,7 +20,7 @@ import { EditRentalRequest } from './tenant/edit-rental-request/edit-rental-requ
 import { CreateContractController } from './controllers/landlord/create-contract.controller';
 import { Contracts } from './shared/contracts/contracts';
 import { ContractDetails } from './shared/contract-details/contract-details';
-import { EditContract } from './landlord/edit-contract/edit-contract';
+import { EditContractController } from './controllers/landlord/edit-contract.controller';
 import { RentPayment } from './tenant/rent-payment/rent-payment';
 import { Transactions } from './shared/transactions/transactions';
 import { TransactionDetails } from './shared/transaction-details/transaction-details';
@@ -63,7 +63,7 @@ export const routes: Routes = [
       { path: 'contracts/create/:id', component: CreateContractController },
       { path: 'contracts', component: Contracts },
       { path: 'contracts/details/:id', component: ContractDetails },
-      { path: 'contracts/edit/:id', component: EditContract },
+      { path: 'contracts/edit/:id', component: EditContractController },
       { path: 'rent-payment', component: RentPayment },
       { path: 'transactions', component: Transactions },
       { path: 'transactions/details/:id', component: TransactionDetails },
