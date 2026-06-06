@@ -11,4 +11,8 @@ export class AuthModel {
     // 🌟 The Model handles the API communication
     return this.http.post('http://localhost:8000/api/login', loginData);
   }
+
+  registerUser(registerData: any) {
+    return this.http.post('http://localhost:8000/api/register', registerData);
+  }
 }

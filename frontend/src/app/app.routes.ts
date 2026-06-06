@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Login } from './controllers/auth/login.controller'; 
-import { Register } from './auth/register/register';
+import { Register } from './controllers/auth/register.controller';
 import { Layout } from './shared/layout/layout';
 import { Dashboard } from './shared/dashboard/dashboard'; // 1. Import your Dashboard component
 import { Profile } from './shared/profile/profile'; // Add this line!

@@ -3,13 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule} from '@angular/router';
+import { AuthModel } from '../../models/auth.model';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
-  templateUrl: './register.html',
-  styleUrl: './register.css',
+  templateUrl: '../../views/auth/register.html',
+  styleUrl: '../../views/auth/register.css',
 })
 export class Register {
   showPassword = false;
