@@ -5,7 +5,7 @@ import { Layout } from './shared/layout/layout';
 import { Dashboard } from './shared/dashboard/dashboard'; // 1. Import your Dashboard component
 import { Profile } from './shared/profile/profile'; // Add this line!
 import { MyProperties } from './landlord/my-properties/my-properties';
-import { CreateProperty } from './landlord/create-property/create-property';
+import { CreatePropertyController } from './controllers/landlord/create-property.controller';
 import { ViewProperty } from './shared/view-property/view-property';
 import { EditProperty } from './landlord/edit-property/edit-property';
 import { PropertyListings } from './shared/property-listings/property-listings';
@@ -17,7 +17,7 @@ import { ApplyProperty } from './tenant/apply-property/apply-property';
 import { RentalRequests } from './shared/rental-requests/rental-requests'; // Make sure this path matches your folder structure!
 import { RentalRequestDetails } from './shared/rental-request-details/rental-request-details';
 import { EditRentalRequest } from './tenant/edit-rental-request/edit-rental-request';
-import { CreateContract } from './landlord/create-contract/create-contract';
+import { CreateContractController } from './controllers/landlord/create-contract.controller';
 import { Contracts } from './shared/contracts/contracts';
 import { ContractDetails } from './shared/contract-details/contract-details';
 import { EditContract } from './landlord/edit-contract/edit-contract';
@@ -48,7 +48,7 @@ export const routes: Routes = [
       { path: 'dashboard', component: Dashboard }, // 2. Add this specific line
       { path: 'profile', component: Profile },
       { path: 'my-properties', component: MyProperties },
-      { path: 'properties/create', component: CreateProperty },
+      { path: 'properties/create', component: CreatePropertyController },
       { path: 'properties/view/:id', component: ViewProperty },
       { path: 'properties/edit/:id', component: EditProperty },
       { path: 'property-listings', component: PropertyListings },
@@ -60,7 +60,7 @@ export const routes: Routes = [
       { path: 'rental-requests', component: RentalRequests },
       { path: 'rental-requests/details/:id', component: RentalRequestDetails },
       { path: 'rental-requests/edit/:id', component: EditRentalRequest },
-      { path: 'contracts/create/:id', component: CreateContract },
+      { path: 'contracts/create/:id', component: CreateContractController },
       { path: 'contracts', component: Contracts },
       { path: 'contracts/details/:id', component: ContractDetails },
       { path: 'contracts/edit/:id', component: EditContract },

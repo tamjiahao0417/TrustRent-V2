@@ -1,17 +1,20 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
+
+// Import the new Model
+import { CreatePropertyModel } from '../../models/create-property.model';
 
 @Component({
   selector: 'app-create-property',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './create-property.html',
-  styleUrl: './create-property.css'
+  // Pointing to the new views folder
+  templateUrl: '../../views/landlord/create-property.html',
+  styleUrl: '../../views/landlord/create-property.css'
 })
-export class CreateProperty {
+export class CreatePropertyController {
   property: any = {
     title: '',
     description: '',
@@ -23,58 +26,51 @@ export class CreateProperty {
   };
 
   selectedFiles: File[] = [];
-  previewUrls: string[] = []; // Matches your HTML
+  previewUrls: string[] = []; 
   isSubmitting: boolean = false;
+  fullScreenImage: string | null = null; 
 
   constructor(
-    private http: HttpClient,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private propertyModel: CreatePropertyModel // INJECTING THE MODEL HERE
   ) {}
-
-  // ADD THESE 3 THINGS:
-  fullScreenImage: string | null = null; 
 
   openImage(url: string) {
     this.fullScreenImage = url;
-    this.cdr.detectChanges(); // Tell Angular to show the popup
+    this.cdr.detectChanges(); 
   }
 
   closeImage() {
     this.fullScreenImage = null;
-    this.cdr.detectChanges(); // Tell Angular to hide the popup
+    this.cdr.detectChanges(); 
   }
   
   onFileSelect(event: any) {
     if (event.target.files.length > 0) {
       const files = Array.from(event.target.files) as File[];
 
-      // Loop through new files and add them to our arrays
       for (let file of files) {
-        this.selectedFiles.push(file); // Save the actual file for Laravel
+        this.selectedFiles.push(file); 
 
-        // Create the preview for Angular
         const reader = new FileReader();
         reader.onload = (e: any) => {
           this.previewUrls.push(e.target.result);
-          this.cdr.detectChanges(); // Instantly draw the new thumbnail
+          this.cdr.detectChanges(); 
         };
         reader.readAsDataURL(file);
       }
       
-      // Clear the input value so the user can select the same file again if they want
       event.target.value = ''; 
     }
   }
 
-  // Matches the (click)="removeImage(i)" in your HTML
   removeImage(index: number) {
-    this.selectedFiles.splice(index, 1); // Remove the file
-    this.previewUrls.splice(index, 1);   // Remove the preview
-    this.cdr.detectChanges(); // Instantly remove it from the screen
+    this.selectedFiles.splice(index, 1); 
+    this.previewUrls.splice(index, 1);   
+    this.cdr.detectChanges(); 
   }
 
-  // Blocks typing letters on the keyboard
   allowNumbersOnly(event: KeyboardEvent) {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -84,7 +80,6 @@ export class CreateProperty {
     return true;
   }
 
-  // Formats into 019-2229393
   formatPhone() {
     if (!this.property.phone_number) return;
     
@@ -119,18 +114,18 @@ export class CreateProperty {
     formData.append('address', this.property.address);
     formData.append('phone_number', this.property.phone_number);
 
-    // Append all remaining files
     this.selectedFiles.forEach((file) => {
       formData.append('property_images[]', file, file.name);
     });
 
-    this.http.post('http://localhost:8000/api/properties', formData).subscribe({
-      next: (response: any) => {
+    // Use the Model to submit the data
+    this.propertyModel.createProperty(formData).subscribe({
+      next: () => {
         alert('Property listed successfully!');
         this.isSubmitting = false;
         this.router.navigate(['/my-properties']);
       },
-      error: (err) => {
+      error: (err: any) => {
         alert('Failed to create property. See console for details.');
         console.error(err);
         this.isSubmitting = false;

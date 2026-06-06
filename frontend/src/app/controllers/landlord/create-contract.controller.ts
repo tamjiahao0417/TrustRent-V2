@@ -2,16 +2,18 @@ import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@an
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+
+// Import your newly created Model
+import { CreateContractModel, ContractPayload } from '../../models/create-contract.model';
 
 @Component({
   selector: 'app-create-contract',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './create-contract.html',
-  styleUrl: './create-contract.css'
+  templateUrl: '../../views/landlord/create-contract.html',
+  styleUrl: '../../views/landlord/create-contract.css'
 })
-export class CreateContract implements OnInit {
+export class CreateContractController implements OnInit {
   @ViewChild('signatureCanvas', { static: false }) signatureCanvas!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
   private isDrawing = false;
@@ -25,40 +27,40 @@ export class CreateContract implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
     private router: Router,
     private location: Location,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private contractModel: CreateContractModel // INJECTING THE MODEL HERE
   ) {}
 
   ngOnInit() {
     const requestId = this.route.snapshot.paramMap.get('id');
-    const landlordId = localStorage.getItem('user_id');
 
-    // Fetch the approved request details to pre-fill the form
-    this.http.get(`http://localhost:8000/api/rental-requests/${requestId}`).subscribe({
-      next: (data: any) => {
-        this.req = data;
-        this.formData.landlord_name = data.landlord?.name;
-        this.formData.landlord_ic = data.landlord?.ic || '';
-        this.formData.landlord_address = data.landlord?.house_address || '';
-        this.formData.tenant_name = data.tenant?.name;
-        this.formData.tenant_ic = data.tenant?.ic || '';
-        this.formData.tenant_address = data.tenant?.house_address || '';
-        this.formData.start_date = data.start_date;
-        this.formData.end_date = data.end_date;
-        this.formData.rent_amount = data.property?.price;
-        this.formData.utilities_deposit = data.property?.price * 0.5;
-        this.formData.security_deposit = data.property?.price * 2;
-        this.formData.additional_terms = `BANKING DETAILS FOR RENT PAYMENT:\nBank Name: \nAccount No: \nAccount Name: ${data.landlord?.name}\n\nADDITIONAL TERMS:\nTenant shall be responsible for all utility bills.`;
-        
-        this.cdr.detectChanges();
-        this.initSignaturePad();
-      }
-    });
+    if (requestId) {
+      // Use the Model to fetch the rental request
+      this.contractModel.getRentalRequest(requestId).subscribe({
+        next: (data: any) => {
+          this.req = data;
+          this.formData.landlord_name = data.landlord?.name;
+          this.formData.landlord_ic = data.landlord?.ic || '';
+          this.formData.landlord_address = data.landlord?.house_address || '';
+          this.formData.tenant_name = data.tenant?.name;
+          this.formData.tenant_ic = data.tenant?.ic || '';
+          this.formData.tenant_address = data.tenant?.house_address || '';
+          this.formData.start_date = data.start_date;
+          this.formData.end_date = data.end_date;
+          this.formData.rent_amount = data.property?.price;
+          this.formData.utilities_deposit = data.property?.price * 0.5;
+          this.formData.security_deposit = data.property?.price * 2;
+          this.formData.additional_terms = `BANKING DETAILS FOR RENT PAYMENT:\nBank Name: \nAccount No: \nAccount Name: ${data.landlord?.name}\n\nADDITIONAL TERMS:\nTenant shall be responsible for all utility bills.`;
+          
+          this.cdr.detectChanges();
+          this.initSignaturePad();
+        }
+      });
+    }
   }
 
-  // --- HTML5 Canvas Signature Logic ---
   // --- HTML5 Canvas Signature Logic ---
   initSignaturePad() {
     setTimeout(() => {
@@ -137,7 +139,7 @@ export class CreateContract implements OnInit {
       return;
     }
 
-    const payload = {
+    const payload: ContractPayload = {
       ...this.formData,
       user_id: localStorage.getItem('user_id'),
       rental_request_id: this.req.id,
@@ -146,14 +148,17 @@ export class CreateContract implements OnInit {
       landlord_signature: this.signatureCanvas.nativeElement.toDataURL('image/png')
     };
 
-    this.http.post('http://localhost:8000/api/contracts', payload).subscribe({
+    // Use the Model to submit the data
+    this.contractModel.createContract(payload).subscribe({
       next: () => {
         alert('Contract generated and sent to tenant!');
-        this.router.navigate(['/contracts']); // We will build the list next
+        this.router.navigate(['/contracts']); 
       },
-      error: (err) => alert(err.error?.message || 'Failed to create contract.')
+      error: (err: any) => alert(err.error?.message || 'Failed to create contract.')
     });
   }
 
-  goBack() { this.location.back(); }
+  goBack() { 
+    this.location.back(); 
+  }
 }
