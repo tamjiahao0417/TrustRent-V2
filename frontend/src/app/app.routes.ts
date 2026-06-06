@@ -30,11 +30,11 @@ import { MaintenanceDetails } from './shared/maintenance-details/maintenance-det
 import { MaintenanceReport } from './tenant/maintenance-report/maintenance-report'; // Adjust path!
 import { EditMaintenance } from './tenant/edit-maintenance/edit-maintenance';
 import { Chat } from './shared/chat/chat';
-import { UserManagementComponent } from './admin/user-management/user-management';
+import { UserManagementComponent } from './controllers/admin/user-management.controller';
 import { ReportIssueComponent } from './shared/report-issue/report-issue';
 import { ReportsListComponent } from './shared/reports-list/reports-list';
 import { ReportDetailsComponent } from './shared/report-details/report-details';
-import { EditReportComponent } from './edit-report/edit-report';
+import { EditReportComponent } from './shared/edit-report/edit-report';
 import { AiMatchingComponent } from './shared/ai-matching/ai-matching';
 
 export const routes: Routes = [ 

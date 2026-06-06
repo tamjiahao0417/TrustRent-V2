@@ -1,42 +1,33 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserManagementService } from '../../models/user-management.model'; // 🌟 Import the Model
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './user-management.html',
-  styleUrl: './user-management.css'
+  templateUrl: '../../views/admin/user-management.html',
+  styleUrl: '../../views/admin/user-management.css'
 })
 export class UserManagementComponent implements OnInit {
   users: any[] = [];
 
   constructor(
-    private http: HttpClient, 
+    private userService: UserManagementService, // 🌟 Inject the Model
     private cdr: ChangeDetectorRef,
-    private zone: NgZone // 🌟 FIX 1: Inject NgZone for guaranteed screen updates
+    private zone: NgZone 
   ) {}
 
   ngOnInit() {
     this.fetchUsers();
   }
 
-  private getHeaders() {
-    const token = localStorage.getItem('token'); 
-    return new HttpHeaders()
-      .set('Authorization', `Bearer ${token}`)
-      .set('Accept', 'application/json');
-  }
-
   fetchUsers() {
-    const bypassCache = new Date().getTime();
-    
-    this.http.get(`http://localhost:8000/api/admin/users?t=${bypassCache}`).subscribe({
+    // 🌟 Controller asks the Model for data
+    this.userService.getUsers().subscribe({
       next: (data: any) => {
         this.zone.run(() => {
             this.users = data.map((user: any) => {
-                // 🌟 FIX 2: Standardize the case so 'suspended' matches 'Suspended' in HTML!
                 if (!user.status || user.status.toLowerCase() === 'active') {
                     user.status = 'Active';
                 } else if (user.status.toLowerCase() === 'suspended') {
@@ -57,15 +48,12 @@ export class UserManagementComponent implements OnInit {
 
     if (!confirm(`Are you sure you want to ${action} this user account?`)) return;
 
-    this.http.patch(`http://localhost:8000/api/admin/users/${user.id}/${action}`, {}, { headers: this.getHeaders() }).subscribe({
+    // 🌟 Controller sends the update request to the Model
+    this.userService.updateUserStatus(user.id, action).subscribe({
       next: () => {
         this.zone.run(() => {
-            // 1. Update the item
             user.status = newStatus;
-            
-            // 🌟 FIX 3: Recreate the array reference so Angular's *ngFor notices the change instantly!
             this.users = [...this.users]; 
-            
             this.cdr.detectChanges();
         });
       },
