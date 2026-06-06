@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 
+import { AuthModel } from '../../models/auth.model';
+
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule], 
-  templateUrl: './login.html',
-  styleUrl: './login.css',
+  templateUrl: '../../views/auth/login.html',
+  styleUrl: '../../views/auth/login.css',
 })
 export class Login {
   showPassword = false;
