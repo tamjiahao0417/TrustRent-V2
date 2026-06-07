@@ -2,16 +2,19 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+
+// Import your newly created Model
+import { ApplyPropertyModel } from '../../models/tenant/apply-property.model';
 
 @Component({
   selector: 'app-apply-property',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './apply-property.html',
-  styleUrl: './apply-property.css' // We can reuse your existing form styles!
+  // Pointing to the new views folder
+  templateUrl: '../../views/tenant/apply-property.html',
+  styleUrl: '../../views/tenant/apply-property.css' 
 })
-export class ApplyProperty implements OnInit {
+export class ApplyPropertyController implements OnInit {
   property: any = null;
   minDate: string = '';
   
@@ -24,10 +27,10 @@ export class ApplyProperty implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
     private router: Router,
     private location: Location,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private applyModel: ApplyPropertyModel // INJECTING THE MODEL HERE
   ) {}
 
   ngOnInit() {
@@ -37,17 +40,19 @@ export class ApplyProperty implements OnInit {
 
     const propertyId = this.route.snapshot.paramMap.get('id');
     
-    // Fetch property details so we know the landlord_id and title
-    this.http.get(`http://localhost:8000/api/properties/${propertyId}`).subscribe({
-      next: (data: any) => {
-        this.property = data;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.errorMessage = 'Failed to load property.';
-        this.cdr.detectChanges();
-      }
-    });
+    if (propertyId) {
+      // Use the Model to fetch property details
+      this.applyModel.getProperty(propertyId).subscribe({
+        next: (data: any) => {
+          this.property = data;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.errorMessage = 'Failed to load property.';
+          this.cdr.detectChanges();
+        }
+      });
+    }
   }
 
   goBack() {
@@ -68,12 +73,13 @@ export class ApplyProperty implements OnInit {
       notes: this.notes
     };
 
-    this.http.post('http://localhost:8000/api/rental-requests', requestData).subscribe({
+    // Use the Model to submit the request
+    this.applyModel.submitRentalRequest(requestData).subscribe({
       next: (response: any) => {
         alert('Rental request sent successfully!');
-        this.router.navigate(['/rental-requests']); // We will build this list next!
+        this.router.navigate(['/rental-requests']); 
       },
-      error: (err) => {
+      error: (err: any) => {
         // Catch validation errors from Laravel
         this.errorMessage = err.error?.message || 'Error submitting request.';
         this.cdr.detectChanges();

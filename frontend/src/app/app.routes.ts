@@ -13,7 +13,7 @@ import { BookAppointment } from './tenant/book-appointment/book-appointment'; //
 import { MyAppointments } from './shared/my-appointments/my-appointments'; // Make sure this path matches your folder structure!
 import { AppointmentDetails } from './shared/appointment-details/appointment-details'; // Make sure this path matches your folder structure!
 import { EditAppointment } from './tenant/edit-appointment/edit-appointment'; // Make sure this path matches your folder structure!
-import { ApplyProperty } from './tenant/apply-property/apply-property';
+import { ApplyPropertyController } from './controllers/tenant/apply-property.controller';
 import { RentalRequests } from './shared/rental-requests/rental-requests'; // Make sure this path matches your folder structure!
 import { RentalRequestDetails } from './shared/rental-request-details/rental-request-details';
 import { EditRentalRequest } from './tenant/edit-rental-request/edit-rental-request';
@@ -56,7 +56,7 @@ export const routes: Routes = [
       { path: 'appointments', component: MyAppointments },
       { path: 'appointments/details/:id', component: AppointmentDetails },
       { path: 'appointments/edit/:id', component: EditAppointment },
-      { path: 'apply-property/:id', component: ApplyProperty },
+      { path: 'apply-property/:id', component: ApplyPropertyController },
       { path: 'rental-requests', component: RentalRequests },
       { path: 'rental-requests/details/:id', component: RentalRequestDetails },
       { path: 'rental-requests/edit/:id', component: EditRentalRequest },
