@@ -16,7 +16,7 @@ import { EditAppointmentController } from './controllers/tenant/edit-appointment
 import { ApplyPropertyController } from './controllers/tenant/apply-property.controller';
 import { RentalRequests } from './shared/rental-requests/rental-requests'; // Make sure this path matches your folder structure!
 import { RentalRequestDetails } from './shared/rental-request-details/rental-request-details';
-import { EditRentalRequest } from './tenant/edit-rental-request/edit-rental-request';
+import { EditRentalRequestController } from './controllers/tenant/edit-rental-request.controller';
 import { CreateContractController } from './controllers/landlord/create-contract.controller';
 import { Contracts } from './shared/contracts/contracts';
 import { ContractDetails } from './shared/contract-details/contract-details';
@@ -59,7 +59,7 @@ export const routes: Routes = [
       { path: 'apply-property/:id', component: ApplyPropertyController },
       { path: 'rental-requests', component: RentalRequests },
       { path: 'rental-requests/details/:id', component: RentalRequestDetails },
-      { path: 'rental-requests/edit/:id', component: EditRentalRequest },
+      { path: 'rental-requests/edit/:id', component: EditRentalRequestController },
       { path: 'contracts/create/:id', component: CreateContractController },
       { path: 'contracts', component: Contracts },
       { path: 'contracts/details/:id', component: ContractDetails },
