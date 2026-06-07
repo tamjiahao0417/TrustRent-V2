@@ -1,17 +1,20 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
+// Import your newly created Model from the tenant folder
+import { EditMaintenanceModel } from '../../models/tenant/edit-maintenance.model';
 
 @Component({
   selector: 'app-edit-maintenance',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './edit-maintenance.html',
-  styleUrl: './edit-maintenance.css'
+  // Pointing to the new views folder
+  templateUrl: '../../views/tenant/edit-maintenance.html',
+  styleUrl: '../../views/tenant/edit-maintenance.css'
 })
-export class EditMaintenance implements OnInit {
+export class EditMaintenanceController implements OnInit {
   issueId: string | null = null;
   userId = localStorage.getItem('user_id');
   activeProperties: any[] = [];
@@ -25,53 +28,55 @@ export class EditMaintenance implements OnInit {
   };
 
   // Media Arrays
-  existingMedia: string[] = []; // URLs already in the database
-  selectedFiles: File[] = []; // New files they want to add
-  previewMedia: { url: string, type: string }[] = []; // Previews for new files
+  existingMedia: string[] = []; 
+  selectedFiles: File[] = []; 
+  previewMedia: { url: string, type: string }[] = []; 
   fullScreenImage: string | null = null;
 
   constructor(
     private route: ActivatedRoute, 
-    private http: HttpClient, 
     private location: Location,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private maintenanceModel: EditMaintenanceModel // INJECTING THE MODEL HERE
   ) {}
 
   ngOnInit() {
     this.issueId = this.route.snapshot.paramMap.get('id');
     
-    // 1. Fetch properties first
-    this.http.get(`http://localhost:8000/api/maintenance-properties?user_id=${this.userId}`).subscribe({
-      next: (props: any) => {
-        this.activeProperties = props;
-        
-        // 2. Fetch the current issue data
-        this.http.get(`http://localhost:8000/api/maintenance/${this.issueId}`).subscribe({
-          next: (data: any) => {
-            this.reportData.category = data.category;
-            this.reportData.urgency = data.urgency;
-            this.reportData.description = data.description;
+    if (this.userId && this.issueId) {
+      // 1. Fetch properties first using the Model
+      this.maintenanceModel.getMaintenanceProperties(this.userId).subscribe({
+        next: (props: any) => {
+          this.activeProperties = props;
+          
+          // 2. Fetch the current issue data using the Model
+          this.maintenanceModel.getMaintenanceIssue(this.issueId!).subscribe({
+            next: (data: any) => {
+              this.reportData.category = data.category;
+              this.reportData.urgency = data.urgency;
+              this.reportData.description = data.description;
 
-            // Pre-select the correct property in the dropdown
-            const matchedProperty = this.activeProperties.find(p => p.property_id === data.property_id);
-            if (matchedProperty) {
-              this.reportData.selected_property = matchedProperty;
-            }
-
-            // Parse existing media
-            if (data.media_path) {
-              try {
-                this.existingMedia = JSON.parse(data.media_path);
-              } catch (e) {
-                this.existingMedia = [data.media_path];
+              // Pre-select the correct property in the dropdown
+              const matchedProperty = this.activeProperties.find(p => p.property_id === data.property_id);
+              if (matchedProperty) {
+                this.reportData.selected_property = matchedProperty;
               }
+
+              // Parse existing media
+              if (data.media_path) {
+                try {
+                  this.existingMedia = JSON.parse(data.media_path);
+                } catch (e) {
+                  this.existingMedia = [data.media_path];
+                }
+              }
+              this.cdr.detectChanges();
             }
-            this.cdr.detectChanges();
-          }
-        });
-      }
-    });
+          });
+        }
+      });
+    }
   }
 
   // --- MEDIA HANDLING LOGIC ---
@@ -115,11 +120,12 @@ export class EditMaintenance implements OnInit {
       return alert('Please fill in all required fields.');
     }
 
+    if (!this.issueId) return;
+
     this.isLoading = true;
 
-    // Use FormData so we can upload files during an Edit!
     const formData = new FormData();
-    formData.append('_method', 'PUT'); // 🌟 Laravel trick: Fakes a PUT request so file uploads work
+    formData.append('_method', 'PUT'); 
     formData.append('user_id', this.userId!);
     formData.append('landlord_id', this.reportData.selected_property.landlord_id);
     formData.append('property_id', this.reportData.selected_property.property_id);
@@ -127,26 +133,22 @@ export class EditMaintenance implements OnInit {
     formData.append('urgency', this.reportData.urgency);
     formData.append('description', this.reportData.description);
     
-    // Pass the old media that wasn't deleted
     formData.append('existing_media', JSON.stringify(this.existingMedia));
 
-    // Append any brand new files
     this.selectedFiles.forEach((file) => {
       formData.append('media[]', file, file.name);
     });
 
-    // Notice this is a POST request now, but Laravel will treat it as a PUT!
-    this.http.post(`http://localhost:8000/api/maintenance/${this.issueId}`, formData).subscribe({
+    // Use the Model to submit the update
+    this.maintenanceModel.updateMaintenanceIssue(this.issueId, formData).subscribe({
       next: () => {
         this.isLoading = false;
         this.cdr.detectChanges(); 
         
         alert('Issue updated successfully!');
-
-        // 🌟 Update this line to include 'details'
         this.router.navigate(['/maintenance/details', this.issueId]); 
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('API Error:', err);
         alert('Failed to update issue.');
         this.isLoading = false;
@@ -155,5 +157,7 @@ export class EditMaintenance implements OnInit {
     });
   }
 
-  goBack() { this.location.back(); }
+  goBack() { 
+    this.location.back(); 
+  }
 }

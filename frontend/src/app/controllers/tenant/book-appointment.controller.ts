@@ -1,17 +1,20 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // 1. Added ChangeDetectorRef
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; 
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+
+// Import your newly created Model
+import { BookAppointmentModel } from '../../models/tenant/book-appointment.model';
 
 @Component({
   selector: 'app-book-appointment',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './book-appointment.html',
-  styleUrl: './book-appointment.css'
+  // Pointing to the new views folder
+  templateUrl: '../../views/tenant/book-appointment.html',
+  styleUrl: '../../views/tenant/book-appointment.css'
 })
-export class BookAppointment implements OnInit {
+export class BookAppointmentController implements OnInit {
   property: any = null;
   minDate: string = '';
   
@@ -23,10 +26,10 @@ export class BookAppointment implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
     private router: Router,
     private location: Location,
-    private cdr: ChangeDetectorRef // 2. Injected here
+    private cdr: ChangeDetectorRef,
+    private appointmentModel: BookAppointmentModel // INJECTING THE MODEL HERE
   ) {}
 
   ngOnInit() {
@@ -35,16 +38,19 @@ export class BookAppointment implements OnInit {
 
     const propertyId = this.route.snapshot.paramMap.get('id');
     
-    this.http.get(`http://localhost:8000/api/properties/${propertyId}`).subscribe({
-      next: (data: any) => {
-        this.property = data;
-        this.cdr.detectChanges(); // 3. Wakes Angular up to show the form!
-      },
-      error: () => {
-        this.errorMessage = 'Failed to load property.';
-        this.cdr.detectChanges(); // Also good to wake it up on error
-      }
-    });
+    if (propertyId) {
+      // Use the Model to fetch the property
+      this.appointmentModel.getProperty(propertyId).subscribe({
+        next: (data: any) => {
+          this.property = data;
+          this.cdr.detectChanges(); 
+        },
+        error: () => {
+          this.errorMessage = 'Failed to load property.';
+          this.cdr.detectChanges(); 
+        }
+      });
+    }
   }
 
   goBack() {
@@ -64,16 +70,13 @@ export class BookAppointment implements OnInit {
       appointment_type: this.appointmentType
     };
 
-    this.http.post('http://localhost:8000/api/appointments', bookingData).subscribe({
+    // Use the Model to submit the booking
+    this.appointmentModel.bookAppointment(bookingData).subscribe({
       next: (response: any) => {
-        // This alert pauses the code execution until you click 'OK'
         alert('Appointment requested successfully! The landlord will review it soon.');
-        
-        // --- ADD OR CHECK THIS LINE ---
-        // This tells Angular to change the URL and load a new component
         this.router.navigate(['/appointments']); 
       },
-      error: (err) => {
+      error: (err: any) => {
         this.errorMessage = err.error?.message || 'Error creating appointment.';
         this.cdr.detectChanges();
       }

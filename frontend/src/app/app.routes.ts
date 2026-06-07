@@ -9,10 +9,10 @@ import { CreatePropertyController } from './controllers/landlord/create-property
 import { ViewProperty } from './shared/view-property/view-property';
 import { EditPropertyController } from './controllers/landlord/edit-property.controller';
 import { PropertyListings } from './shared/property-listings/property-listings';
-import { BookAppointment } from './tenant/book-appointment/book-appointment'; // Make sure this path matches your folder structure!
+import { BookAppointmentController } from './controllers/tenant/book-appointment.controller';
 import { MyAppointments } from './shared/my-appointments/my-appointments'; // Make sure this path matches your folder structure!
 import { AppointmentDetails } from './shared/appointment-details/appointment-details'; // Make sure this path matches your folder structure!
-import { EditAppointment } from './tenant/edit-appointment/edit-appointment'; // Make sure this path matches your folder structure!
+import { EditAppointmentController } from './controllers/tenant/edit-appointment.controller';
 import { ApplyPropertyController } from './controllers/tenant/apply-property.controller';
 import { RentalRequests } from './shared/rental-requests/rental-requests'; // Make sure this path matches your folder structure!
 import { RentalRequestDetails } from './shared/rental-request-details/rental-request-details';
@@ -28,7 +28,7 @@ import { AiPricing } from './shared/ai-pricing/ai-pricing'; // Adjust path!
 import { Maintenance } from './shared/maintenance/maintenance'; // Adjust path!
 import { MaintenanceDetails } from './shared/maintenance-details/maintenance-details'; // Adjust path!
 import { MaintenanceReport } from './tenant/maintenance-report/maintenance-report'; // Adjust path!
-import { EditMaintenance } from './tenant/edit-maintenance/edit-maintenance';
+import { EditMaintenanceController } from './controllers/tenant/edit-maintenance.controller';
 import { Chat } from './shared/chat/chat';
 import { UserManagementComponent } from './controllers/admin/user-management.controller';
 import { ReportIssueComponent } from './shared/report-issue/report-issue';
@@ -52,10 +52,10 @@ export const routes: Routes = [
       { path: 'properties/view/:id', component: ViewProperty },
       { path: 'properties/edit/:id', component: EditPropertyController },
       { path: 'property-listings', component: PropertyListings },
-      { path: 'book-appointment/:id', component: BookAppointment },
+      { path: 'book-appointment/:id', component: BookAppointmentController },
       { path: 'appointments', component: MyAppointments },
       { path: 'appointments/details/:id', component: AppointmentDetails },
-      { path: 'appointments/edit/:id', component: EditAppointment },
+      { path: 'appointments/edit/:id', component: EditAppointmentController },
       { path: 'apply-property/:id', component: ApplyPropertyController },
       { path: 'rental-requests', component: RentalRequests },
       { path: 'rental-requests/details/:id', component: RentalRequestDetails },
@@ -71,7 +71,7 @@ export const routes: Routes = [
       { path: 'maintenance', component: Maintenance },
       { path: 'maintenance/details/:id', component: MaintenanceDetails },
       { path: 'maintenance/report', component: MaintenanceReport },
-      { path: 'edit-maintenance/:id', component: EditMaintenance },
+      { path: 'edit-maintenance/:id', component: EditMaintenanceController },
       { path: 'chat', component: Chat },
       { path: 'user-management', component: UserManagementComponent },
       { path: 'reports/create', component: ReportIssueComponent },
