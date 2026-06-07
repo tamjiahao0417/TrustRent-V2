@@ -1,17 +1,20 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
+// Import your newly created Model from the tenant folder
+import { MaintenanceReportModel } from '../../models/tenant/maintenance-report.model';
 
 @Component({
   selector: 'app-maintenance-report',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './maintenance-report.html',
-  styleUrl: './maintenance-report.css'
+  // Pointing to the new views folder
+  templateUrl: '../../views/tenant/maintenance-report.html',
+  styleUrl: '../../views/tenant/maintenance-report.css'
 })
-export class MaintenanceReport implements OnInit {
+export class MaintenanceReportController implements OnInit {
   userId = localStorage.getItem('user_id');
   activeProperties: any[] = [];
   
@@ -22,7 +25,6 @@ export class MaintenanceReport implements OnInit {
     description: ''
   };
 
-  // 🌟 Upgraded to Arrays for Multiple Files
   selectedFiles: File[] = [];
   previewMedia: { url: string, type: string }[] = []; 
   fullScreenImage: string | null = null;
@@ -30,21 +32,23 @@ export class MaintenanceReport implements OnInit {
   isLoading = false;
 
   constructor(
-    private http: HttpClient, 
     private location: Location,
     private router: Router,
-    private cdr: ChangeDetectorRef  
+    private cdr: ChangeDetectorRef,
+    private maintenanceModel: MaintenanceReportModel // INJECTING THE MODEL HERE
   ) {}
  
   ngOnInit() {
-    this.http.get(`http://localhost:8000/api/maintenance-properties?user_id=${this.userId}`)
-      .subscribe({
+    if (this.userId) {
+      // Use the Model to fetch active properties
+      this.maintenanceModel.getActiveProperties(this.userId).subscribe({
         next: (data: any) => {
           this.activeProperties = data;
           this.cdr.detectChanges();
         },
         error: () => alert('Failed to load active properties.')
       });
+    }
   }
 
   openImage(url: string) {
@@ -57,7 +61,6 @@ export class MaintenanceReport implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // 🌟 Loops through multiple files and generates previews
   onFileSelected(event: any) {
     if (event.target.files.length > 0) {
       const files = Array.from(event.target.files) as File[];
@@ -67,18 +70,16 @@ export class MaintenanceReport implements OnInit {
 
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          // Save both the url and the type (image vs video)
           this.previewMedia.push({ url: e.target.result, type: file.type });
           this.cdr.detectChanges(); 
         };
         reader.readAsDataURL(file);
       }
       
-      event.target.value = ''; // Reset input
+      event.target.value = ''; 
     }
   }
 
-  // 🌟 Removes specific file by index
   removeImage(index: number) {
     this.selectedFiles.splice(index, 1);
     this.previewMedia.splice(index, 1);
@@ -100,17 +101,17 @@ export class MaintenanceReport implements OnInit {
     formData.append('urgency', this.reportData.urgency);
     formData.append('description', this.reportData.description);
     
-    // 🌟 Append ALL selected files as an array
     this.selectedFiles.forEach((file) => {
       formData.append('media[]', file, file.name);
     });
 
-    this.http.post('http://localhost:8000/api/maintenance', formData).subscribe({
+    // Use the Model to submit the report
+    this.maintenanceModel.submitReport(formData).subscribe({
       next: () => {
         alert('Maintenance issue reported successfully!');
         this.router.navigate(['/maintenance']);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('API Error:', err);
         alert('Failed to submit report. Check console.');
         this.isLoading = false;
@@ -119,5 +120,7 @@ export class MaintenanceReport implements OnInit {
     });
   }
 
-  goBack() { this.location.back(); }
+  goBack() { 
+    this.location.back(); 
+  }
 }

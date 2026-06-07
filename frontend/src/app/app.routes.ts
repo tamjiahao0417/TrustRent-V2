@@ -27,7 +27,7 @@ import { TransactionDetails } from './shared/transaction-details/transaction-det
 import { AiPricing } from './shared/ai-pricing/ai-pricing'; // Adjust path!
 import { Maintenance } from './shared/maintenance/maintenance'; // Adjust path!
 import { MaintenanceDetails } from './shared/maintenance-details/maintenance-details'; // Adjust path!
-import { MaintenanceReport } from './tenant/maintenance-report/maintenance-report'; // Adjust path!
+import { MaintenanceReportController } from './controllers/tenant/maintenance-report.controller';
 import { EditMaintenanceController } from './controllers/tenant/edit-maintenance.controller';
 import { Chat } from './shared/chat/chat';
 import { UserManagementComponent } from './controllers/admin/user-management.controller';
@@ -70,7 +70,7 @@ export const routes: Routes = [
       { path: 'ai-pricing', component: AiPricing },
       { path: 'maintenance', component: Maintenance },
       { path: 'maintenance/details/:id', component: MaintenanceDetails },
-      { path: 'maintenance/report', component: MaintenanceReport },
+      { path: 'maintenance/report', component: MaintenanceReportController },
       { path: 'edit-maintenance/:id', component: EditMaintenanceController },
       { path: 'chat', component: Chat },
       { path: 'user-management', component: UserManagementComponent },
