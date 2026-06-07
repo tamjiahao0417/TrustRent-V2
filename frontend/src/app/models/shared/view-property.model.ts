@@ -1,0 +1,22 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ViewPropertyModel {
+  private apiUrl = 'http://localhost:8000/api/properties';
+
+  constructor(private http: HttpClient) {}
+
+  // Fetch specific property details
+  getProperty(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
+  // Delete property listing
+  deleteProperty(id: string, userId: string | null): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}?user_id=${userId}`);
+  }
+}
