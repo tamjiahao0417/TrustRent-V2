@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\PropertyService;
+use Exception;
 
 class PropertyController extends Controller
 {
+    protected PropertyService $propertyService;
+
+    // Inject the Business Logic Layer
+    public function __construct(PropertyService $propertyService)
+    {
+        $this->propertyService = $propertyService;
+    }
+
     // 1. Fetch all properties for a specific landlord (Used in My Properties)
     public function index(Request $request)
     {
@@ -16,16 +25,8 @@ class PropertyController extends Controller
             return response()->json(['message' => 'User ID is required'], 400);
         }
 
-        $properties = DB::table('properties')
-            ->where('landlord_id', $userId)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        foreach ($properties as $property) {
-            $property->images = json_decode($property->image_path) ?: [];
-            $property->thumbnail = !empty($property->images) ? $property->images[0] : 'default_property.jpg';
-        }
-
+        $properties = $this->propertyService->getLandlordProperties($userId);
+        
         return response()->json($properties);
     }
 
@@ -36,128 +37,68 @@ class PropertyController extends Controller
 
         if (!$userId) return response()->json(['message' => 'Unauthorized'], 401);
 
-        $uploadDirectory = public_path('uploads/');
-        if (!file_exists($uploadDirectory)) {
-            mkdir($uploadDirectory, 0777, true);
+        try {
+            $this->propertyService->createProperty(
+                $userId,
+                $request->except(['user_id', 'property_images']),
+                $request->file('property_images')
+            );
+            return response()->json(['message' => 'Property created successfully'], 201);
+        } catch (Exception $e) {
+            // 🌟 NEW: This will return the EXACT line and error from Laravel to your browser!
+            return response()->json([
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ], 500);
         }
-
-        $uploadedImages = [];
-
-        if ($request->hasFile('property_images')) {
-            foreach ($request->file('property_images') as $file) {
-                $newFilename = uniqid('prop_') . '_' . time() . '.' . $file->getClientOriginalExtension();
-                $file->move($uploadDirectory, $newFilename);
-                $uploadedImages[] = $newFilename;
-            }
-        }
-
-        if (empty($uploadedImages)) {
-            return response()->json(['message' => 'At least one image is required.'], 422);
-        }
-
-        DB::table('properties')->insert([
-            'landlord_id' => $userId,
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'location' => $request->input('location'),
-            'price' => $request->input('price'),
-            'rooms' => $request->input('rooms'),
-            'address' => $request->input('address'),
-            'phone_number' => $request->input('phone_number'),
-            'image_path' => json_encode($uploadedImages)
-        ]);
-
-        return response()->json(['message' => 'Success']);
     }
 
-    // 3. Fetch a single property's details (Used in View Property)
+    // 3. Fetch specific property details
     public function show($id)
     {
-        $property = DB::table('properties')->where('id', $id)->first();
-        
-        if (!$property) {
-            return response()->json(['message' => 'Property not found'], 404);
+        try {
+            $property = $this->propertyService->getPropertyDetails($id);
+            return response()->json($property);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode() ?: 404);
         }
-
-        // Check if rented so we can disable the delete button
-        $isRented = DB::table('contracts')
-            ->where('property_id', $id)
-            ->where('status', 'Active')
-            ->exists();
-
-        $property->images = json_decode($property->image_path) ?: [];
-        $property->is_rented = $isRented;
-
-        return response()->json($property);
     }
 
-    // 4. Delete a property (Used in View Property)
+    // 4. Delete property listing
     public function destroy($id, Request $request)
     {
         $userId = $request->query('user_id');
         
-        $isRented = DB::table('contracts')->where('property_id', $id)->where('status', 'Active')->exists();
-        if ($isRented) {
-            return response()->json(['message' => 'Cannot delete active rental'], 403);
+        try {
+            $this->propertyService->deleteProperty($id, $userId);
+            return response()->json(['message' => 'Property deleted successfully']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode() ?: 400);
         }
-
-        DB::table('properties')->where('id', $id)->where('landlord_id', $userId)->delete();
-        return response()->json(['message' => 'Deleted']);
     }
 
-    // 5. Update an existing property
-    // 5. Update an existing property
+    // 5. Update Property Details and append new images
     public function update(Request $request, $id)
     {
-        $userId = $request->input('user_id');
-
-        $property = DB::table('properties')->where('id', $id)->where('landlord_id', $userId)->first();
-        if (!$property) {
-            return response()->json(['message' => 'Unauthorized or Property not found'], 403);
+        try {
+            $this->propertyService->updateProperty(
+                $id,
+                $request->except(['user_id', 'property_images', 'existing_images']),
+                $request->file('property_images'),
+                $request->input('existing_images', [])
+            );
+            return response()->json(['message' => 'Updated successfully']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
-
-        $updateData = [
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'location' => $request->input('location'),
-            'price' => $request->input('price'),
-            'rooms' => $request->input('rooms'),
-            'address' => $request->input('address'),
-            'phone_number' => $request->input('phone_number')
-        ];
-
-        // 1. Get the list of old images the user DID NOT delete
-        $finalImages = $request->input('existing_images', []); 
-
-        // 2. If they uploaded new images, save them and add them to the final list
-        if ($request->hasFile('property_images')) {
-            $uploadDirectory = public_path('uploads/');
-            foreach ($request->file('property_images') as $file) {
-                $newFilename = uniqid('prop_') . '_' . time() . '.' . $file->getClientOriginalExtension();
-                $file->move($uploadDirectory, $newFilename);
-                $finalImages[] = $newFilename; // Append the new image
-            }
-        }
-
-        // 3. Save the combined list of kept images + new images to the database!
-        $updateData['image_path'] = json_encode($finalImages);
-
-        DB::table('properties')->where('id', $id)->update($updateData);
-
-        return response()->json(['message' => 'Updated successfully']);
     }
 
-    // Fetch ALL properties for the public feed
+    // 6. Fetch ALL properties for the public feed
     public function getAll()
     {
-        // Notice we don't filter by user_id here!
-        $properties = DB::table('properties')->orderBy('created_at', 'desc')->get();
-
-        foreach ($properties as $property) {
-            $property->images = json_decode($property->image_path) ?: [];
-            $property->thumbnail = !empty($property->images) ? $property->images[0] : 'default_property.jpg';
-        }
-
+        $properties = $this->propertyService->getAllPublicProperties();
+        
         return response()->json($properties);
     }
 }
