@@ -128,9 +128,23 @@ tbody tr:hover { background-color: var(--bg-main); }
     border: 1px solid transparent;
 }
 
-.status-open { background-color: #fef08a; color: #854d0e; border-color: #fde047; } 
-.status-progress { background-color: #dbeafe; color: var(--primary-blue); border-color: #bfdbfe; }
-.status-closed { background-color: #dcfce7; color: var(--success-green); border-color: #bbf7d0; }
+/* 1. Open (Orange) */
+.status-open { background-color: #fff7ed; color: #c2410c; border-color: #fed7aa; } 
+
+/* 2. In Progress (Blue) */
+.status-progress { background-color: #eff6ff; color: var(--primary-blue); border-color: #bfdbfe; }
+
+/* 3. On Hold (Yellow) */
+.status-hold { background-color: #fef9c3; color: #854d0e; border-color: #fef08a; } 
+
+/* 4. Resolved (Green) */
+.status-resolved { background-color: #f0fdf4; color: var(--success-green); border-color: #bbf7d0; } 
+
+/* 5. Cancelled (Red) */
+.status-cancelled { background-color: #fef2f2; color: #dc2626; border-color: #fecaca; } 
+
+/* 6. Closed (Gray) */
+.status-closed { background-color: #f3f4f6; color: #4b5563; border-color: #d1d5db; }
 
 .action-link { 
     color: var(--primary-blue); 

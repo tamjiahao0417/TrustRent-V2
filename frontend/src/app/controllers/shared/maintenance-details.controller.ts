@@ -97,6 +97,11 @@ export class MaintenanceDetailsController implements OnInit {
       next: () => {
         alert('Status updated successfully!');
         this.ngOnInit(); // Refresh the page data
+      },
+      // 🌟 NEW: Added an error handler so it doesn't fail silently!
+      error: (err) => {
+        console.error("Status Update Error:", err);
+        alert('Failed to update status. Check the console for details.');
       }
     });
   }

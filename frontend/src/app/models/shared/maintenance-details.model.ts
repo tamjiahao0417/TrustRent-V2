@@ -22,6 +22,7 @@ export class MaintenanceDetailsModel {
 
   // Landlord action: Update the status and add a message
   updateStatus(id: string, updateData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}/status`, updateData);
+    // 🌟 Changed .put to .patch to perfectly match Laravel's api.php
+    return this.http.patch(`${this.apiUrl}/${id}/status`, updateData);
   }
 }

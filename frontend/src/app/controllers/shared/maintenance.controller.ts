@@ -75,10 +75,13 @@ export class MaintenanceController implements OnInit {
   }
 
   // Dynamic classes for your status pills based on your CSS
+  // Dynamic classes for your status pills based on your CSS
   getStatusClass(status: string): string {
     if (status === 'In Progress') return 'status-progress';
+    if (status === 'On Hold') return 'status-hold';             // Added On Hold
     if (status === 'Resolved') return 'status-resolved';
+    if (status === 'Cancelled') return 'status-cancelled';      // Added Cancelled
     if (status === 'Closed') return 'status-closed';
-    return 'status-open'; // Default for "Open" or unknown statuses
+    return 'status-open'; // Default for "Open"
   }
 }
