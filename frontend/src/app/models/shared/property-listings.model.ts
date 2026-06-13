@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PropertyListingsModel {
-  private apiUrl = 'http://localhost:8000/api/properties/all';
+  private apiUrl = 'http://localhost:8000/api/properties/feed';
 
   constructor(private http: HttpClient) {}
 

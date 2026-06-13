@@ -10,12 +10,13 @@ export class EditPropertyModel {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch the current property details
+  // 🌟 FIX: Fetch the current property details using the PUBLIC route
   getProperty(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+    return this.http.get(`${this.apiUrl}/view/${id}`);
   }
 
   // Submit the updated property (FormData includes files, so we use POST)
+  // 🌟 Leave this exactly as it is (it correctly uses the SECURE route to save data)
   updateProperty(id: string, formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/${id}`, formData);
   }

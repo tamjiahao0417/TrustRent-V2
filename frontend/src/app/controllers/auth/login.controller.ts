@@ -32,7 +32,10 @@ export class Login {
     event.preventDefault();
     this.errorMessage = '';
     
-    if (!this.email || !this.password) return;
+    if (!this.email || !this.password) {
+      this.errorMessage = 'Please enter both email and password.';
+      return;
+    }
     
     this.isLoading = true; 
 
@@ -45,9 +48,11 @@ export class Login {
       next: (response: any) => {
         if (response && response.user) {
             
-            // 🌟 ADD THIS LINE TO SAVE THE TOKEN! 🌟
-            // Note: Check your Laravel AuthController to see if it sends back 'token' or 'access_token'
-            localStorage.setItem('token', response.token); 
+            // 🌟 FIX 1: Turn off the loading spinner!
+            this.isLoading = false;
+            
+            // 🌟 FIX 2: Change 'token' to 'auth_token' so the AuthGuard can see it!
+            localStorage.setItem('auth_token', response.token); 
 
             localStorage.setItem('user_role', response.user.role);
             localStorage.setItem('user_name', response.user.name || response.user.email.split('@')[0]);

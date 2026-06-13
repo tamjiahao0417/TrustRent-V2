@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MyPropertiesModel {
-  private apiUrl = 'http://localhost:8000/api/properties';
+  private apiUrl = 'http://localhost:8000/api/my-properties';
 
   constructor(private http: HttpClient) {}
 

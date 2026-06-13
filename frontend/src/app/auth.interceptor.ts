@@ -6,8 +6,8 @@ import { catchError, throwError } from 'rxjs';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
 
-  // 🌟 1. Grab the token from memory
-  const token = localStorage.getItem('token');
+  // 🌟 FIX: Change 'token' to 'auth_token' to match the rest of your app!
+  const token = localStorage.getItem('auth_token');
 
   // 🌟 2. Clone the request and AUTOMATICALLY staple the token to it!
   let authReq = req;
@@ -36,7 +36,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         localStorage.clear();
         router.navigate(['/login']);
       }
-      
       return throwError(() => error);
     })
   );

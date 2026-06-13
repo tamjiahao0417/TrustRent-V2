@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './auth-guard';
 import { Login } from './controllers/auth/login.controller'; 
 import { Register } from './controllers/auth/register.controller';
 import { LayoutController } from './controllers/shared/layout.controller';
@@ -44,6 +45,7 @@ export const routes: Routes = [
   { 
     path: '', 
     component: LayoutController,
+    canActivate: [AuthGuard],
     children: [
       { path: 'dashboard', component: DashboardController }, // 2. Add this specific line
       { path: 'profile', component: ProfileController },

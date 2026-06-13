@@ -12,7 +12,7 @@ export class ViewPropertyModel {
 
   // Fetch specific property details
   getProperty(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+    return this.http.get(`${this.apiUrl}/view/${id}`); 
   }
 
   // Delete property listing

@@ -97,8 +97,19 @@ class PropertyController extends Controller
     // 6. Fetch ALL properties for the public feed
     public function getAll()
     {
-        $properties = $this->propertyService->getAllPublicProperties();
-        
-        return response()->json($properties);
+        try {
+            $properties = $this->propertyService->getAllPublicProperties();
+            
+            return response()->json($properties);
+            
+        } catch (\Exception $e) {
+            // 🌟 Force Laravel to send the exact error as JSON instead of an HTML page!
+            return response()->json([
+                'message' => 'Backend crashed inside getAll()!',
+                'error'   => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine()
+            ], 500);
+        }
     }
 }

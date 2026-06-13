@@ -7,6 +7,14 @@ import { HttpClient } from '@angular/common/http';
 export class AuthModel {
   constructor(private http: HttpClient) {}
 
+  verifyOtp(data: {email: string, otp: string}) {
+    return this.http.post('http://localhost:8000/api/verify-otp', data);
+  }
+
+  resendOtp(data: {email: string}) {
+    return this.http.post('http://localhost:8000/api/resend-otp', data);
+  }
+  
   loginUser(loginData: any) {
     // 🌟 The Model handles the API communication
     return this.http.post('http://localhost:8000/api/login', loginData);

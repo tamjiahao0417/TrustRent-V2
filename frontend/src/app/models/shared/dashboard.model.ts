@@ -14,6 +14,6 @@ export class DashboardModel {
   getDashboardStats(userId: string, role: string): Observable<any> {
     // We include a timestamp cache-buster to ensure the dashboard always shows the freshest data
     const timeStamp = new Date().getTime(); 
-    return this.http.get(`${this.apiUrl}/dashboard-stats?user_id=${userId}&role=${role}&cb=${timeStamp}`);
+    return this.http.get(`${this.apiUrl}/dashboard/stats?user_id=${userId}&role=${role}&cb=${timeStamp}`);
   }
 }

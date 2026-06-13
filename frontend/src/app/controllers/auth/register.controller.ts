@@ -22,6 +22,9 @@ export class Register {
   password = '';
   confirmPassword = ''; 
   errorMessage = '';
+  isVerifying = false;
+  otpCode = '';
+  registeredEmail = '';
 
   // 🌟 2. Inject cdr
   constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) {}
@@ -33,7 +36,10 @@ export class Register {
     event.preventDefault();
     this.errorMessage = '';
 
-    if (!this.role || !this.email || !this.password || !this.confirmPassword) return;
+    if (!this.role || !this.email || !this.password || !this.confirmPassword) {
+      this.errorMessage = 'Please fill in all required fields.';
+      return;
+    }
 
     if (this.password !== this.confirmPassword) {
       this.errorMessage = "Passwords do not match.";
@@ -51,13 +57,35 @@ export class Register {
 
     this.http.post('http://localhost:8000/api/register', registerData).subscribe({
       next: (response: any) => {
-        this.router.navigate(['/login']);
+        // 🌟 Do NOT navigate away. Show the OTP screen instead!
+        this.isLoading = false;
+        this.isVerifying = true;
+        this.registeredEmail = this.email; 
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error("Register API Error:", error);
         this.errorMessage = error?.error?.message || 'Registration failed.';
         this.isLoading = false; 
         this.cdr.detectChanges(); // 🌟 3. Force UI to redraw!
+      }
+    });
+  }
+
+  onVerify(event: Event) {
+    event.preventDefault();
+    this.errorMessage = '';
+    this.isLoading = true;
+
+    this.http.post('http://localhost:8000/api/verify-otp', { email: this.registeredEmail, otp: this.otpCode }).subscribe({
+      next: () => {
+        alert('Email verified successfully! You can now log in.');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        this.errorMessage = err?.error?.message || 'Invalid OTP.';
+        this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

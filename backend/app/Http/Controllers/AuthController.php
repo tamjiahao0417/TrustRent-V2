@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\AuthService;
+use Illuminate\Support\Facades\DB; // 🌟 1. Add this at the top!
 use Exception;
 
 class AuthController extends Controller
@@ -18,20 +19,81 @@ class AuthController extends Controller
     }
 
     // --- 1. REGISTRATION LOGIC ---
+    // --- 1. REGISTRATION LOGIC ---
+    // --- 1. REGISTRATION LOGIC ---
     public function register(Request $request)
     {
         $validated = $request->validate([
             'role' => 'required|string',
-            'email' => 'required|email',
+            // 🌟 FIX 1: Removed the 'dns' check because it crashes on local XAMPP servers
+            'email' => 'required|email|unique:users,email', 
             'password' => 'required|min:6',
         ]);
 
+        // Start the Database Transaction
+        DB::beginTransaction();
+
         try {
+            // 1. Create the user
             $this->authService->registerUser($validated);
-            return response()->json(['message' => 'Registration successful'], 201);
+            
+            // 2. Generate a 6-digit OTP
+            $otp = rand(100000, 999999);
+            
+            // 3. Store OTP in cache for 10 minutes
+            \Illuminate\Support\Facades\Cache::put('otp_' . $validated['email'], $otp, now()->addMinutes(10));
+
+            // 4. Send the Email
+            \Illuminate\Support\Facades\Mail::raw("Your TrustRent verification code is: {$otp}. It will expire in 10 minutes.", function ($message) use ($validated) {
+                
+                // 🌟 FIX 2: Explicitly state who the email is FROM so the mailer doesn't crash
+                $message->from('noreply@trustrent.com', 'TrustRent');
+                
+                $message->to($validated['email'])
+                        ->subject('Verify your TrustRent Account');
+            });
+
+            // 5. Commit the transaction
+            DB::commit();
+
+            return response()->json(['message' => 'Registration successful. OTP sent.', 'email' => $validated['email']], 201);
+            
         } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode() ?: 400);
+            
+            // If ANYTHING crashes, ROLLBACK and delete the inserted user!
+            DB::rollBack();
+            
+            $statusCode = $e->getCode();
+            if (!is_numeric($statusCode) || $statusCode < 100 || $statusCode >= 600) {
+                $statusCode = 500; 
+            }
+
+            return response()->json([
+                'message' => 'Registration failed: ' . $e->getMessage() 
+            ], $statusCode);
         }
+    }
+
+    // --- 1.5 OTP VERIFICATION ---
+    public function verifyOtp(Request $request)
+    {
+        $request->validate(['email' => 'required|email', 'otp' => 'required|numeric']);
+
+        $cachedOtp = \Illuminate\Support\Facades\Cache::get('otp_' . $request->email);
+
+        if (!$cachedOtp || $cachedOtp != $request->otp) {
+            return response()->json(['message' => 'Invalid or expired OTP.'], 400);
+        }
+
+        // Find user and mark as verified
+        $user = \App\Models\User::where('email', $request->email)->first();
+        $user->email_verified_at = now();
+        $user->save();
+
+        // Clear the OTP from cache
+        \Illuminate\Support\Facades\Cache::forget('otp_' . $request->email);
+
+        return response()->json(['message' => 'Email verified successfully!']);
     }
 
     // --- 2. LOGIN LOGIC ---
@@ -50,8 +112,19 @@ class AuthController extends Controller
                 'user' => $authData['user'],
                 'token' => $authData['token']
             ], 200);
+
         } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode() ?: 401);
+            
+            // Prevent the "Status Code 7" crash during login
+            $statusCode = $e->getCode();
+            
+            if (!is_numeric($statusCode) || $statusCode < 100 || $statusCode >= 600) {
+                $statusCode = 500; // Default to standard 500 Server Error
+            }
+
+            return response()->json([
+                'message' => 'Login Error: ' . $e->getMessage() 
+            ], $statusCode);
         }
     }
 
