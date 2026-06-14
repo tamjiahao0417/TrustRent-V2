@@ -54,10 +54,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/profile', [ProfileController::class, 'update']);
 
     // Admin User Management
-    Route::get('/users', [AdminController::class, 'index']);
+    Route::get('/users', [AdminController::class, 'getUsers']);
     Route::delete('/users/{id}', [AdminController::class, 'destroy']);
     Route::put('/users/{id}', [AdminController::class, 'update']);
-
+    Route::patch('/users/{id}/suspend', [AdminController::class, 'suspendUser']);
+    Route::patch('/users/{id}/activate', [AdminController::class, 'activateUser']);
+    
     // Properties
     Route::post('/properties', [PropertyController::class, 'store']);
     Route::post('/properties/{id}', [PropertyController::class, 'update']);
