@@ -40,11 +40,12 @@ class AdminController extends Controller
             $user->status = 'Suspended'; 
             $user->save();
 
-            // NF Step 6: System saves the update and shows a success message
+            // 🌟 THE FIX: Instantly destroy all active login sessions for this user!
+            $user->tokens()->delete();
+
             return response()->json(['message' => 'User suspended successfully.']);
 
         } catch (\Exception $e) {
-            // EF1 Step 2: System Fails to Suspend Account
             return response()->json([
                 'message' => 'Failed to suspend account. Please try again later.'
             ], 500);

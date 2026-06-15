@@ -38,7 +38,17 @@ class AuthService
             throw new Exception('Invalid email or password.', 401);
         }
 
-        // 2. Generate Sanctum token
+        // 🌟 2. NEW: Check if the user has completed the OTP verification
+        if (is_null($user->email_verified_at)) {
+            throw new Exception('Please verify your email address before logging in.', 403);
+        }
+
+        // 🌟 3. NEW: Check if the admin has suspended this user
+        if ($user->status === 'Suspended') {
+            throw new Exception('Your account has been suspended by an administrator.', 403);
+        }
+
+        // 4. Generate Sanctum token
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
