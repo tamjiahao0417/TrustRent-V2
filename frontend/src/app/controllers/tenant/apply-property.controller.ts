@@ -39,15 +39,19 @@ export class ApplyPropertyController implements OnInit {
     this.minDate = today.toISOString().split('T')[0];
 
     const propertyId = this.route.snapshot.paramMap.get('id');
+    console.log("1. Angular grabbed ID from URL:", propertyId); // 🌟 DEBUG 1
     
     if (propertyId) {
       // Use the Model to fetch property details
       this.applyModel.getProperty(propertyId).subscribe({
         next: (data: any) => {
+          console.log("2. Backend returned this data:", data); // 🌟 DEBUG 2
           this.property = data;
           this.cdr.detectChanges();
         },
-        error: () => {
+        error: (err: any) => {
+          // 🌟 DEBUG 3: This forces the silent error to print to your console!
+          console.error("3. API Call Failed silently! Details:", err); 
           this.errorMessage = 'Failed to load property.';
           this.cdr.detectChanges();
         }
@@ -64,8 +68,8 @@ export class ApplyPropertyController implements OnInit {
     this.errorMessage = '';
 
     const requestData = {
-      property_id: this.property.id,
-      landlord_id: this.property.landlord_id,
+      property_id: this.property?.id,
+      landlord_id: this.property?.landlord_id,
       tenant_id: localStorage.getItem('user_id'), 
       start_date: this.startDate,
       end_date: this.endDate,

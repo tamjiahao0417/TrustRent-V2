@@ -66,7 +66,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     //Route::get('/properties/all', [PropertyController::class, 'getAll']);
     Route::delete('/properties/{id}', [PropertyController::class, 'destroy']);
     Route::get('/my-properties', [PropertyController::class, 'index']);
-    //Route::get('/properties/{id}', [PropertyController::class, 'show']);
+    Route::get('/properties/{id}', [PropertyController::class, 'show']);
 
     // Appointments
     Route::get('/appointments', [AppointmentController::class, 'index']);
@@ -114,6 +114,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/reports/{id}', [ReportController::class, 'show']);
     Route::post('/reports/{id}', [ReportController::class, 'update']);
     Route::delete('/reports/{id}', [ReportController::class, 'destroy']);
+    Route::patch('/reports/{id}/status', [ReportController::class, 'updateStatus']);
 
     // Dashboard
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);

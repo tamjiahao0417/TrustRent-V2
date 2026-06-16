@@ -1,7 +1,9 @@
 <div class="page-container">
     <div class="header-actions">
         <h1 class="page-title">Issue Reported</h1>
-        <button routerLink="/reports/create" class="btn-primary">Report</button>
+        <button *ngIf="userRole !== 'admin'" routerLink="/reports/create" class="btn-primary">
+            <i class="fa-solid fa-plus"></i> Report
+        </button>
     </div>
 
     <div class="controls-container">

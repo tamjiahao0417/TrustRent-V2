@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Repositories\ContractRepository;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContractSealedMail;
 
 class ContractService
 {
@@ -104,12 +106,25 @@ class ContractService
 
     public function sealContract($id, $blockchainHash)
     {
-        $contract = $this->repository->getBasicById($id);
+        // 🌟 Changed to WithRelations so we can access $contract->tenant->email
+        $contract = $this->repository->getByIdWithRelations($id);
         if (!$contract) throw new Exception('Contract not found', 404);
 
-        return $this->repository->update($contract, [
+        $updatedContract = $this->repository->update($contract, [
             'blockchain_hash' => $blockchainHash,
-            'status' => 'Active' // Ensure it remains Active
+            'status' => 'Active' 
         ]);
+
+        // 🌟 NEW: Send Email to Landlord
+        if ($contract->landlord && $contract->landlord->email) {
+            Mail::to($contract->landlord->email)->send(new ContractSealedMail($updatedContract));
+        }
+        
+        // 🌟 NEW: Send Email to Tenant
+        if ($contract->tenant && $contract->tenant->email) {
+            Mail::to($contract->tenant->email)->send(new ContractSealedMail($updatedContract));
+        }
+
+        return $updatedContract;
     }
 }

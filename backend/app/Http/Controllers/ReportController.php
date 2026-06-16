@@ -25,7 +25,6 @@ class ReportController extends Controller
             'description' => 'required|string',
             'attachment' => 'nullable|array', 
             'attachment.*' => 'file|max:5120|mimes:jpeg,png,jpg,gif,webp', // Max 5MB
-            'related_user_id' => 'nullable|exists:users,id'
         ], [
             'issue_type.required' => 'Please select an issue type.',
             'description.required' => 'Please complete all required fields before submitting.'
@@ -69,8 +68,7 @@ class ReportController extends Controller
             'issue_type' => 'required|string',
             'description' => 'required|string',
             'new_attachments' => 'nullable|array',
-            'new_attachments.*' => 'file|max:5120|mimes:jpeg,png,jpg,gif,webp',
-            'related_user_id' => 'nullable|exists:users,id',
+            'new_attachments.*' => 'file|max:5120|mimes:jpeg,png,jpg,gif,webp'
         ]);
 
         try {
@@ -97,6 +95,25 @@ class ReportController extends Controller
             return response()->json(['message' => 'Report deleted successfully']);
         } catch (Exception $e) {
             $code = str_contains($e->getMessage(), 'Cannot delete') || $e->getMessage() === 'Unauthorized access.' ? 403 : 404;
+            return response()->json(['message' => $e->getMessage()], $code);
+        }
+    }
+
+    // 🌟 ADDED: The missing method to handle Status Updates from the Admin Dashboard
+    public function updateStatus(Request $request, $id)
+    {
+        $user = $request->user('sanctum');
+
+        $validated = $request->validate([
+            'status' => 'required|string',
+            'admin_comment' => 'nullable|string'
+        ]);
+
+        try {
+            $this->reportService->updateReportStatus($id, $user, $validated);
+            return response()->json(['message' => 'Status updated successfully']);
+        } catch (Exception $e) {
+            $code = $e->getMessage() === 'Unauthorized access.' ? 403 : 500;
             return response()->json(['message' => $e->getMessage()], $code);
         }
     }

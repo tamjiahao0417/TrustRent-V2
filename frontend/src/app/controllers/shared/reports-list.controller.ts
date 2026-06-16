@@ -14,12 +14,13 @@ import { ReportsListModel } from '../../models/shared/reports-list.model';
   styleUrl: '../../views/shared/reports-list.css'
 })
 export class ReportsListController implements OnInit {
+  userRole: string = '';
   reports: any[] = [];
   filteredReports: any[] = [];
   
   searchQuery: string = '';
   activeTab: string = 'All';
-  tabs: string[] = ['All', 'Open', 'Resolved', 'Request More', 'warn', 'Invalid'];
+  tabs: string[] = ['All', 'Open', 'Investigating', 'Resolved', 'Dismissed'];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -28,6 +29,7 @@ export class ReportsListController implements OnInit {
 
   ngOnInit() {
     this.fetchReports();
+    this.userRole = localStorage.getItem('user_role') || '';
   }
 
   fetchReports() {

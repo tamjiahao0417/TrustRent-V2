@@ -14,7 +14,7 @@ import { ReportIssueModel } from '../../models/shared/report-issue.model';
   styleUrl: '../../views/shared/report-issue.css'
 })
 export class ReportIssueController {
-  issueData = { issue_type: '', description: '', related_user_id: ''};
+  issueData = { issue_type: '', description: ''};
   
   selectedFiles: File[] = [];
   previewMedia: { url: string, type: string }[] = []; 
@@ -79,10 +79,6 @@ export class ReportIssueController {
     const formData = new FormData();
     formData.append('issue_type', this.issueData.issue_type);
     formData.append('description', this.issueData.description);
-    
-    if (this.issueData.related_user_id) {
-      formData.append('related_user_id', this.issueData.related_user_id);
-    }
     
     this.selectedFiles.forEach((file) => {
       formData.append('attachment[]', file, file.name);

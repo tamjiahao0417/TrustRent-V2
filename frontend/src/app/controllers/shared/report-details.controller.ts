@@ -20,8 +20,9 @@ export class ReportDetailsController implements OnInit {
   
   newStatus: string = '';
   adminComment: string = ''; 
-  statusOptions = ['Open', 'Resolved', 'Request More', 'Warn', 'Invalid'];
   
+  statusOptions = ['Open', 'Investigating', 'Resolved', 'Dismissed'];
+
   parsedMedia: string[] = [];
   fullScreenImage: string | null = null;
 
@@ -68,27 +69,35 @@ export class ReportDetailsController implements OnInit {
   isClosed(): boolean {
     if (!this.report || !this.report.status) return false;
     const s = this.report.status.toLowerCase();
-    return s === 'resolved' || s === 'invalid';
+    
+    // We removed:  || s === 'resolved'
+    return s === 'dismissed'; 
   }
   
   updateStatus() {
     if (this.isClosed()) return alert('This report is already closed.');
-    if (!this.adminComment && (this.newStatus === 'Resolved' || this.newStatus === 'Invalid')) {
-        return alert('Please enter a resolution comment before closing.');
+    
+    // 3. Force admin to leave a comment if they are closing the ticket
+    if (!this.adminComment && (this.newStatus === 'Resolved' || this.newStatus === 'Dismissed')) {
+        return alert('Please enter a resolution comment before closing the ticket.');
     }
 
     this.reportDetailsModel.updateStatus(this.report.id, {
-        status: this.newStatus,
-        admin_comment: this.adminComment 
-    }).subscribe({
-      next: (res: any) => {
-        alert(res.message || 'Updated successfully!');
-        this.report.status = this.newStatus;
-        this.report.admin_comment = this.adminComment; 
-        this.cdr.detectChanges();
-      },
-      error: () => alert('Failed to update status.')
-    });
+      status: this.newStatus,
+      admin_comment: this.adminComment 
+  }).subscribe({
+    next: (res: any) => {
+      alert(res.message || 'Updated successfully!');
+      this.report.status = this.newStatus;
+      this.report.admin_comment = this.adminComment; 
+      this.cdr.detectChanges();
+    },
+    // 🌟 CHANGED: This will now print the exact Laravel crash reason to your console!
+    error: (err: any) => {
+      console.error("Backend Error Details:", err.error);
+      alert(`Error: ${err.error?.message || 'Failed to update status'}`);
+    }
+  }); 
   }
 
   deleteReport() {
@@ -109,17 +118,20 @@ export class ReportDetailsController implements OnInit {
     if (!status) return 'status-waiting';
     const s = status.toLowerCase();
     if (s === 'open') return 'status-needs-seal';
+    if (s === 'investigating') return 'status-investigating';
     if (s === 'resolved') return 'status-active';
-    if (s === 'invalid') return 'status-closed';
+    if (s === 'dismissed') return 'status-closed';
     return 'status-waiting';
   }
 
+  // 5. Update the UI Icons
   getStatusIcon(status: string): string {
     if (!status) return 'fa-circle-info';
     const s = status.toLowerCase();
     if (s === 'open') return 'fa-circle-exclamation';
+    if (s === 'investigating') return 'fa-magnifying-glass';
     if (s === 'resolved') return 'fa-circle-check';
-    if (s === 'invalid') return 'fa-ban';
+    if (s === 'dismissed') return 'fa-ban';
     return 'fa-circle-info';
   }
 }

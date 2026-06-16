@@ -110,6 +110,7 @@
 .status-waiting { background-color: #eff6ff; color: var(--primary-blue); border: 1px solid #bfdbfe; } 
 .status-active { background-color: #f0fdf4; color: var(--success-green); border: 1px solid #bbf7d0; } 
 .status-closed { background-color: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db; } 
+.status-investigating { background-color: #eff6ff; color: var(--primary-blue); border: 1px solid #bfdbfe; }
 
 /* Locked Warning */
 .closed-warning-box { text-align: center; padding: 30px 20px; background-color: #f9fafb; border-radius: var(--radius-md); border: 1px dashed var(--border-color); }

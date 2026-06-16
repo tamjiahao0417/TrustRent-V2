@@ -123,4 +123,19 @@ class ReportService
 
         return $this->repository->delete($report);
     }
+
+    // 🌟 ADDED: The missing method to handle Status Updates for the Controller
+    public function updateReportStatus($id, $user, array $data)
+    {
+        $report = $this->repository->getById($id);
+        
+        if (!$report) throw new Exception('Report not found', 404);
+
+        // Security Check: Only Admins can update the status
+        if ($user->role !== 'admin') {
+            throw new Exception('Unauthorized access.', 403);
+        }
+
+        return $this->repository->update($report, $data);
+    }
 }
