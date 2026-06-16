@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,13 +10,21 @@ export class BookAppointmentModel {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch the property details for the booking form
-  getProperty(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/properties/${id}`);
+  // 🌟 ADDED: Grab the token and force JSON responses
+  private getHeaders() {
+    const token = localStorage.getItem('token'); 
+    return new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json');
   }
 
-  // Submit the appointment booking payload to the backend
+  // 🌟 FIX: Switched to the public view endpoint so the page loads successfully!
+  getProperty(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/properties/view/${id}`);
+  }
+
+  // 🌟 FIX: Submit the appointment securely using the headers!
   bookAppointment(bookingData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/appointments`, bookingData);
+    return this.http.post(`${this.apiUrl}/appointments`, bookingData, { headers: this.getHeaders() });
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,23 +10,31 @@ export class ContractDetailsModel {
 
   constructor(private http: HttpClient) {}
 
+  // 🌟 ADDED: Centralized header management for Sanctum Auth
+  private getHeaders() {
+    const token = localStorage.getItem('token'); 
+    return new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json');
+  }
+
   // Fetch the contract details
   getContract(id: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+    return this.http.get(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
-  // Tenant action: Sign the contract
+  // 🌟 FIX: Changed from .patch to .post and added Auth Headers
   signContract(id: string, payload: any): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/sign`, payload);
+    return this.http.post(`${this.apiUrl}/${id}/sign`, payload, { headers: this.getHeaders() });
   }
 
-  // Tenant action: Request an edit from the landlord
+  // 🌟 FIX: Changed from .patch to .post and added Auth Headers
   requestEdit(id: string, reason: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/request-edit`, { reason: reason });
+    return this.http.post(`${this.apiUrl}/${id}/request-edit`, { reason: reason }, { headers: this.getHeaders() });
   }
 
-  // Landlord action: Save the blockchain transaction hash
+  // 🌟 FIX: Changed from .patch to .post and added Auth Headers
   sealContract(id: string, txHash: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/seal`, { blockchain_hash: txHash });
+    return this.http.post(`${this.apiUrl}/${id}/seal`, { blockchain_hash: txHash }, { headers: this.getHeaders() });
   }
 }

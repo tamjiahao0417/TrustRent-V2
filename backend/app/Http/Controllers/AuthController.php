@@ -43,10 +43,11 @@ class AuthController extends Controller
             // 3. Store OTP in cache for 10 minutes
             \Illuminate\Support\Facades\Cache::put('otp_' . $validated['email'], $otp, now()->addMinutes(10));
 
-            // 4. Send the Email
-            \Illuminate\Support\Facades\Mail::raw("Your TrustRent verification code is: {$otp}. It will expire in 10 minutes.", function ($message) use ($validated) {
+            // 4. Send the Email using the new HTML template
+            // 🌟 Changed from Mail::raw to Mail::send
+            \Illuminate\Support\Facades\Mail::send('emails.otp', ['otp' => $otp], function ($message) use ($validated) {
                 
-                // 🌟 FIX 2: Explicitly state who the email is FROM so the mailer doesn't crash
+                // Explicitly state who the email is FROM so the mailer doesn't crash
                 $message->from('noreply@trustrent.com', 'TrustRent');
                 
                 $message->to($validated['email'])
