@@ -17,6 +17,7 @@ export class ProfileController implements OnInit {
   user: any = {};
   originalData: any = {};
   isEditing: boolean = false;
+  isSaving: boolean = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -67,6 +68,9 @@ export class ProfileController implements OnInit {
   }
 
   saveProfile() {
+    this.isSaving = true; // 🌟 Start the loading spinner!
+    this.cdr.detectChanges(); // Force the UI to update instantly
+
     const payload = {
       ...this.user,
       original_email: this.originalData.email || localStorage.getItem('user_email')
@@ -82,13 +86,18 @@ export class ProfileController implements OnInit {
         localStorage.setItem('full_profile_cache', JSON.stringify(this.user));
         
         this.isEditing = false;
+        this.isSaving = false; // 🌟 Stop the loading spinner
         this.cdr.detectChanges(); 
         
         setTimeout(() => {
             alert('Profile updated successfully!'); 
         }, 50); 
       },
-      error: (err: any) => alert(err.error?.message || 'Validation Error')
+      error: (err: any) => {
+        this.isSaving = false; // 🌟 Stop the spinner if Laravel throws an error
+        this.cdr.detectChanges();
+        alert(err.error?.message || 'Validation Error');
+      }
     });
   }
 

@@ -8,12 +8,12 @@ use App\Models\Contract;
 class TransactionRepository
 {
     // Fetches the currently active contract for a tenant
-    public function getActiveContractByTenant($tenantId)
+    public function getActiveContractsByTenant($tenantId)
     {
         return Contract::with(['property', 'landlord'])
             ->where('tenant_id', $tenantId)
             ->where('status', 'Active')
-            ->first();
+            ->get(); // 🌟 FIX: Now it gets ALL contracts!
     }
 
     // Fetches all past transactions for a specific contract

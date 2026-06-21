@@ -1,22 +1,35 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AiMatchingModel {
-  private apiUrl = 'http://localhost:8000/api/ai';
+  private apiUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 
-  // For Tenants: Find matching properties based on preferences
-  findPropertyMatchesForTenant(preferences: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/match`, preferences);
+  // 🌟 Centralized Headers
+  private getHeaders() {
+    const token = localStorage.getItem('token'); 
+    return new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json');
   }
 
-  // For Landlords: Find matching tenants based on property details
+  // 🌟 NEW: Fetch the landlord's properties for the dropdown
+  getLandlordProperties(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/my-properties?user_id=${userId}`, { headers: this.getHeaders() });
+  }
+
+  // For Tenants
+  findPropertyMatchesForTenant(preferences: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/ai/match`, preferences, { headers: this.getHeaders() });
+  }
+
+  // For Landlords
   findTenantMatchesForLandlord(propertyDetails: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/match-tenants`, propertyDetails);
+    return this.http.post(`${this.apiUrl}/ai/match-tenants`, propertyDetails, { headers: this.getHeaders() });
   }
 }

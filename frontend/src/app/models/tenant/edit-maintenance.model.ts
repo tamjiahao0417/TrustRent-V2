@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,18 +10,27 @@ export class EditMaintenanceModel {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch properties the tenant is currently renting
+  // 🌟 ADDED: Centralized header management for Sanctum Auth
+  private getHeaders() {
+    const token = localStorage.getItem('token'); 
+    return new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json');
+  }
+
+  // 🌟 FIX 1: Changed URL to match your api.php file (/active-properties)
+  // 🌟 FIX 2: Added security headers
   getMaintenanceProperties(userId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/maintenance-properties?user_id=${userId}`);
+    return this.http.get(`${this.apiUrl}/active-properties?user_id=${userId}`, { headers: this.getHeaders() });
   }
 
-  // Fetch the current maintenance issue details
+  // 🌟 FIX 3: Added security headers to fetch the issue details
   getMaintenanceIssue(issueId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/maintenance/${issueId}`);
+    return this.http.get(`${this.apiUrl}/maintenance/${issueId}`, { headers: this.getHeaders() });
   }
 
-  // Submit the updated issue (Using POST because FormData requires it for files, with _method=PUT inside)
+  // 🌟 FIX 4: Added security headers for the form submission
   updateMaintenanceIssue(issueId: string, formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/maintenance/${issueId}`, formData);
+    return this.http.post(`${this.apiUrl}/maintenance/${issueId}`, formData, { headers: this.getHeaders() });
   }
 }

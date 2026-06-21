@@ -1,3 +1,15 @@
+<div class="page-container" *ngIf="hasError">
+    <div class="alert-banner error-banner" style="text-align: center; margin: 40px auto; max-width: 600px; padding: 40px; border-radius: 8px;">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 3rem; margin-bottom: 20px;"></i>
+        <h2>Oops! Something went wrong.</h2>
+        <p style="margin-bottom: 25px;">{{ errorMessage }}</p>
+        
+        <a routerLink="/my-properties" class="btn-primary" style="text-decoration: none; display: inline-block;">
+            <i class="fa-solid fa-arrow-left"></i> Go Back to Properties
+        </a>
+    </div>
+</div>
+
 <div class="page-container" *ngIf="property">
     
     <a routerLink="/my-properties" class="back-link">

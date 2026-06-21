@@ -52,7 +52,7 @@ export class CreateContractController implements OnInit {
           this.formData.rent_amount = data.property?.price;
           this.formData.utilities_deposit = data.property?.price * 0.5;
           this.formData.security_deposit = data.property?.price * 2;
-          this.formData.additional_terms = `BANKING DETAILS FOR RENT PAYMENT:\nBank Name: \nAccount No: \nAccount Name: ${data.landlord?.name}\n\nADDITIONAL TERMS:\nTenant shall be responsible for all utility bills.`;
+          this.formData.additional_terms = `ADDITIONAL TERMS:\nTenant shall be responsible for all utility bills.`;
           
           this.cdr.detectChanges();
           this.initSignaturePad();

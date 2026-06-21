@@ -125,6 +125,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
 
     // AI
+    Route::get('/ai/properties/{landlordId}', [AiController::class, 'getLandlordProperties']);
     Route::post('/ai/price-estimate', [AiController::class, 'estimatePrice']);
     Route::post('/ai/match', [AiController::class, 'match']);
     Route::post('/ai/match-tenants', [AiController::class, 'matchTenants']);

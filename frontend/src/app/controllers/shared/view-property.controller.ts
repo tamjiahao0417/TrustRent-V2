@@ -19,6 +19,9 @@ export class ViewPropertyController implements OnInit {
   userRole: string | null = null;
   fullScreenImage: string | null = null;
 
+  hasError: boolean = false;
+  errorMessage: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -36,9 +39,20 @@ export class ViewPropertyController implements OnInit {
       this.propertyModel.getProperty(id).subscribe({
         next: (data: any) => {
           this.property = data;
-          this.cdr.detectChanges(); 
+          this.hasError = false; // Reset error state on success
+          this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('Failed to load property details', err)
+        error: (err: any) => {
+          // Keep your background log
+          console.error('Failed to load property details', err);
+          
+          // 🌟 ADDED: Update the UI state to show the error
+          this.hasError = true;
+          // Extract the exact error message from your Laravel backend, or use a fallback
+          this.errorMessage = err.error?.message || 'Sorry, we couldn\'t find this property. It may have been removed or a network error occurred.';
+          
+          this.cdr.detectChanges(); // Tell Angular to update the screen
+        }
       });
     }
   }

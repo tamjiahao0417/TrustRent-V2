@@ -26,7 +26,8 @@
 .form-group { margin-bottom: 20px; }
 .form-group label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; }
 
-.form-group input {
+/* 🌟 UPDATED: Added textarea to share the same input styles */
+.form-group input, .form-group textarea {
     width: 100%;
     padding: 12px 16px;
     border-radius: 8px;
@@ -39,14 +40,18 @@
     font-family: inherit;
 }
 
-/* Edit Mode State - matches the white inputs in image_3ec805.png */
-.form-group input:not([readonly]) {
+.form-group textarea {
+    resize: vertical; /* Allows user to pull the text box down to make it taller */
+}
+
+/* Edit Mode State - matches the white inputs */
+.form-group input:not([readonly]), .form-group textarea:not([readonly]) {
     background-color: #ffffff;
     color: #111827;
     border-color: #d1d5db;
 }
 
-.form-group input:focus:not([readonly]) {
+.form-group input:focus:not([readonly]), .form-group textarea:focus:not([readonly]) {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);

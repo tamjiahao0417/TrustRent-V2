@@ -10,46 +10,45 @@
     </div>
 
     <div class="details-card">
-        <h2 class="section-title" style="margin-top: 0;">{{ userRole === 'tenant' ? 'Your Rental Preferences' : 'Property Details' }}</h2>
-        <p class="text-muted" style="margin-bottom: 30px;">Set your criteria, and our AI will find the best matches for you.</p>
+        <h2 class="section-title" style="margin-top: 0;">{{ userRole === 'tenant' ? 'Your Rental Preferences' : 'Select Property' }}</h2>
+        <p class="text-muted" style="margin-bottom: 30px;">
+            {{ userRole === 'tenant' ? 'Set your criteria, and our AI will find the best matches.' : 'Select a property to find tenants whose preferences match it perfectly.' }}
+        </p>
         
-        <div class="form-row" *ngIf="userRole === 'tenant'">
-            <div class="form-group">
-                <label>Preferred Location <span class="required">*</span></label>
-                <input type="text" [(ngModel)]="preferences.location" class="form-control" placeholder="e.g. Kuala Lumpur">
+        <div *ngIf="userRole === 'tenant'">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Preferred Location <span class="required">*</span></label>
+                    <input type="text" [(ngModel)]="preferences.location" class="form-control" placeholder="e.g. Kuala Lumpur">
+                </div>
+                <div class="form-group">
+                    <label>Min Budget (RM) <span class="required">*</span></label>
+                    <input type="number" [(ngModel)]="preferences.budget_min" class="form-control" placeholder="e.g. 1000">
+                </div>
+                <div class="form-group">
+                    <label>Max Budget (RM) <span class="required">*</span></label>
+                    <input type="number" [(ngModel)]="preferences.budget_max" class="form-control" placeholder="e.g. 2500">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Min Budget (RM) <span class="required">*</span></label>
-                <input type="number" [(ngModel)]="preferences.budget_min" class="form-control" placeholder="e.g. 1000">
-            </div>
-            <div class="form-group">
-                <label>Max Budget (RM) <span class="required">*</span></label>
-                <input type="number" [(ngModel)]="preferences.budget_max" class="form-control" placeholder="e.g. 2500">
+
+            <div class="form-group" style="margin-top: 10px;">
+                <label>Must-Have Features</label>
+                <div class="features-grid">
+                    <label class="feature-pill" *ngFor="let feature of availableFeatures" [ngClass]="{'active': preferences.features.includes(feature)}">
+                        <input type="checkbox" [checked]="preferences.features.includes(feature)" (change)="toggleFeature(feature)" style="display: none;">
+                        <i class="fa-solid" [ngClass]="preferences.features.includes(feature) ? 'fa-check' : 'fa-plus'"></i>
+                        {{ feature }}
+                    </label>
+                </div>
             </div>
         </div>
 
-        <div class="form-row" *ngIf="userRole === 'landlord'">
-            <div class="form-group">
-                <label>Property Location <span class="required">*</span></label>
-                <input type="text" [(ngModel)]="propertyDetails.location" class="form-control" placeholder="e.g. Kuala Lumpur">
-            </div>
-            <div class="form-group">
-                <label>Monthly Rent (RM) <span class="required">*</span></label>
-                <input type="number" [(ngModel)]="propertyDetails.price" class="form-control" placeholder="e.g. 1500">
-            </div>
-        </div>
-
-        <div class="form-group" style="margin-top: 10px;">
-            <label>{{ userRole === 'tenant' ? 'Must-Have Features' : 'Included Amenities' }}</label>
-            <div class="features-grid">
-                <label class="feature-pill" *ngFor="let feature of availableFeatures" [ngClass]="{'active': (userRole === 'tenant' ? preferences.features : propertyDetails.features).includes(feature)}">
-                    <input type="checkbox" 
-                           [checked]="(userRole === 'tenant' ? preferences.features : propertyDetails.features).includes(feature)" 
-                           (change)="toggleFeature(feature)" style="display: none;">
-                    <i class="fa-solid" [ngClass]="(userRole === 'tenant' ? preferences.features : propertyDetails.features).includes(feature) ? 'fa-check' : 'fa-plus'"></i>
-                    {{ feature }}
-                </label>
-            </div>
+        <div class="form-group" *ngIf="userRole === 'landlord'" style="width: 100%;">
+            <label>Select Property to Match <span class="required">*</span></label>
+            <select class="form-control" [(ngModel)]="selectedProperty" style="padding: 14px; font-size: 15px;">
+                <option value="" disabled selected>-- Select a property from your portfolio --</option>
+                <option *ngFor="let prop of myProperties" [ngValue]="prop">{{ prop.title }} (RM {{ prop.price }}/mo)</option>
+            </select>
         </div>
 
         <div class="action-footer" style="justify-content: flex-end; margin-top: 10px; padding-top: 30px;">

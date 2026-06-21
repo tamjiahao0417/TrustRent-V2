@@ -79,7 +79,8 @@ class ContractService
         return $this->repository->update($contract, [
             'status' => 'Draft',
             'landlord_signature' => null,
-            'landlord_signed_at' => null
+            'landlord_signed_at' => null,
+            'edit_reason' => $reason
         ]);
     }
 
@@ -100,7 +101,8 @@ class ContractService
 
         $data['landlord_signed_at'] = now();
         $data['status'] = 'Pending Tenant'; // Send back to tenant!
-
+        $data['edit_reason'] = null;
+        
         return $this->repository->update($contract, $data);
     }
 

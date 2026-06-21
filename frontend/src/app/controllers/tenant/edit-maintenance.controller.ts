@@ -125,7 +125,6 @@ export class EditMaintenanceController implements OnInit {
     this.isLoading = true;
 
     const formData = new FormData();
-    formData.append('_method', 'PUT'); 
     formData.append('user_id', this.userId!);
     formData.append('landlord_id', this.reportData.selected_property.landlord_id);
     formData.append('property_id', this.reportData.selected_property.property_id);

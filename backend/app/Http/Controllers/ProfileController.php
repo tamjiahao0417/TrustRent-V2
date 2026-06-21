@@ -49,6 +49,7 @@ class ProfileController extends Controller
             'phone_number' => 'nullable|string|max:50',
             'house_address' => 'nullable|string',
             'wallet_address' => 'nullable|string|max:255',
+            'rental_preferences' => 'nullable|string',
         ]);
 
         try {

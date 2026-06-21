@@ -3,24 +3,27 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router'; 
 
-// Import your newly created Model from the shared folder
 import { AiMatchingModel } from '../../models/shared/ai-matching.model';
 
 @Component({
   selector: 'app-ai-matching',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  // Pointing to the new views folder
   templateUrl: '../../views/shared/ai-matching.html',
   styleUrl: '../../views/shared/ai-matching.css'
 })
 export class AiMatchingController implements OnInit {
   userRole: string = 'tenant';
+  userId = localStorage.getItem('user_id');
 
+  // Tenant search form
   preferences = { budget_min: 500, budget_max: 2000, location: '', features: [] as string[] };
-  propertyDetails = { price: 1200, location: '', features: [] as string[] };
   availableFeatures = ['Furnished', 'Pet-friendly', 'Parking', 'Gym', 'Pool', 'Balcony'];
   
+  // Landlord property selector
+  myProperties: any[] = [];
+  selectedProperty: any = ''; 
+
   matches: any[] = [];
   isLoading = false;
   hasSearched = false;
@@ -30,7 +33,7 @@ export class AiMatchingController implements OnInit {
     private cdr: ChangeDetectorRef, 
     private router: Router,
     private zone: NgZone,
-    private aiMatchingModel: AiMatchingModel // INJECTING THE MODEL HERE
+    private aiMatchingModel: AiMatchingModel
   ) {}
 
   viewDetails(propertyId: number | string) {
@@ -39,55 +42,59 @@ export class AiMatchingController implements OnInit {
 
   ngOnInit() {
     this.userRole = localStorage.getItem('user_role') || 'tenant';
+    
+    // 🌟 Load Landlord's Properties for the Dropdown!
+    if (this.userRole === 'landlord' && this.userId) {
+      this.aiMatchingModel.getLandlordProperties(this.userId).subscribe({
+        next: (data: any) => {
+          this.myProperties = data;
+          this.cdr.detectChanges();
+        }
+      });
+    }
   }
 
   toggleFeature(feature: string) {
-    const targetArr = this.userRole === 'tenant' ? this.preferences.features : this.propertyDetails.features;
+    const targetArr = this.preferences.features;
     const index = targetArr.indexOf(feature);
-    if (index > -1) {
-      targetArr.splice(index, 1);
-    } else {
-      targetArr.push(feature);
-    }
+    if (index > -1) targetArr.splice(index, 1);
+    else targetArr.push(feature);
   }
 
-  findMatches() {
+  findMatches(): void {
     this.errorMessage = '';
+    
+    // 🌟 Security Checks!
+    if (this.userRole === 'tenant' && !this.preferences.location) {
+      this.errorMessage = 'Please provide a location to get accurate matches.';
+      return; // 🌟 FIX: Separated the return statement
+    }
+    
+    if (this.userRole === 'landlord' && !this.selectedProperty) {
+      this.errorMessage = 'Please select a property to find tenants for.';
+      return; // 🌟 FIX: Separated the return statement
+    }
+
     this.isLoading = true;
     this.hasSearched = false;
 
-    const payload = this.userRole === 'tenant' ? this.preferences : this.propertyDetails;
-
-    if (!payload.location) {
-      this.errorMessage = 'Please provide a location to get accurate matches.';
-      this.isLoading = false;
-      return;
-    }
-
-    // Determine which Model method to use based on the user's role
+    // 🌟 If Landlord, send the ENTIRE selected property object to the AI!
+    const payload = this.userRole === 'tenant' ? this.preferences : this.selectedProperty;
     const matchRequest$ = this.userRole === 'tenant' 
       ? this.aiMatchingModel.findPropertyMatchesForTenant(payload)
       : this.aiMatchingModel.findTenantMatchesForLandlord(payload);
 
     matchRequest$.subscribe({
       next: (response: any) => {
-        this.zone.run(() => {
+        this.zone.run(() => { 
             let fetchedMatches = response.matches || [];
             
             fetchedMatches.forEach((match: any) => {
                 let imgData = match.image_path || match.images; 
-                
                 if (typeof imgData === 'string') {
-                    try { 
-                        match.images = JSON.parse(imgData); 
-                    } catch(e) { 
-                        match.images = []; 
-                    }
-                } else if (Array.isArray(imgData)) {
-                    match.images = imgData;
-                } else {
-                    match.images = [];
-                }
+                    try { match.images = JSON.parse(imgData); } catch(e) { match.images = []; }
+                } else if (Array.isArray(imgData)) match.images = imgData;
+                else match.images = [];
             });
 
             this.matches = fetchedMatches;
@@ -99,7 +106,7 @@ export class AiMatchingController implements OnInit {
       error: (err: any) => {
         this.zone.run(() => {
             this.isLoading = false;
-            this.errorMessage = err.error?.message || 'Matching feature is currently unavailable. Please try again later.';
+            this.errorMessage = err.error?.message || 'Matching feature is currently unavailable.';
             this.cdr.detectChanges();
         });
       }

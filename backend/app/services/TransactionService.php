@@ -17,51 +17,59 @@ class TransactionService
 
     public function calculateBillingDetails($tenantId)
     {
-        $contract = $this->repository->getActiveContractByTenant($tenantId);
+        // 1. Fetch all contracts
+        $contracts = $this->repository->getActiveContractsByTenant($tenantId);
         
-        if (!$contract) {
-            throw new Exception('No active contract found', 404);
+        if ($contracts->isEmpty()) {
+            throw new Exception('No active contracts found', 404);
         }
 
-        $history = $this->repository->getHistoryByContract($contract->id);
-        
-        $isFirstPayment = true;
-        $normalPaymentCount = 0;
+        $allBills = [];
 
-        // Determine payment state based on history
-        foreach ($history as $tx) {
-            if ($tx->type === 'Initial Deposit & Rent') $isFirstPayment = false;
-            elseif ($tx->type === 'Monthly Rent & Utilities') $normalPaymentCount++;
-        }
-
-        $startDate = Carbon::parse($contract->start_date);
-
-        if ($isFirstPayment) {
-            $totalDue = $contract->rent_amount + $contract->security_deposit + $contract->utilities_deposit;
-            $endOfFirstMonth = $startDate->copy()->addMonth()->subDay();
-            $period = $startDate->format('M j, Y') . ' - ' . $endOfFirstMonth->format('M j, Y');
-
-            return [
-                'is_first' => true, 'contract' => $contract, 
-                'rent' => $contract->rent_amount, 'sec_dep' => $contract->security_deposit, 
-                'util_dep' => $contract->utilities_deposit, 'total' => $totalDue, 
-                'type' => 'Initial Deposit & Rent', 'period' => $period, 'history' => $history
-            ];
-        } else {
-            $monthlyUtil = 150.00;
-            $totalDue = $contract->rent_amount + $monthlyUtil;
+        // 2. Loop through each contract to calculate its specific bill
+        foreach ($contracts as $contract) {
+            $history = $this->repository->getHistoryByContract($contract->id);
             
-            $targetStart = $startDate->copy()->addMonths($normalPaymentCount + 1);
-            $targetEnd = $targetStart->copy()->addMonth()->subDay();
-            $period = $targetStart->format('M j, Y') . ' - ' . $targetEnd->format('M j, Y');
+            $isFirstPayment = true;
+            $normalPaymentCount = 0;
 
-            return [
-                'is_first' => false, 'contract' => $contract, 
-                'rent' => $contract->rent_amount, 'util' => $monthlyUtil, 
-                'total' => $totalDue, 'type' => 'Monthly Rent & Utilities', 
-                'period' => $period, 'history' => $history
-            ];
+            foreach ($history as $tx) {
+                if ($tx->type === 'Initial Deposit & Rent') $isFirstPayment = false;
+                elseif ($tx->type === 'Monthly Rent & Utilities') $normalPaymentCount++;
+            }
+
+            $startDate = Carbon::parse($contract->start_date);
+
+            if ($isFirstPayment) {
+                $totalDue = $contract->rent_amount + $contract->security_deposit + $contract->utilities_deposit;
+                $endOfFirstMonth = $startDate->copy()->addMonth()->subDay();
+                $period = $startDate->format('M j, Y') . ' - ' . $endOfFirstMonth->format('M j, Y');
+
+                $allBills[] = [
+                    'is_first' => true, 'contract' => $contract, 
+                    'rent' => $contract->rent_amount, 'sec_dep' => $contract->security_deposit, 
+                    'util_dep' => $contract->utilities_deposit, 'total' => $totalDue, 
+                    'type' => 'Initial Deposit & Rent', 'period' => $period
+                ];
+            } else {
+                $monthlyUtil = 150.00;
+                $totalDue = $contract->rent_amount + $monthlyUtil;
+                
+                $targetStart = $startDate->copy()->addMonths($normalPaymentCount + 1);
+                $targetEnd = $targetStart->copy()->addMonth()->subDay();
+                $period = $targetStart->format('M j, Y') . ' - ' . $targetEnd->format('M j, Y');
+
+                $allBills[] = [
+                    'is_first' => false, 'contract' => $contract, 
+                    'rent' => $contract->rent_amount, 'util' => $monthlyUtil, 
+                    'total' => $totalDue, 'type' => 'Monthly Rent & Utilities', 
+                    'period' => $period
+                ];
+            }
         }
+
+        // 3. Return the array of all bills
+        return $allBills;
     }
 
     public function recordPayment(array $data)

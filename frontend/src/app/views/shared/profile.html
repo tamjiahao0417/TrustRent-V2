@@ -48,11 +48,26 @@
                 <label>Wallet Address (Web3)</label>
                 <input type="text" name="wallet_address" [(ngModel)]="user.wallet_address" [readonly]="!isEditing">
             </div>
-
-            <div class="action-buttons" *ngIf="isEditing">
-                <button type="button" class="btn-black" (click)="saveProfile()">Save Changes</button>
-                <button type="button" class="btn-outline" (click)="toggleEdit(false)">Cancel</button>
+            
+            <div class="form-group" *ngIf="user.role === 'tenant'" style="width: 100%; margin-bottom: 24px;">
+                <label>My Rental Preferences (For AI Matching)</label>
+                <textarea [(ngModel)]="user.rental_preferences" name="prefs" class="form-control" rows="3" 
+                          [readonly]="!isEditing"
+                          placeholder="e.g., I am a student looking for a fully furnished place near UTM with a budget of RM1200. Must have fast WiFi."></textarea>
+                <small class="text-muted">Describe what you are looking for so our AI can match you with the perfect landlord.</small>
             </div>
+
+            <form class="settings-form" (ngSubmit)="saveProfile()">
+            
+                <div class="action-buttons" *ngIf="isEditing">
+                    <button type="submit" class="btn-black" [disabled]="isSaving">
+                        <i class="fa-solid fa-circle-notch fa-spin" *ngIf="isSaving" style="margin-right: 8px;"></i>
+                        {{ isSaving ? 'Saving...' : 'Save Changes' }}
+                    </button>
+                    
+                    <button type="button" class="btn-outline" (click)="toggleEdit(false)" [disabled]="isSaving">Cancel</button>
+                </div>
+            </form>
         </form>
     </div>
 

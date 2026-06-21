@@ -16,49 +16,57 @@ declare let Web3: any;
   styleUrl: '../../views/tenant/rent-payment.css'
 })
 export class RentPaymentController implements OnInit {
-  bill: any = null;
+  // 🌟 FIX: Change from a single bill object to a bills array
+  bills: any[] = []; 
   history: any[] = [];
   userId = localStorage.getItem('user_id');
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private paymentModel: RentPaymentModel // INJECTING THE MODEL HERE
+    private paymentModel: RentPaymentModel 
   ) {}
 
   ngOnInit() {
     if (this.userId) {
-      // Use the Model to fetch billing data
+      // 1. Fetch Bills
       this.paymentModel.getBilling(this.userId).subscribe({
-        next: (data: any) => {
-          this.bill = data;
-          this.history = data.history ? data.history.slice(0, 5) : []; // Just grab latest 5 for the mini-table
+        next: (data: any[]) => {
+          this.bills = data; // Assign array of bills
           this.cdr.detectChanges();
         },
         error: () => console.log('No active balances found.')
       });
+
+      // 2. Fetch History (We can use your existing history route here)
+      this.paymentModel.getHistory(this.userId).subscribe({
+          next: (data: any[]) => {
+              this.history = data.slice(0, 5);
+              this.cdr.detectChanges();
+          }
+      });
     }
   }
 
-  async payWithWeb3() {
+  // 🌟 FIX: We now pass the SPECIFIC bill into the pay function
+  async payWithWeb3(targetBill: any) {
     if (typeof window.ethereum === 'undefined' || typeof Web3 === 'undefined') {
         return alert("Please install MetaMask.");
     }
 
-    // Default testing wallet if landlord hasn't provided one
-    const landlordWallet = this.bill.contract.landlord.wallet_address || '0xYourGanacheTestingWalletAddressHere'; 
+    const landlordWallet = targetBill.contract.landlord.wallet_address || '0xYourGanacheTestingWalletAddressHere'; 
 
     try {
-        let ethToMyrRate = 8237.87; // Fallback
+        let ethToMyrRate = 8237.87; 
         try {
             const priceRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=myr');
             const priceData = await priceRes.json();
             if (priceData.ethereum?.myr) ethToMyrRate = priceData.ethereum.myr;
         } catch (e) { console.warn("Live price API failed. Using fallback."); }
 
-        const exactEth = this.bill.total / ethToMyrRate;
+        const exactEth = targetBill.total / ethToMyrRate;
         const safeEthString = exactEth.toFixed(6);
 
-        alert(`Conversion: 1 ETH = RM ${ethToMyrRate}\nAmount to Pay: ${safeEthString} ETH\n\nInitiating secure Web3 transaction...`);
+        alert(`Conversion: 1 ETH = RM ${ethToMyrRate}\nAmount to Pay: ${safeEthString} ETH`);
 
         const web3 = new Web3(window.ethereum);
         await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -67,37 +75,34 @@ export class RentPaymentController implements OnInit {
         const ethAmountWei = web3.utils.toWei(safeEthString, "ether"); 
         const hexAmount = "0x" + BigInt(ethAmountWei).toString(16);
 
-        // Send Transaction
         const txHash = await window.ethereum.request({
             method: 'eth_sendTransaction',
             params: [{ from: accounts[0], to: landlordWallet, value: hexAmount }],
         });
 
-        // If approved, save to database!
-        this.savePaymentToDatabase(txHash);
+        this.savePaymentToDatabase(txHash, targetBill); // Pass the bill here too!
 
     } catch (error: any) {
         if (error.code === 4001) alert("Transaction cancelled by user.");
-        else alert("Payment failed. Check console for details.");
+        else alert("Payment failed.");
     }
   }
 
-  savePaymentToDatabase(hash: string) {
+  savePaymentToDatabase(hash: string, targetBill: any) {
     const payload = {
       tenant_id: this.userId,
-      landlord_id: this.bill.contract.landlord_id,
-      property_id: this.bill.contract.property_id,
-      contract_id: this.bill.contract.id,
-      amount: this.bill.total,
-      type: this.bill.type,
-      billing_period: this.bill.period,
+      landlord_id: targetBill.contract.landlord_id,
+      property_id: targetBill.contract.property_id,
+      contract_id: targetBill.contract.id,
+      amount: targetBill.total,
+      type: targetBill.type,
+      billing_period: targetBill.period,
       blockchain_hash: hash
     };
 
-    // Use the Model to save the transaction
     this.paymentModel.savePayment(payload).subscribe(() => {
       alert('Payment successful and recorded on the blockchain!');
-      this.ngOnInit(); // Reload page to update history
+      this.ngOnInit(); 
     });
   }
 }

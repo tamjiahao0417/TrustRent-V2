@@ -128,7 +128,6 @@ export class EditReportController implements OnInit {
     this.isSubmitting = true;
 
     const formData = new FormData();
-    formData.append('_method', 'PUT'); 
     formData.append('issue_type', this.reportData.issue_type);
     formData.append('description', this.reportData.description);
     
@@ -136,10 +135,10 @@ export class EditReportController implements OnInit {
       formData.append('related_user_id', this.reportData.related_user_id);
     }
     
-    formData.append('existing_media', JSON.stringify(this.existingMedia));
+    formData.append('existing_attachments', JSON.stringify(this.existingMedia));
 
     this.selectedFiles.forEach((file) => {
-      formData.append('attachment[]', file, file.name);
+      formData.append('new_attachments[]', file, file.name);
     });
 
     // Use the Model to submit the update

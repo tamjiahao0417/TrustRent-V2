@@ -5,6 +5,11 @@
     <h1 class="page-title">Edit Contract</h1>
     <p class="page-subtitle">Make requested changes, re-sign, and send back to the tenant.</p>
 
+    <div *ngIf="formData.edit_reason" style="background-color: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; padding: 16px; border-radius: 8px; margin-bottom: 24px; font-size: 15px;">
+        <i class="fa-solid fa-circle-exclamation" style="margin-right: 8px;"></i>
+        <strong>Tenant requested changes:</strong> {{ formData.edit_reason }}
+    </div>
+
     <div *ngIf="errorMessage" class="error-banner" style="background: #fee2e2; color: #dc2626; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;">
         {{ errorMessage }}
     </div>
@@ -50,8 +55,10 @@
                 <button type="button" class="btn-clear" (click)="clearSignature()">Clear Signature</button>
             </div>
 
-            <div class="submit-container mt-4">
-                <button type="submit" class="btn-submit">Save Edits & Re-Send to Tenant</button>
+            <div class="action-buttons mt-4">
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-file-signature"></i> Save Edits & Re-Send to Tenant
+                </button>
             </div>
         </form>
     </div>

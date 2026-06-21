@@ -18,7 +18,7 @@ class Contract extends Model
         'landlord_ic', 'landlord_address', 'tenant_ic', 'tenant_address',
         'utilities_deposit', 'security_deposit', 'notice_period', 'status', 
         'blockchain_hash', 'landlord_signature', 'landlord_signed_at',
-        'tenant_signature', 'tenant_signed_at', 'payment_frequency', 'due_date'
+        'tenant_signature', 'tenant_signed_at', 'payment_frequency', 'due_date', 'edit_reason'
     ];
 
     public function property() { return $this->belongsTo(Property::class, 'property_id'); }

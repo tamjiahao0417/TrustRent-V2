@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,15 +10,27 @@ export class RentPaymentModel {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch the current billing details and history for the tenant
+  // 🌟 Centralized header management for Sanctum Auth
+  private getHeaders() {
+    const token = localStorage.getItem('token'); 
+    return new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json');
+  }
+
+  // Fetch the current billing details for the tenant
   getBilling(userId: string): Observable<any> {
-    // 🌟 FIX 1: Updated URL to match Laravel's /transactions/billing-details route
-    return this.http.get(`${this.apiUrl}/transactions/billing-details/${userId}`);
+    return this.http.get(`${this.apiUrl}/transactions/billing-details/${userId}`, { headers: this.getHeaders() });
+  }
+
+  // 🌟 FIX: Added the missing getHistory function!
+  // Fetches the tenant's transaction history
+  getHistory(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/transactions`, { headers: this.getHeaders() });
   }
 
   // Save the successful Web3 transaction to the backend
   savePayment(payload: any): Observable<any> {
-    // 🌟 FIX 2: Updated URL to match Laravel's /transactions/payment route
-    return this.http.post(`${this.apiUrl}/transactions/payment`, payload);
+    return this.http.post(`${this.apiUrl}/transactions/payment`, payload, { headers: this.getHeaders() });
   }
 }

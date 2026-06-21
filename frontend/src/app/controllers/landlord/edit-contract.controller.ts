@@ -44,7 +44,7 @@ export class EditContractController implements OnInit {
             this.router.navigate(['/contracts']);
             return; 
           }
-
+          this.formData = data; 
           // Pre-fill the form with existing contract data
           this.formData = {
             landlord_ic: data.landlord_ic,
@@ -60,6 +60,7 @@ export class EditContractController implements OnInit {
             additional_terms: data.additional_terms
           };
           
+          this.formData.edit_reason = data.edit_reason;
           this.cdr.detectChanges();
           this.initSignaturePad();
         },
