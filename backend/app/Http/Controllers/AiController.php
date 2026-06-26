@@ -29,7 +29,7 @@ class AiController extends Controller
                 'features' => 'nullable|string'
             ]);
 
-            $apiKey = "AIzaSyAQrHK4_VuE8Oc8HpBPKVXz4KV4mAP6CRY"; 
+            $apiKey = "AQ.Ab8RN6KG_W-1ZCfUNfTKreMPpiiGMKk8_OCd48TDVTERjK0w8Q"; 
 
             $prompt = "You are an expert real estate appraiser in Malaysia. Analyze the following property and estimate a fair monthly rental price in RM (Malaysian Ringgit). 
             Property Details:
@@ -85,8 +85,10 @@ class AiController extends Controller
 
         try {
             // 🌟 GLOBAL SEARCH: Get EVERY unrented property in the entire system!
-            $properties = Property::where('is_rented', 0)
-                ->get(['id', 'title', 'price', 'location', 'rooms', 'address', 'description']);
+            $properties = Property::where(function ($query) {
+                $query->where('is_rented', 0)
+                      ->orWhereNull('is_rented');
+            })->get(['id', 'title', 'price', 'location', 'rooms', 'address', 'description']);
 
             if ($properties->isEmpty()) {
                 return response()->json(['matches' => []]);
@@ -107,7 +109,7 @@ class AiController extends Controller
                     'available_properties' => $properties->toArray()
                 ]);
 
-            $apiKey = "AIzaSyAQrHK4_VuE8Oc8HpBPKVXz4KV4mAP6CRY"; 
+            $apiKey = "AQ.Ab8RN6KG_W-1ZCfUNfTKreMPpiiGMKk8_OCd48TDVTERjK0w8Q"; 
 
             $response = Http::withoutVerifying()
                 ->timeout(60)
@@ -166,7 +168,7 @@ class AiController extends Controller
                     'available_tenants' => $tenants->toArray()
                 ]);
 
-            $apiKey = "AIzaSyAQrHK4_VuE8Oc8HpBPKVXz4KV4mAP6CRY"; 
+            $apiKey = "AQ.Ab8RN6KG_W-1ZCfUNfTKreMPpiiGMKk8_OCd48TDVTERjK0w8Q"; 
 
             $response = Http::withoutVerifying()
                 ->timeout(60)
