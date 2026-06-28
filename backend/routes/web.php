@@ -36,13 +36,8 @@ Route::get('/{asset}', function ($asset) {
 
 Route::get('/run-migrations', function () {
     try {
-        // 1. Wipe the old cached settings
-        \Illuminate\Support\Facades\Artisan::call('optimize:clear');
-        
-        // 2. Run the database migrations
         \Illuminate\Support\Facades\Artisan::call('migrate --force');
-        
-        return 'Cache cleared and Migrations run successfully!';
+        return 'Migrations run successfully!';
     } catch (\Exception $e) {
         return 'Error: ' . $e->getMessage();
     }
