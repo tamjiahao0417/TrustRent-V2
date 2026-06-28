@@ -44,6 +44,10 @@ Route::get('/{any}', function () {
 })->where('any', '.*');
 
 Route::get('/run-migrations', function () {
-    \Artisan::call('migrate --force');
-    return 'Migrations run successfully!';
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate --force');
+        return 'Migrations run successfully!';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
 });
