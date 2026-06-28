@@ -34,15 +34,6 @@ Route::get('/{asset}', function ($asset) {
 })->where('asset', '.*\.(js|css|ico|png|jpg|jpeg|svg|woff|woff2|ttf|eot)$');
 
 
-Route::get('/run-migrations', function () {
-    try {
-        \Illuminate\Support\Facades\Artisan::call('migrate --force');
-        return 'Migrations run successfully!';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
-    }
-});
-
 // =========================================================
 // ANGULAR CATCH-ALL (SPA Routing)
 // =========================================================
@@ -52,3 +43,7 @@ Route::get('/{any}', function () {
      return file_exists($path) ? response()->file($path) : "Error: index.html not found. Please build Angular first.";
 })->where('any', '.*');
 
+Route::get('/run-migrations', function () {
+    \Artisan::call('migrate --force');
+    return 'Migrations run successfully!';
+});
