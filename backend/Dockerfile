@@ -10,9 +10,6 @@ RUN docker-php-ext-install pdo pdo_pgsql
 WORKDIR /var/www/html
 COPY . .
 
-# Install Git and Unzip so Composer can fall back to source if needed
-RUN apt-get update && apt-get install -y git unzip
-
 # Install Composer and Laravel dependencies
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --no-dev --optimize-autoloader
