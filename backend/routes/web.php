@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 
 // This route catches requests from users without a token and sends a proper JSON 401 error.
 Route::get('/login', function () {
@@ -42,8 +41,3 @@ Route::get('/{any}', function () {
     $path = public_path('frontend/index.html');
      return file_exists($path) ? response()->file($path) : "Error: index.html not found. Please build Angular first.";
 })->where('any', '.*');
-
-Route::get('/run-migrations', function () {
-    \Artisan::call('migrate --force');
-    return 'Migrations run successfully!';
-});
