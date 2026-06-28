@@ -1,7 +1,7 @@
 FROM php:8.2-apache
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y libpq-dev zip unzip
+RUN apt-get update && apt-get install -y libpq-dev zip unzip git curl
 
 # Install PHP extensions for PostgreSQL
 RUN docker-php-ext-install pdo pdo_pgsql
