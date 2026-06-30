@@ -28,8 +28,6 @@ RUN rm -f .env
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan config:clear
-
 # Expose port
 EXPOSE 8000
 
