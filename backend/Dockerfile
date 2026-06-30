@@ -22,9 +22,6 @@ WORKDIR /var/www
 # Copy files
 COPY . .
 
-# Remove the .env file so it doesn't conflict with Render's Environment Variables
-RUN rm -f .env
-
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
