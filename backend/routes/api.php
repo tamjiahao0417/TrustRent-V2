@@ -63,7 +63,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Properties
     Route::post('/properties', [PropertyController::class, 'store']);
     Route::post('/properties/{id}', [PropertyController::class, 'update']);
-    //Route::get('/properties/all', [PropertyController::class, 'getAll']);
     Route::delete('/properties/{id}', [PropertyController::class, 'destroy']);
     Route::get('/my-properties', [PropertyController::class, 'index']);
     Route::get('/properties/{id}', [PropertyController::class, 'show']);

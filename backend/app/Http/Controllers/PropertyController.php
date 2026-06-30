@@ -16,20 +16,6 @@ class PropertyController extends Controller
         $this->propertyService = $propertyService;
     }
 
-    // 1. Fetch all properties for a specific landlord (Used in My Properties)
-    public function index(Request $request)
-    {
-        $userId = $request->query('user_id');
-
-        if (!$userId) {
-            return response()->json(['message' => 'User ID is required'], 400);
-        }
-
-        $properties = $this->propertyService->getLandlordProperties($userId);
-        
-        return response()->json($properties);
-    }
-
     // 2. Save a new property and upload images (Used in Create Property)
     public function store(Request $request)
     {
@@ -53,6 +39,23 @@ class PropertyController extends Controller
             ], 500);
         }
     }
+    
+
+    // 1. Fetch all properties for a specific landlord (Used in My Properties)
+    public function index(Request $request)
+    {
+        $userId = $request->query('user_id');
+
+        if (!$userId) {
+            return response()->json(['message' => 'User ID is required'], 400);
+        }
+
+        $properties = $this->propertyService->getLandlordProperties($userId);
+        
+        return response()->json($properties);
+    }
+
+    
 
     // 3. Fetch specific property details
     public function show($id)

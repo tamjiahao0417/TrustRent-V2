@@ -20,7 +20,7 @@ class Property extends Model
         'address',
         'phone_number',
         'image_path',
-        'is_rented' // 🌟 NEW: Added so the Contract Service can update this!
+        'is_rented' 
     ];
 
     // Laravel automatically encodes/decodes the JSON images array for you

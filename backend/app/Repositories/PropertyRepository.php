@@ -35,8 +35,6 @@ class PropertyRepository
 
         $cleanData = array_intersect_key($data, array_flip($allowedColumns));
 
-        // 🚨 I REMOVED THE TIMESTAMPS HERE 🚨
-
         $id = DB::table('properties')->insertGetId($cleanData);
         return $this->getById($id);
     }
@@ -49,9 +47,7 @@ class PropertyRepository
         ];
 
         $cleanData = array_intersect_key($data, array_flip($allowedColumns));
-        
-        // 🚨 I REMOVED THE TIMESTAMPS HERE 🚨
-        
+                
         DB::table('properties')->where('id', $id)->update($cleanData);
         
         return $this->getById($id);
