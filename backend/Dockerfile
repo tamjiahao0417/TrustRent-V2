@@ -19,8 +19,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-RUN echo "Forcing rebuild to bypass cache"
-
 # Copy files
 COPY . .
 
