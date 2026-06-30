@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    libicu-dev
+    libicu-dev \
+    libpq-dev  # <-- ADD THIS LINE
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl pdo_pgsql
@@ -27,4 +28,5 @@ RUN composer install --no-dev --optimize-autoloader
 # Expose port
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Start command
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
