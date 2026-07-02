@@ -20,8 +20,8 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://localhost:4200', 
-        'https://your-angular-site-name.onrender.com' // You can replace this placeholder later when you deploy Angular
+        'http://localhost:4200',
+        'https://trustrent-frontend.onrender.com'
     ],
 
     'allowed_origins_patterns' => [],
