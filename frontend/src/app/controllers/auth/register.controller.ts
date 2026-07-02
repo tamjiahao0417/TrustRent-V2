@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule} from '@angular/router';
 import { AuthModel } from '../../models/auth/auth.model';
 
+import { environment } from '../../../environments/environment';
+
 @Component({
   selector: 'app-register',
   standalone: true,
