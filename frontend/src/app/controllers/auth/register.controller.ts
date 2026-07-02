@@ -57,7 +57,7 @@ export class Register {
       confirm_password: this.confirmPassword 
     };
 
-    this.http.post('http://localhost:8000/api/register', registerData).subscribe({
+    this.http.post(`${environment.apiUrl}/verify-otp`, registerData).subscribe({
       next: (response: any) => {
         // 🌟 Do NOT navigate away. Show the OTP screen instead!
         this.isLoading = false;
