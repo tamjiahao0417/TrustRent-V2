@@ -57,7 +57,7 @@ export class Register {
       confirm_password: this.confirmPassword 
     };
 
-    this.http.post(`${environment.apiUrl}/verify-otp`, registerData).subscribe({
+    this.http.post(`${environment.apiUrl}/register`, registerData).subscribe({
       next: (response: any) => {
         // 🌟 Do NOT navigate away. Show the OTP screen instead!
         this.isLoading = false;
@@ -79,7 +79,7 @@ export class Register {
     this.errorMessage = '';
     this.isLoading = true;
 
-    this.http.post('http://localhost:8000/api/verify-otp', { email: this.registeredEmail, otp: this.otpCode }).subscribe({
+    this.http.post(`${environment.apiUrl}/verify-otp`, { email: this.registeredEmail, otp: this.otpCode }).subscribe({
       next: () => {
         alert('Email verified successfully! You can now log in.');
         this.router.navigate(['/login']);
