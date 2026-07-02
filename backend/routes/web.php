@@ -41,3 +41,11 @@ Route::get('/{any}', function () {
     $path = public_path('frontend/index.html');
      return file_exists($path) ? response()->file($path) : "Error: index.html not found. Please build Angular first.";
 })->where('any', '.*');
+
+Route::get('/debug-db', function () {
+    return [
+        'host' => env('DB_HOST'),
+        'url' => env('DATABASE_URL'),
+        'config_host' => config('database.connections.pgsql.host')
+    ];
+});
