@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8000/api',
-  storageUrl: 'http://localhost:8000/uploads/' // 🌟 Added
+  apiUrl: 'https://trustrent-backend-6yww.onrender.com/api',
+  storageUrl: 'https://trustrent-backend-6yww.onrender.com/uploads/'
 };
