@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AiPricingModel {
   // Base URL for the prediction
-  private apiUrl = 'http://localhost:8000/api/ai';
+  private apiUrl = `${environment.apiUrl}/ai`;
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +22,7 @@ export class AiPricingModel {
 
   // 🌟 ULTIMATE FIX: Use your existing Property route that we KNOW works!
   getLandlordProperties(userId: string): Observable<any> {
-    return this.http.get(`http://localhost:8000/api/my-properties?user_id=${userId}`, { headers: this.getHeaders() });
+    return this.http.get(`${environment.apiUrl}/my-properties?user_id=${userId}`, { headers: this.getHeaders() });
   }
 
   // Submit the property data to get a price prediction

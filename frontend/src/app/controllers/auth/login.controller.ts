@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 
 import { AuthModel } from '../../models/auth/auth.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -44,7 +45,7 @@ export class Login {
       password: this.password
     };
 
-    this.http.post('http://localhost:8000/api/login', loginData).subscribe({
+    this.http.post(`${environment.apiUrl}/login`, loginData).subscribe({
       next: (response: any) => {
         if (response && response.user) {
             

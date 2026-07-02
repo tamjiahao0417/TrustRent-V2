@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,6 @@ export class SidebarModel {
 
   // Handle the backend logout request
   logout(): Observable<any> {
-    return this.http.post('http://localhost:8000/api/logout', {}, { withCredentials: true });
+    return this.http.post(`${environment.apiUrl}/logout`, {}, { withCredentials: true });
   }
 }
