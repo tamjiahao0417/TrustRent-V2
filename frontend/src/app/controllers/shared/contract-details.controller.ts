@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 // Import your newly created Model from the shared folder
 import { ContractDetailsModel } from '../../models/shared/contract-details.model';
 
@@ -60,7 +60,7 @@ export class ContractDetailsController implements OnInit {
         "type": "function"
     }
   ];
-  contractAddress = "0x1eBB5F5DaeE1c797e530BfDbcb8DDDE31946B435";
+  contractAddress = environment.contractAddress;
 
   constructor(
     private route: ActivatedRoute,
