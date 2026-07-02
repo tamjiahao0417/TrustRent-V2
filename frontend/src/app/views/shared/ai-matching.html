@@ -87,7 +87,7 @@
                     
                     <div class="match-image">
                         <img *ngIf="userRole === 'tenant'" 
-                             [src]="match.images && match.images.length > 0 ? 'http://localhost:8000/uploads/' + match.images[0] : 'https://placehold.co/600x400/e2e8f0/9ca3af?text=No+Image'" 
+                             [src]="match.images && match.images.length > 0 ? storageUrl + match.images[0] : 'https://placehold.co/600x400/e2e8f0/9ca3af?text=No+Image'" 
                              alt="Property">
                         
                         <div *ngIf="userRole === 'landlord'" class="landlord-tenant-placeholder">

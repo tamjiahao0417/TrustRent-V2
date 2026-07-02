@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 // Import your new Model
 import { ViewPropertyModel } from '../../models/shared/view-property.model';
 
@@ -18,7 +18,7 @@ export class ViewPropertyController implements OnInit {
   currentUserId: string | null = null;
   userRole: string | null = null;
   fullScreenImage: string | null = null;
-
+  storageUrl = environment.storageUrl; 
   hasError: boolean = false;
   errorMessage: string = '';
 

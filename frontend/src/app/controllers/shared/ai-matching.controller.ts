@@ -2,6 +2,7 @@ import { Component, ChangeDetectorRef, OnInit, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router'; 
+import { environment } from '../../../environments/environment';
 
 import { AiMatchingModel } from '../../models/shared/ai-matching.model';
 
@@ -19,7 +20,7 @@ export class AiMatchingController implements OnInit {
   // Tenant search form
   preferences = { budget_min: 500, budget_max: 2000, location: '', features: [] as string[] };
   availableFeatures = ['Furnished', 'Pet-friendly', 'Parking', 'Gym', 'Pool', 'Balcony'];
-  
+  storageUrl = environment.storageUrl;
   // Landlord property selector
   myProperties: any[] = [];
   selectedProperty: any = ''; 

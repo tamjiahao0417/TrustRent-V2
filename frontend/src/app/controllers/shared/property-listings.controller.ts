@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 // Import your spinner (Adjust path if needed depending on your root setup)
 import { LoadingSpinnerComponent } from '../../loading-spinner.component'; 
@@ -21,7 +22,7 @@ export class PropertyListingsController implements OnInit {
   properties: any[] = [];
   filteredProperties: any[] = []; 
   isLoading: boolean = true;
-
+  storageUrl = environment.storageUrl;
   searchText: string = '';
   showFilters: boolean = false;
   maxPrice: number | null = null;

@@ -47,7 +47,7 @@
         <div class="property-card" *ngFor="let prop of filteredProperties" [routerLink]="['/properties/view', prop.id]">
             
             <div class="card-image">
-                <img [src]="'http://localhost:8000/uploads/' + prop.thumbnail" alt="Property Image">
+                <img [src]="storageUrl + prop.thumbnail" alt="Property Image">
             </div>
 
             <div class="card-info">

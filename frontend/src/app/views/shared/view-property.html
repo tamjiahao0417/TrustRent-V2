@@ -31,18 +31,18 @@
 
     <div class="photo-grid">
         <div class="main-photo">
-            <img [src]="'http://localhost:8000/uploads/' + property.images[0]" 
-                 (click)="openImage('http://localhost:8000/uploads/' + property.images[0])" 
+            <img [src]="storageUrl + property.images[0]" 
+                 (click)="openImage(storageUrl + property.images[0])" 
                  class="clickable-image">
         </div>
         <div class="side-photos" *ngIf="property.images.length > 1">
             <img *ngIf="property.images[1]" 
-                 [src]="'http://localhost:8000/uploads/' + property.images[1]" 
-                 (click)="openImage('http://localhost:8000/uploads/' + property.images[1])" 
+                 [src]="storageUrl + property.images[1]" 
+                 (click)="openImage(storageUrl + property.images[1])" 
                  class="clickable-image">
             <img *ngIf="property.images[2]" 
-                 [src]="'http://localhost:8000/uploads/' + property.images[2]" 
-                 (click)="openImage('http://localhost:8000/uploads/' + property.images[2])" 
+                 [src]="storageUrl + property.images[2]" 
+                 (click)="openImage(storageUrl + property.images[2])" 
                  class="clickable-image">
         </div>
     </div>
@@ -94,9 +94,9 @@
                 <h2>Additional Photos</h2>
                 <div class="extra-gallery-grid">
                     <div class="gallery-item" *ngFor="let img of property.images.slice(3)">
-                        <img [src]="'http://localhost:8000/uploads/' + img" 
+                        <img [src]="storageUrl + img" 
                              alt="Property Image" 
-                             (click)="openImage('http://localhost:8000/uploads/' + img)" 
+                             (click)="openImage(storageUrl + img)" 
                              class="clickable-image">
                     </div>
                 </div>

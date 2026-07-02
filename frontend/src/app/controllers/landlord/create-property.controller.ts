@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 // Import the new Model
 import { CreatePropertyModel } from '../../models/landlord/create-property.model';
 
@@ -29,7 +29,7 @@ export class CreatePropertyController {
   previewUrls: string[] = []; 
   isSubmitting: boolean = false;
   fullScreenImage: string | null = null; 
-
+  storageUrl = environment.storageUrl;
   constructor(
     private router: Router,
     private cdr: ChangeDetectorRef,

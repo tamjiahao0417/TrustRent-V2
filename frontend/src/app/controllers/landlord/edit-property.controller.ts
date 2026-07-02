@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-
+import { environment } from '../../../environments/environment';
 // Import your newly created Model
 import { EditPropertyModel } from '../../models/landlord/edit-property.model';
 
@@ -17,7 +17,7 @@ import { EditPropertyModel } from '../../models/landlord/edit-property.model';
 export class EditPropertyController implements OnInit {
   propertyId: string | null = null;
   property: any = null; 
-  
+  storageUrl = environment.storageUrl;
   existingImages: string[] = [];
   selectedFiles: File[] = [];
   previewUrls: string[] = []; 

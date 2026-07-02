@@ -58,7 +58,7 @@
                 
                 <div class="preview-container" *ngIf="existingImages.length > 0 || previewUrls.length > 0">
                     <div class="preview-wrapper" *ngFor="let img of existingImages; let i = index">
-                        <img [src]="'http://localhost:8000/uploads/' + img" class="preview-image" alt="Current Image" (click)="openImage('http://localhost:8000/uploads/' + img)">
+                        <img [src]="storageUrl + img" class="preview-image" alt="Current Image" (click)="openImage(storageUrl + img)">
                         <button type="button" class="remove-btn" (click)="removeExistingImage(i)">&times;</button>
                     </div>
 

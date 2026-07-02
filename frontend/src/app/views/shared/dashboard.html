@@ -61,7 +61,7 @@
                 <div class="property-list" *ngIf="dbData.activeContracts && dbData.activeContracts.length > 0">
                     <div class="property-wide-card" *ngFor="let contract of dbData.activeContracts">
                         <div class="property-image-wrapper">
-                            <img *ngIf="contract.property_image" [src]="'http://localhost:8000/uploads/' + contract.property_image" alt="Property">
+                            <img *ngIf="contract.property_image" [src]="storageUrl + contract.property_image" alt="Property">
                             <i *ngIf="!contract.property_image" class="fa-solid fa-image" style="color: #9ca3af; font-size: 24px;"></i>
                         </div>
                         <div class="property-details">
@@ -135,7 +135,7 @@
                 <div class="property-list" *ngFor="let prop of dbData.rentedProperties">
                     <div class="property-wide-card">
                         <div class="property-image-wrapper">
-                            <img *ngIf="prop.property_image" [src]="'http://localhost:8000/uploads/' + prop.property_image" alt="Property">
+                            <img *ngIf="prop.property_image" [src]="storageUrl + prop.property_image" alt="Property">
                             <i *ngIf="!prop.property_image" class="fa-solid fa-image" style="color: #9ca3af; font-size: 24px;"></i>
                         </div>
                         <div class="property-details">

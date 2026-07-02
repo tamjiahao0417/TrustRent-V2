@@ -37,7 +37,7 @@
         <div class="listing-card" *ngFor="let prop of filteredProperties" [routerLink]="['/properties/view', prop.id]">
             
             <div class="listing-image">
-                <img [src]="'http://localhost:8000/uploads/' + prop.thumbnail" alt="Property Image">
+                <img [src]="storageUrl + prop.thumbnail" alt="Property Image">
             </div>
 
             <div class="listing-info">

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LoadingSpinnerComponent } from '../../loading-spinner.component';
+import { environment } from '../../../environments/environment';
 
 // Import your newly created Model
 import { MyPropertiesModel } from '../../models/landlord/my-properties.model';
@@ -19,7 +20,7 @@ export class MyPropertiesController implements OnInit {
   properties: any[] = [];
   filteredProperties: any[] = []; 
   isLoading: boolean = true;
-
+  storageUrl = environment.storageUrl;
   searchText: string = '';
   showFilters: boolean = false;
   maxPrice: number | null = null;

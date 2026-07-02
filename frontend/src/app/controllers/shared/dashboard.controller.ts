@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; 
+import { environment } from '../../../environments/environment';
 
 // Import your newly created Model from the shared folder
 import { DashboardModel } from '../../models/shared/dashboard.model';
@@ -17,7 +18,7 @@ export class DashboardController implements OnInit {
   userRole: string = '';
   userName: string = '';
   userId: string = '';
-  
+  storageUrl = environment.storageUrl;
   dbData: any = null;
   isLoading: boolean = true;
 
