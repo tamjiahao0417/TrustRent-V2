@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 // Define the structure of the data you are sending
 export interface ContractPayload {
@@ -16,7 +17,7 @@ export interface ContractPayload {
   providedIn: 'root'
 })
 export class CreateContractModel {
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
