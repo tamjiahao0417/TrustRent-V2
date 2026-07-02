@@ -52,13 +52,12 @@ class AppointmentController extends Controller
 
     public function show($id)
     {
-        // try {
-        //     $appointment = $this->appointmentService->getAppointmentDetails($id);
-        //     return response()->json($appointment);
-        // } catch (Exception $e) {
-        //     return response()->json(['message' => $e->getMessage()], $e->getCode() ?: 404);
-        // }
-        return response()->json(['received_id' => $id]);
+        try {
+            $appointment = $this->appointmentService->getAppointmentDetails($id);
+            return response()->json($appointment);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode() ?: 404);
+        }
     }
 
     public function update(Request $request, $id)
