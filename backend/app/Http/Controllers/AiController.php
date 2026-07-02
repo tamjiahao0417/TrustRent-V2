@@ -29,7 +29,7 @@ class AiController extends Controller
                 'features' => 'nullable|string'
             ]);
 
-            $apiKey = "AIzaSyBWGS4XWOlX_rC-vcsPMWZ6pHG6dXQKXpQ"; 
+            $apiKey = "AIzaSyAfXyvd4AR1ztwzxEzCYWb5IPkGVzz--RY"; 
 
             $prompt = "You are an expert real estate appraiser in Malaysia. Analyze the following property and estimate a fair monthly rental price in RM (Malaysian Ringgit). 
             Property Details:
@@ -109,7 +109,7 @@ class AiController extends Controller
                     'available_properties' => $properties->toArray()
                 ]);
 
-            $apiKey = "AIzaSyBWGS4XWOlX_rC-vcsPMWZ6pHG6dXQKXpQ"; 
+            $apiKey = "AIzaSyAfXyvd4AR1ztwzxEzCYWb5IPkGVzz--RY"; 
 
             $response = Http::withoutVerifying()
                 ->timeout(60)
@@ -168,7 +168,7 @@ class AiController extends Controller
                     'available_tenants' => $tenants->toArray()
                 ]);
 
-            $apiKey = "AIzaSyBWGS4XWOlX_rC-vcsPMWZ6pHG6dXQKXpQ"; 
+            $apiKey = "AIzaSyAfXyvd4AR1ztwzxEzCYWb5IPkGVzz--RY"; 
 
             $response = Http::withoutVerifying()
                 ->timeout(60)
